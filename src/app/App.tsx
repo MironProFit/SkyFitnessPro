@@ -1,9 +1,9 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import HomePage from '@/pages/home/ui/HomePage';
-import AuthPage from '@/pages/auth/ui/AuthPage';
-import CoursePage from '@/pages/course/ui/CoursePage';
-import ProfilePage from '@/pages/profile/ui/ProfilePage';
-import LessonPage from '@/pages/lesson/ui/LessonPage';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import HomePage from "../pages/home/HomePage";
+import AuthPage from "../pages/auth/AuthPage";
+import CoursePage from "../pages/course/CoursePage";
+import ProfilePage from "../pages/profile/ProfilePage";
+import LessonPage from "../pages/lesson/LessonPage";
 
 function App() {
   return (

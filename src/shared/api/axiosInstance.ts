@@ -10,12 +10,12 @@ export const apiClient = axios.create({
 });
 
 // нтерцептор для добавления токена
-apiClient.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    config.headers.Authorization = \Bearer \\;
-  }
-  return config;
-});
+// apiClient.interceptors.request.use((config) => {
+//   const token = localStorage.getItem('token');
+//   if (token) {
+//     config.headers.Authorization = ;
+//   }
+//   return config;
+// });
 
-export default apiClient;
+// export default apiClient;
