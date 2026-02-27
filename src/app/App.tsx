@@ -1,13 +1,18 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import HomePage from "../pages/home/HomePage";
-import AuthPage from "../pages/auth/AuthPage";
-import CoursePage from "../pages/course/CoursePage";
-import ProfilePage from "../pages/profile/ProfilePage";
-import LessonPage from "../pages/lesson/LessonPage";
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import HomePage from '../pages/home/HomePage';
+import AuthPage from '../pages/auth/AuthPage';
+import CoursePage from '../pages/course/CoursePage';
+import ProfilePage from '../pages/profile/ProfilePage';
+import LessonPage from '../pages/lesson/LessonPage';
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter
+      future={{
+        v7_startTransition: true,
+        v7_relativeSplatPath: true,
+      }}
+    >
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/auth" element={<AuthPage />} />

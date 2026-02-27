@@ -1,6 +1,5 @@
 .header {
   background-color: #ffffff;
-  border-bottom: 1px solid #eaeaea;
   padding: 16px 0;
   position: sticky;
   top: 0;
@@ -18,7 +17,7 @@
 
 .logo {
   font-size: 20px;
-  font-weight: 800;
+  font-weight: 500;
   color: #1a1a1a;
   text-decoration: none;
   display: flex;
@@ -29,6 +28,37 @@
 
 .logo:hover {
   opacity: 0.8;
+}
+
+.logoContainer {
+  display: flex;
+  gap: 15px;
+  flex-direction: column;
+}
+
+.logoIcon {
+  width: 30px;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+
+  /* height: auto; */
+  /* display: block; */
+}
+
+.logoText {
+  width: 182px;
+  position: relative;
+  top: 3px;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+
+  /* width: 182.96px;
+  height: 28.56px; */
+  display: block;
+}
+.logoDescription {
+  font-size: 16px;
+  color: #555;
+  font-weight: 400;
+  opacity: 0.5;
 }
 
 .nav {

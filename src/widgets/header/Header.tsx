@@ -1,28 +1,24 @@
 import { Link } from 'react-router-dom';
-
+import { Button } from '@/shared/components/Button/Button';
+import logoIcon from '@/shared/assets/icon/logoIcon.svg';
+import logoText from '@/shared/assets/icon/logoText.svg';
 import styles from './Header.module.css';
-import { Button } from '../../shared/components/Button/Button';
 
 export const Header = () => {
   return (
     <header className={styles.header}>
       <div className={styles.container}>
-        <Link to="/" className={styles.logo}>
-          🏋️‍♂️ SkyFitnessPro
-        </Link>
-
-        <nav className={styles.nav}>
-          <Link to="/" className={styles.navLink}>
-            Главная
+        <div className={styles.logoContainer}>
+          <Link to="/" className={styles.logo}>
+            <img src={logoIcon} alt="Logo" className={styles.logoIcon} />
+            <img src={logoText} alt="Logo" className={styles.logoText} />
           </Link>
-          <Link to="/courses" className={styles.navLink}>
-            Курсы
-          </Link>
-        </nav>
+          <span className={styles.logoDescription}>Онлайн-тренировки для занятий дома</span>
+        </div>
 
         <div className={styles.actions}>
           <Link to="/auth">
-            <Button variant="black" size="sm">
+            <Button variant="primary" size="sm">
               Войти
             </Button>
           </Link>

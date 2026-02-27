@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './Button.module.css';
 
-type ButtonVariant = 'primary' | 'secondary' | 'black' | 'disabled';
+type ButtonVariant = 'primary' | 'disabled';
 type ButtonSize = 'sm' | 'md' | 'lg';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -19,12 +19,11 @@ export const Button: React.FC<ButtonProps> = ({
   className = '',
   ...props
 }) => {
-
-    const classNames = [
+  const classNames = [
     styles.btn,
     styles[`btn--${variant}`],
     styles[`btn--${size}`],
-    className, // Пользовательские классы добавляются как есть
+    className, 
   ]
     .filter(Boolean)
     .join(' ');
