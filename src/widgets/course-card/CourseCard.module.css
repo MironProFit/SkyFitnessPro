@@ -10,6 +10,7 @@
   flex-direction: column;
   height: 500px;
   min-width: 360px;
+  cursor: pointer;
 }
 
 .card:hover {
@@ -35,20 +36,26 @@
   height: 100%;
   object-fit: contain;
   transition: transform 0.3s ease;
-  background-size: 20%;
 }
 
 .card:hover .image {
   transform: scale(1.05);
 }
 
-.addButton {
+.addButtonWrapper {
   position: absolute;
   top: 23px;
   right: 23px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.addButton {
   width: 26px;
   height: 26px;
   border-radius: 50%;
+  /* background-color: rgba(255, 255, 255, 0.9); */
   border: none;
   color: #1a1a1a;
   font-size: 20px;
@@ -60,11 +67,54 @@
   transition:
     background 0.2s,
     transform 0.2s;
+  z-index: 2;
 }
 
 .addButton:hover {
+  background-color: #b8f33f;
   color: #000;
   transform: rotate(90deg);
+}
+
+.tooltip {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 8px;
+  padding: 6px 12px;
+  background-color: rgba(255, 255, 255, 0.8);
+  color: black;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 6px;
+  border: 0.5px  solid #000000;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-5px);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    visibility 0.2s;
+  pointer-events: none;
+  cursor: pointer ;
+  z-index: 10;
+}
+
+.tooltip::before {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  right: 10px;
+  border-width: 6px;
+  border-style: solid;
+  border-color: transparent transparent rgba(0, 0, 0, 0.8) transparent;
+}
+
+.addButtonWrapper:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
 }
 
 .content {
