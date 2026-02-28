@@ -19,14 +19,16 @@
   width: 103px;
   height: 52px;
   padding: 8px 16px;
-  font-size: 14px;
+  font-size: 18px;
+  font-weight: 400;
+
 }
 
 .btn--md {
-  width: 280px;
+  width: 127px;
   height: 52px;
   padding: 12px 24px;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .btn--lg {

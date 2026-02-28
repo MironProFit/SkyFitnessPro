@@ -14,40 +14,45 @@
 }
 
 .mainTitle {
-  font-size: 42px;
-  font-weight: 800;
+  font-size: 60px;
+  font-weight: 400;
   color: #1a1a1a;
   line-height: 1.1;
   margin: 0;
-  max-width: 800px;
+  max-width: 947px;
 }
 
 .badge {
-  background-color: #B8F33F;
+  background-color: #bcec30;
   color: #1a1a1a;
+  border-radius: 5px;
   padding: 12px 20px;
-  border-radius: 12px;
-  font-weight: 600;
-  font-size: 16px;
+  font-weight: 400;
+  font-size: 32px;
   position: relative;
-  white-space: nowrap;
+  max-width: 262px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .badge::after {
   content: '';
   position: absolute;
-  left: -8px;
-  top: 20px;
-  border-width: 8px 8px 8px 0;
-  border-style: solid;
-  border-color: transparent #B8F33F transparent transparent;
-  transform: translateY(-50%);
+  left: 117px;
+  bottom: -20px;
+  width: 30px;
+  height: 35px;
+  background-image: url('@/shared/assets/icon/badge_polygon_1.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 40px;
   margin-bottom: 40px;
 }
 
@@ -56,16 +61,18 @@
 }
 
 .scrollTopBtn {
-  background-color: #B8F33F;
+  background-color: #b8f33f;
   color: #1a1a1a;
   border: none;
-  padding: 12px 24px;
+  padding: 16px 20px;
   border-radius: 30px;
-  font-weight: 600;
-  font-size: 16px;
+  font-weight: 400;
+  font-size: 18px;
   cursor: pointer;
   font-family: 'StratosSkyeng', sans-serif;
-  transition: background 0.2s, transform 0.2s;
+  transition:
+    background 0.2s,
+    transform 0.2s;
 }
 
 .scrollTopBtn:hover {
@@ -77,16 +84,16 @@
   .mainTitle {
     font-size: 32px;
   }
-  
+
   .headerBlock {
     flex-direction: column;
     gap: 10px;
   }
-  
+
   .badge::after {
     left: 20px;
     top: -8px;
     border-width: 0 8px 8px 8px;
-    border-color: transparent transparent #B8F33F transparent;
+    border-color: transparent transparent #b8f33f transparent;
   }
 }
