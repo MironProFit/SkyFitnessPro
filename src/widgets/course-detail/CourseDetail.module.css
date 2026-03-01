@@ -3,10 +3,12 @@
   margin: 0 auto;
   padding-bottom: 60px;
   font-family: 'StratosSkyeng', sans-serif;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .contentWrapper {
-  padding: 60px 0;
+  padding: 60px 20px;
 }
 
 .section {
@@ -16,10 +18,11 @@
 .sectionTitle {
   font-weight: 400;
   font-size: 40px;
-  line-height: 44px;
-  white-space: nowrap;
+  line-height: 1.2;
   color: #1a1a1a;
   margin: 0 0 40px;
+  white-space: normal;
+  word-wrap: break-word;
 }
 
 .hero {
@@ -30,6 +33,7 @@
   display: flex;
   justify-content: space-between;
   padding: 0 40px;
+  align-items: center;
 }
 
 .heroContent {
@@ -44,24 +48,33 @@
   color: #fff;
   margin: 0;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  line-height: 1.1;
+  white-space: normal;
 }
 
 .heroImage {
   position: absolute;
-  right: 0;
+  right: 8%;
   top: 0;
   height: 100%;
   width: auto;
   object-fit: cover;
-  mask-image: linear-gradient(to left, black 90%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to left, black 90%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 15%,
+    black 85%,
+    transparent 100%
+  );
 }
 
 .fittingGrid {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   gap: 17px;
-  align-items: flex-start;
+  align-items: stretch;
+  justify-content: flex-start;
 }
 
 .fittingCard {
@@ -72,56 +85,71 @@
   display: flex;
   align-items: flex-start;
   gap: 16px;
+  width: auto;
+  min-width: 280px;
+  max-width: 500px;
+  box-sizing: border-box;
+  height: auto;
+  flex: 0 0 auto;
 }
 
 .fittingNumber {
-  height: 102px;
   font-style: normal;
   font-weight: 400;
   font-size: 75px;
-  line-height: 101px;
+  line-height: 1;
   color: #b8f33f;
+  flex-shrink: 0;
 }
 
 .fittingText {
-  height: 105.6px;
   font-weight: 400;
   font-size: 24px;
-  line-height: 26px;
+  line-height: 1.3;
   margin: 0;
   color: #eee;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-height: none;
+  max-width: none;
+  text-align: left;
 }
 
 .directionsBox {
   background-color: #b8f33f;
   border-radius: 20px;
   padding: 30px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .directionsList {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 0 0 30px 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 16px 40px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px 40px;
 }
 
 .directionsItem {
-  height: 26.4px;
   font-style: normal;
   font-weight: 400;
   font-size: 24px;
-  line-height: 26px;
+  line-height: 1.3;
   color: #1a1a1a;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
+  word-wrap: break-word;
 }
 
 .plusIcon {
   width: 25px;
   height: 25px;
+  flex-shrink: 0;
+  margin-top: 2px;
 }
 
 .ctaBlock {
@@ -134,36 +162,44 @@
   justify-content: space-between;
   gap: 40px;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   min-height: 400px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .ctaContent {
   max-width: 437px;
   flex: 1;
-  z-index: 2;
+  z-index: 3;
   position: relative;
+}
+
+.ctaImageLine {
+  position: absolute;
+  right: 20px;
+  bottom: -60px;
+  height: 100%;
+  width: auto;
+  max-width: 60%;
+  object-fit: contain;
+  z-index: 1;
+  pointer-events: none;
+  clip-path: inset( 0 0 60px 0);
 }
 
 .ctaImage {
   position: absolute;
-  top: 0;
+  top: -60px;
   right: 0;
-  height: 100%;
+  bottom: 0;
+  height: calc(100% + 60px);
+  width: auto;
+  max-width: 50%;
   object-fit: cover;
-  object-position: center;
-  z-index: 1;
+  object-position: bottom center;
+  z-index: 2;
   margin: 0;
-  bottom: auto;
-}
-
-.ctaTitle {
-  font-style: normal;
-  font-weight: 400;
-  font-size: 60px;
-  line-height: 60px;
-  color: #1a1a1a;
-  margin: 0 0 24px 0;
 }
 
 .benefitsList {
@@ -176,11 +212,12 @@
   font-style: normal;
   font-weight: 400;
   font-size: 24px;
-  line-height: 26px;
+  line-height: 1.3;
   opacity: 0.6;
   margin-bottom: 12px;
   padding-left: 20px;
   position: relative;
+  word-wrap: break-word;
 }
 
 .benefitsList li::before {
@@ -193,6 +230,7 @@
 
 .ctaButton {
   width: 100%;
+  max-width: 400px;
   background-color: #b8f33f;
   color: #1a1a1a;
   border: none;
@@ -207,7 +245,8 @@
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
-  line-height: 19px;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .ctaButton:hover {
@@ -242,41 +281,118 @@
   z-index: 1;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .hero {
-    padding: 20px;
     height: auto;
     flex-direction: column;
+    padding: 30px 20px;
     text-align: center;
   }
 
   .heroContent {
     max-width: 100%;
+    padding-top: 20px;
     margin-bottom: 20px;
+  }
+
+  .heroTitle {
+    font-size: 42px;
   }
 
   .heroImage {
     position: relative;
     width: 100%;
-    height: 200px;
+    height: 250px;
     mask-image: none;
     -webkit-mask-image: none;
-    object-fit: contain;
-    object-position: center center;
+    object-fit: cover;
   }
 
   .ctaBlock {
-    flex-direction: column-reverse;
+    flex-direction: column;
     text-align: center;
-    padding: 24px;
+    padding: 30px 20px;
+    min-height: auto;
+  }
+
+  .ctaContent {
+    max-width: 100%;
+    order: 2;
+  }
+
+  .ctaImage {
+    position: relative;
+    top: 0;
+    right: auto;
+    bottom: auto;
+    height: 250px;
+    width: 100%;
+    max-width: none;
+    clip-path: none;
+    order: 1;
+    margin-bottom: 20px;
+    border-radius: 20px;
+  }
+
+  .ctaTitle {
+    font-size: 36px;
+  }
+
+  .benefitsList li {
+    text-align: left;
+    display: inline-block;
+  }
+
+  .fittingCard {
+    flex: 1 1 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .sectionTitle {
+    font-size: 28px;
+  }
+
+  .fittingGrid {
+    flex-direction: column;
+  }
+
+  .fittingCard {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+
+  .fittingNumber {
+    font-size: 50px;
+  }
+
+  .fittingText {
+    font-size: 18px;
+  }
+
+  .directionsList {
+    grid-template-columns: 1fr;
+  }
+
+  .directionsItem {
+    font-size: 18px;
+  }
+
+  .ctaTitle {
+    font-size: 28px;
+  }
+
+  .benefitsList li {
+    font-size: 18px;
+  }
+
+  .ctaButton {
+    max-width: 100%;
+    font-size: 16px;
   }
 
   .ctaImageWrapper {
     width: 200px;
     height: 200px;
-  }
-
-  .benefitsList li {
-    text-align: left;
   }
 }
