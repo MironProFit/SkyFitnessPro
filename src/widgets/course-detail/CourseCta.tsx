@@ -1,3 +1,4 @@
+import { useApp } from '@/context/AppContext';
 import styles from './CourseDetail.module.css';
 import CtaImage from '@/shared/assets/courses/cta_img.png';
 import CtaImageLine from '@/shared/assets/courses/cta_line.png';
@@ -7,10 +8,12 @@ interface CourseCtaProps {
 }
 
 export const CourseCta = ({ fitting }: CourseCtaProps) => {
+  const { toggleModalAuth } = useApp();
   const benefits =
     fitting && fitting.length > 0
       ? fitting
       : ['проработка всех групп мышц', 'тренировка суставов', 'улучшение циркуляции крови'];
+  3;
 
   return (
     <div className={styles.ctaBlock}>
@@ -23,7 +26,9 @@ export const CourseCta = ({ fitting }: CourseCtaProps) => {
           ))}
         </ul>
 
-        <button className={styles.ctaButton}>Войдите, чтобы добавить курс</button>
+        <button onClick={() => toggleModalAuth()} className={styles.ctaButton}>
+          Войдите, чтобы добавить курс
+        </button>
       </div>
 
       <img src={CtaImageLine} className={styles.ctaImageLine} />

@@ -1,0 +1,153 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 40px;
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  
+}
+
+
+.scene {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  perspective: 1000px; /* Увеличили перспективу для плавности */
+}
+
+.icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  /* Фиксируем размер контейнера иконки */
+  width: 64px;
+  height: 64px;
+
+  /* Центрируем контейнер */
+  margin-top: -32px; /* Половина высоты */
+  margin-left: -32px; /* Половина ширины */
+
+  /* Начальное состояние */
+  opacity: 0;
+
+  /* ВАЖНО: Вращаем вокруг центра самого элемента */
+  transform-origin: 50% 50%;
+  transform: rotateY(-180deg) scale(0.6);
+
+  animation: morphSpin 7.5s infinite cubic-bezier(0.4, 0, 0.2, 1);
+
+  color: #141b34;
+  fill: currentColor;
+  stroke: currentColor;
+
+  /* Скрываем заднюю грань при вращении, чтобы не было инверсии */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+}
+
+/* Очередность */
+.iconDumbbell {
+  animation-delay: 0s;
+}
+.iconBike {
+  animation-delay: 1.5s;
+}
+.iconMat {
+  animation-delay: 3s;
+}
+.iconScale {
+  animation-delay: 4.5s;
+}
+.iconPulse {
+  animation-delay: 6s;
+}
+
+@keyframes morphSpin {
+  0% {
+    opacity: 0;
+    /* Старт: развернута спиной, уменьшена */
+    transform: rotateY(-180deg) scale(0.2);
+  }
+  12% {
+    opacity: 1;
+    /* Появление лицом */
+    transform: rotateY(0deg) scale(1);
+  }
+  20% {
+    opacity: 1;
+    /* Пауза: стоит ровно */
+    transform: rotateY(0deg) scale(1);
+  }
+  32% {
+    opacity: 1;
+    /* Начало ухода: поворот на 90 град (ребро) */
+    transform: rotateY(90deg) scale(0.8);
+  }
+  44% {
+    opacity: 0;
+    /* Исчезновение: полный разворот спиной (180) */
+    transform: rotateY(180deg) scale(0.6);
+  }
+  100% {
+    opacity: 0;
+    transform: rotateY(180deg) scale(0.6);
+  }
+}
+
+.textContainer {
+  font-family: 'StratosSkyeng', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #334155;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.loadingText {
+  letter-spacing: 0.5px;
+}
+
+.dots::after {
+  content: '...';
+  animation: blinkDots 1.5s infinite steps(4, end);
+  display: inline-block;
+  min-width: 20px;
+  text-align: left;
+  color: #b8f33f;
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 0;
+  margin-top: -2px;
+}
+
+@keyframes blinkDots {
+  0%,
+  100% {
+    content: '';
+    opacity: 0;
+  }
+  25% {
+    content: '.';
+    opacity: 1;
+  }
+  50% {
+    content: '..';
+    opacity: 1;
+  }
+  75% {
+    content: '...';
+    opacity: 0.5;
+  }
+}
+
+
+
+

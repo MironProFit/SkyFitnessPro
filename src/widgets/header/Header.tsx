@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@/shared/components/Button/Button';
-import logoIcon from '@/shared/assets/icon/logoIcon.svg';
-import logoText from '@/shared/assets/icon/logoText.svg';
+import logoIcon from '@/shared/assets/icons/logoIcon.svg';
+import logoText from '@/shared/assets/icons/logoText.svg';
 import styles from './Header.module.css';
+import { useApp } from '@/context/AppContext';
 
 export const Header = () => {
+  const { toggleModalAuth } = useApp();
   return (
     <header className={styles.header}>
       <div className={styles.container}>
@@ -17,11 +19,9 @@ export const Header = () => {
         </div>
 
         <div className={styles.actions}>
-          <Link to="/auth">
-            <Button variant="primary" size="sm">
-              Войти
-            </Button>
-          </Link>
+          <Button color="green" onClick={() => toggleModalAuth()} variant="primary" size="sm">
+            Войти
+          </Button>
         </div>
       </div>
     </header>

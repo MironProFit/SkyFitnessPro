@@ -1,0 +1,175 @@
+/* Затемнение фона (Оверлей) */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.2s ease-out;
+  padding: 20px;
+}
+
+/* Само белое окно модалки */
+.modal {
+  background: #fff;
+  border-radius: 30px;
+  padding: 40px 30px;
+  width: 100%;
+  max-width: 360px;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Логотип сверху */
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  text-decoration: none;
+  margin-bottom: 10px;
+}
+
+.logoIcon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.logoText {
+  height: 35px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* Форма с полями */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Поля ввода (Инпуты) */
+.input {
+  width: 100%;
+  padding: 16px 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  font-size: 16px;
+  font-family: 'StratosSkyeng', sans-serif;
+  outline: none;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+  box-sizing: border-box;
+  background-color: #fafafa;
+  color: #333;
+}
+
+.input::placeholder {
+  color: #a0a0a0;
+}
+
+.input:focus {
+  border-color: #b8f33f;
+  background-color: #fff;
+  box-shadow: 0 0 0 3px rgba(184, 243, 63, 0.1);
+}
+
+/* Главная зеленая кнопка */
+.submitButton {
+  width: 100%;
+  padding: 18px;
+  background-color: #b8f33f;
+  color: #1a1a1a;
+  border: none;
+  border-radius: 50px;
+  font-size: 18px;
+  font-weight: 700;
+  font-family: 'StratosSkyeng', sans-serif;
+  cursor: pointer;
+  transition:
+    transform 0.1s,
+    background-color 0.2s;
+  margin-top: 8px;
+}
+
+.submitButton:hover {
+  background-color: #a6e030;
+}
+
+.submitButton:active {
+  transform: scale(0.98);
+}
+
+.submitButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Вторичная белая кнопка с обводкой */
+.secondaryButton {
+  width: 100%;
+  padding: 16px;
+  background-color: transparent;
+  border: 2px solid #1a1a1a;
+  border-radius: 50px;
+  font-size: 18px;
+  font-weight: 600;
+  font-family: 'StratosSkyeng', sans-serif;
+  color: #1a1a1a;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.secondaryButton:hover {
+  background-color: #1a1a1a;
+  color: #fff;
+}
+
+/* Анимации появления */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Адаптив для мобильных */
+@media (max-width: 480px) {
+  .modal {
+    padding: 30px 20px;
+    border-radius: 24px;
+  }
+  .logoText {
+    height: 20px;
+  }
+  .input,
+  .submitButton,
+  .secondaryButton {
+    font-size: 16px;
+    padding: 14px;
+  }
+}
