@@ -1,6 +1,6 @@
 ﻿import { useParams } from 'react-router-dom';
 import { CourseDetail } from '@/widgets/course-detail/CourseDetail';
-import { coursesData } from '@/widgets/course-list/CourseList';
+import { coursesData } from '@/widgets/course-card/course-list/CourseList';
 
 const CoursePage = () => {
   const { nameEN } = useParams<{ nameEN: string }>();

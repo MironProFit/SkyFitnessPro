@@ -13,6 +13,7 @@ import fitnessImg from '@/shared/assets/courses/fitness_cr.webp';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/shared/components/Button/Button';
+import type { ICourse } from '@/entities/course/types';
 
 const courseImages: Record<string, string> = {
   stepairobic: stepairobicImg,
@@ -41,7 +42,7 @@ export interface CourseData {
 }
 
 interface CourseCardProps {
-  course: CourseData;
+  course: ICourse;
   pageProfile: boolean;
 }
 
@@ -62,14 +63,7 @@ const getDifficultyLabel = (level: number) => {
 export const CourseCard = ({ pageProfile, course }: CourseCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
 
-  const {
-    nameRU,
-    nameEN,
-    durationInDays,
-    dailyDurationInMinutes,
-    difficulty,
-    color = '#f0f0f0',
-  } = course;
+  const { nameRU, nameEN, durationInDays, dailyDurationInMinutes, difficulty, color } = course;
 
   const durationText = `${dailyDurationInMinutes.from}-${dailyDurationInMinutes.to} мин/день`;
   const level = getDifficultyLevel(difficulty);

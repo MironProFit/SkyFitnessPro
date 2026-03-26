@@ -1,8 +1,19 @@
+export interface DailyDuration {
+  from: number;
+  to: number;
+}
+
 export interface ICourse {
-  id: number;
-  title: string;
+  _id: string;
+  nameRU: string;
+  nameEN: string;
   description: string;
-  price: number;
-  imageUrl: string;
-  lessons: number[];
+  directions: string[];
+  fitting: string[];
+  difficulty: string;
+  durationInDays: number;
+  dailyDurationInMinutes: DailyDuration;
+  workouts: string[];
+  order: number;
+  __v?: number;
 }
