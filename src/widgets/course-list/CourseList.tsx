@@ -1,6 +1,11 @@
 import { useLocation } from 'react-router-dom';
 import { CourseCard, type CourseData } from '../course-card/CourseCard';
 import styles from './CourseList.module.css';
+import { useEffect, useState } from 'react';
+import type { ICourse } from '@/entities/course/types';
+import { useApp } from '@/context/AppContext';
+import { courseApi } from '@/shared/api/endpoints/courseApi';
+import { LoadingAnimation } from '@/shared/components/LoadingAnimation/LoadingAnimation';
 
 export const coursesData: CourseData[] = [
   {
@@ -98,10 +103,37 @@ export const coursesData: CourseData[] = [
 ];
 
 export const CourseList = () => {
+  const [courses, setCourses] = useState<ICourse[]>([]);
+  const { isLoading, setIsLoading, setError } = useApp();
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const response = await courseApi.getAll();
+        console.log(response.data);
+
+        const courses = response.data;
+
+        if (Array.isArray(courses)) {
+          setCourses(courses);
+        } else {
+          throw new Error('Пустой ответ от сервера');
+        }
+      } catch (error) {
+        console.error('Ошибка загрузка курсов', error);
+        setError('Не удалось загрузить курсы, попробуйте позже');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchCourses();
+  }, []);
+
   const location = useLocation();
   const pageProfile = location.pathname === '/profile' ? true : false;
-
-  console.log(pageProfile);
 
   return (
     <section className={styles.section}>

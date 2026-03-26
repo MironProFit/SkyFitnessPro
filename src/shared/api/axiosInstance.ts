@@ -1,9 +1,9 @@
 import axios from 'axios';
-
-const API_URL = 'https://api.skyfitnesspro.example.com'; // аменить на реальный URL из документации
+import { ENDPOINTS } from '../config/api.endpoints';
 
 export const apiClient = axios.create({
-  baseURL: API_URL,
+  baseURL: `${ENDPOINTS.API.URL}${ENDPOINTS.API.BASE}`,
+  timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
   },

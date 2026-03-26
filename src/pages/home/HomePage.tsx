@@ -1,10 +1,6 @@
 ﻿import { CourseList } from '@/widgets/course-list/CourseList';
 
 const HomePage = () => {
-  return (
-    <>
-      <CourseList />
-    </>
-  );
+  return <CourseList />;
 };
 export default HomePage;

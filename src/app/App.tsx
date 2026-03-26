@@ -6,10 +6,11 @@ import LessonPage from '../pages/lesson/LessonPage';
 import AuthPage from '../pages/auth/AuthPage';
 import { PrivateRoute } from '@/shared/components/PrivateRoute/PrivateRoute';
 import { Header } from '@/widgets/header/Header';
+import { LoadingAnimation } from '@/shared/components/LoadingAnimation/LoadingAnimation';
+import { useApp } from '@/context/AppContext';
 
 function App() {
-
-
+  const { isLoading } = useApp();
   return (
     <BrowserRouter
       future={{
@@ -17,7 +18,9 @@ function App() {
         v7_relativeSplatPath: true,
       }}
     >
-      <Header/>
+      {isLoading ? <LoadingAnimation /> : ''}
+
+      <Header />
 
       <Routes>
         <Route path="/" element={<HomePage />} />
@@ -41,7 +44,7 @@ function App() {
         />
       </Routes>
 
-      <AuthPage/>
+      <AuthPage />
     </BrowserRouter>
   );
 }

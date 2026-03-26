@@ -4,6 +4,7 @@ import './app/styles/index.css';
 import App from './app/App';
 import { AuthProvider } from './context/AuthContext';
 import { AppProvider } from './context/AppContext';
+import '@/app/styles/global.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -12,5 +13,5 @@ createRoot(document.getElementById('root')!).render(
         <App />
       </AppProvider>
     </AuthProvider>
-  </StrictMode>
+   </StrictMode>
 );

@@ -25,9 +25,12 @@ export const CourseHero = ({ title, color, nameEN }: CourseHeroProps) => {
 
   return (
     <div className={styles.hero} style={{ backgroundColor: color }}>
-      <div className={styles.heroContent}>
-        <h1 className={styles.heroTitle}>{title}</h1>
+      <div className={styles.content__wrapper}>
+        <div className={styles.hero__content}> 
+          <h1 className={styles.hero__title}>{title}</h1>
+        </div>
       </div>
+
       {backgroundImage && <img src={backgroundImage} alt={title} className={styles.heroImage} />}
     </div>
   );

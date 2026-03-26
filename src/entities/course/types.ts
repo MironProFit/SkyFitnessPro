@@ -4,5 +4,5 @@ export interface ICourse {
   description: string;
   price: number;
   imageUrl: string;
-  lessons: number[]; // IDs of lessons
+  lessons: number[];
 }

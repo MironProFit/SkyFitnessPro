@@ -72,8 +72,8 @@
   align-items: center;
   justify-content: center;
   transition:
-    background 0.2s,
-    transform 0.2s;
+    background 0.3s,
+    transform 0.3s;
   z-index: 2;
 }
 
