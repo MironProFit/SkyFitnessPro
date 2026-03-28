@@ -4,46 +4,16 @@ import TimeIcon from '@/shared/assets/icons/Time.svg';
 import PlusIcon from '@/shared/assets/icons/plus.svg';
 import MinusIcon from '@/shared/assets/icons/minus.svg';
 
-import stepairobicImg from '@/shared/assets/courses/stepairobic_cr.webp';
-import yogaImg from '@/shared/assets/courses/yoga_cr.webp';
-import stretchingImg from '@/shared/assets/courses/stretching_cr.webp';
-import bodyflexImg from '@/shared/assets/courses/bodyflex_cr.webp';
-import fitnessImg from '@/shared/assets/courses/fitness_cr.webp';
-
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/shared/components/Button/Button';
 import type { ICourse } from '@/entities/course/types';
-
-const courseImages: Record<string, string> = {
-  stepairobic: stepairobicImg,
-  yoga: yogaImg,
-  stretching: stretchingImg,
-  bodyflex: bodyflexImg,
-  fitness: fitnessImg,
-};
-
-interface DailyDuration {
-  from: number;
-  to: number;
-}
-
-export interface CourseData {
-  _id: string;
-  nameRU: string;
-  nameEN?: string;
-  durationInDays: number;
-  dailyDurationInMinutes: DailyDuration;
-  difficulty: string;
-  color?: string;
-  description?: string;
-  directions?: string[];
-  fitting?: string[];
-}
+import { courseImages } from '@/shared/constans/courseConfig';
 
 interface CourseCardProps {
   course: ICourse;
   pageProfile: boolean;
+  backgroundColor: string | undefined;
 }
 
 const getDifficultyLevel = (difficulty: string) => {
@@ -60,10 +30,10 @@ const getDifficultyLabel = (level: number) => {
   return 'Сложный';
 };
 
-export const CourseCard = ({ pageProfile, course }: CourseCardProps) => {
+export const CourseCard = ({ pageProfile, course, backgroundColor }: CourseCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
 
-  const { nameRU, nameEN, durationInDays, dailyDurationInMinutes, difficulty, color } = course;
+  const { nameRU, nameEN, durationInDays, dailyDurationInMinutes, difficulty } = course;
 
   const durationText = `${dailyDurationInMinutes.from}-${dailyDurationInMinutes.to} мин/день`;
   const level = getDifficultyLevel(difficulty);
@@ -75,11 +45,12 @@ export const CourseCard = ({ pageProfile, course }: CourseCardProps) => {
   return (
     <div
       className={styles.card}
+      style={{ order: course.order }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <Link to={`/course/${course.nameEN}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-        <div className={styles.imageWrapper} style={{ backgroundColor: color }}>
+        <div className={styles.imageWrapper} style={{ backgroundColor: backgroundColor }}>
           {backgroundImage ? (
             <img src={backgroundImage} alt={nameRU} className={styles.image} />
           ) : (

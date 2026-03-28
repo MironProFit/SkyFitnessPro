@@ -6,8 +6,8 @@ interface AppContextType {
   openModalProfile: boolean;
   setOpenModalProfile: (value: boolean) => void;
   toggleModalProfile: () => void;
-  isLoading: boolean;
-  setIsLoading: (value: boolean) => void;
+  isAppLoading: boolean;
+  setIsAppLoading: (value: boolean) => void;
   error: string | null;
   setError: (value: string | null) => void;
 }
@@ -20,36 +20,44 @@ interface AppProviderProps {
 
 export const AppProvider = ({ children }: AppProviderProps) => {
   const [openModalAuth, setOpenModalAuth] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [openModalProfile, setOpenModalProfile] = useState(false);
+  const [isAppLoading, setIsAppLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const toggleModalAuth = () => {
-    setOpenModalAuth((prev) => !prev);
-  };
-  const [openModalProfile, setOpenModalProfile] = useState(false);
   useEffect(() => {
-    setOpenModalProfile(false);
+    const checkAuth = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (token) {
+          // await validateToken(token); // ✅ Раскомментируйте если есть валидация
+        }
+      } catch (err) {
+        console.error('Auth check failed:', err);
+      } finally {
+        setIsAppLoading(false); // ✅ Загрузка завершена
+      }
+    };
+    checkAuth();
   }, []);
-  const toggleModalProfile = () => {
-    setOpenModalProfile((prev) => !prev);
-  };
+
+  const toggleModalAuth = () => setOpenModalAuth((prev) => !prev);
+  const toggleModalProfile = () => setOpenModalProfile((prev) => !prev);
 
   const value = {
     openModalAuth,
     toggleModalAuth,
-
     openModalProfile,
     setOpenModalProfile,
     toggleModalProfile,
-
-    isLoading,
-    setIsLoading,
-
+    isAppLoading,
+    setIsAppLoading,
     error,
     setError,
   };
+
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
+
 export const useApp = () => {
   const context = useContext(AppContext);
   if (context === undefined) {

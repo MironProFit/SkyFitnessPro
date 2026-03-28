@@ -7,4 +7,10 @@ export const courseApi = {
     const res = await apiClient.get<ICourse[]>(ENDPOINTS.COURSES.LIST);
     return res.data;
   },
+  getByID: async (id: string) => {
+    const res = await apiClient.get<ICourse>(
+      `${ENDPOINTS.COURSES.LIST}${ENDPOINTS.COURSES.BY_ID(id)}`
+    );
+    return res.data;
+  },
 };

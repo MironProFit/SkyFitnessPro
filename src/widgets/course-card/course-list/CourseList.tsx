@@ -4,14 +4,8 @@ import styles from './CourseList.module.css';
 import { courseApi } from '@/shared/api/endpoints/courseApi';
 import { useQuery } from '@tanstack/react-query';
 import type { ICourse } from '@/entities/course/types';
-
-const courseColorMap: Record<string, string> = {
-  Yoga: '#FFC700',
-  Stretching: '#2491D2',
-  Fitness: '#F7A012',
-  StepAirobic: '#FF7E65',
-  BodyFlex: '#7D458C',
-};
+import { getCourseColor } from '@/shared/constans/courseConfig';
+import { LoadingAnimation } from '@/shared/components/LoadingAnimation/LoadingAnimation';
 
 export const CourseList = () => {
   const location = useLocation();
@@ -31,6 +25,10 @@ export const CourseList = () => {
     retry: 1,
   });
 
+if (isLoading) {
+ return <LoadingAnimation/>
+}
+
   return (
     <section className={styles.section}>
       <div className={styles.headerBlock}>
@@ -49,17 +47,23 @@ export const CourseList = () => {
 
       <div className={styles.grid}>
         {courses.map((course) => (
-          <CourseCard pageProfile={pageProfile} key={course._id} course={course} />
+          <CourseCard
+            pageProfile={pageProfile}
+            key={course._id}
+            course={course}
+            backgroundColor={getCourseColor(course.nameEN)}
+          />
         ))}
       </div>
-      <div className={styles.scrollTopContainer}>
+      {courses && <div className={styles.scrollTopContainer}>
         <button
           className={styles.scrollTopBtn}
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         >
           Наверх ↑
         </button>
-      </div>
+      </div>}
+
     </section>
   );
 };

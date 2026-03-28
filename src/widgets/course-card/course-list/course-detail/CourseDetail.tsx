@@ -3,16 +3,21 @@ import { CourseHero } from './CourseHero';
 import { CourseFitting } from './CourseFitting';
 import { CourseDirections } from './CourseDirections';
 import { CourseCta } from './CourseCta';
-import { type CourseData } from '../course-card/CourseCard';
+import type { ICourse } from '@/entities/course/types';
+import { getCourseColor } from '@/shared/constans/courseConfig';
 
 interface CourseDetailProps {
-  course: CourseData;
+  course: ICourse;
 }
 
 export const CourseDetail = ({ course }: CourseDetailProps) => {
   return (
     <div className={styles.container}>
-      <CourseHero title={course.nameRU} color={course.color} nameEN={course.nameEN} />
+      <CourseHero
+        title={course.nameRU}
+        color={getCourseColor(course.nameEN)}
+        nameEN={course.nameEN}
+      />
 
       <div className={styles.contentWrapper}>
         {course.fitting && (
