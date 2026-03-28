@@ -1,12 +1,14 @@
 import React from 'react';
 import styles from './Button.module.css';
 
-type ButtonVariant = 'primary' | 'secondary' | 'black' | 'disabled';
+type ButtonVariant = 'primary' | 'disabled';
 type ButtonSize = 'sm' | 'md' | 'lg';
+type ButtonsColor = 'green' | 'white';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   size?: ButtonSize;
+  color?: ButtonsColor;
   isLoading?: boolean;
 }
 
@@ -16,15 +18,16 @@ export const Button: React.FC<ButtonProps> = ({
   size = 'md',
   isLoading = false,
   disabled,
+  color = 'green' ,
   className = '',
   ...props
 }) => {
-
-    const classNames = [
+  const classNames = [
     styles.btn,
     styles[`btn--${variant}`],
     styles[`btn--${size}`],
-    className, // Пользовательские классы добавляются как есть
+    styles[`btn--${color}`],
+    className,
   ]
     .filter(Boolean)
     .join(' ');

@@ -1,4 +1,3 @@
-﻿const LessonPage = () => {
-  return <div>Страница тренировки (урока) в разработке...</div>;
-};
-export default LessonPage;
+﻿export default function LessonPage() {
+  return <>Загрузка страницы уроков</>;
+}

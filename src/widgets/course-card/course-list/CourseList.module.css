@@ -1,0 +1,107 @@
+.section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  font-family: 'StratosSkyeng', sans-serif;
+}
+
+.headerBlock {
+  display: flex;
+  align-items: flex-start;
+  /* gap: 20px; */
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.mainTitle {
+  font-size: 60px;
+  font-weight: 400;
+  color: #1a1a1a;
+  line-height: 1.1;
+  margin: 0;
+  max-width: 947px;
+}
+.mainTitle_profile {
+  font-size: 40px;
+  font-weight: 400;
+  color: #1a1a1a;
+  line-height: 1.1;
+  margin: 0;
+  max-width: 947px;
+}
+
+.badge {
+  background-color: #bcec30;
+  color: #1a1a1a;
+  border-radius: 5px;
+  padding: 12px 20px;
+  font-weight: 400;
+  font-size: 32px;
+  position: relative;
+  max-width: 262px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.badge::after {
+  content: '';
+  position: absolute;
+  left: 117px;
+  bottom: -20px;
+  width: 30px;
+  height: 35px;
+  background-image: url('@/shared/assets/icons/badge_polygon_1.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+.scrollTopContainer {
+  text-align: center;
+}
+
+.scrollTopBtn {
+  background-color: #b8f33f;
+  color: #1a1a1a;
+  border: none;
+  padding: 16px 20px;
+  border-radius: 30px;
+  font-weight: 400;
+  font-size: 18px;
+  cursor: pointer;
+  font-family: 'StratosSkyeng', sans-serif;
+  transition:
+    background 0.2s,
+    transform 0.2s;
+}
+
+.scrollTopBtn:hover {
+  background-color: #a6e030;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .mainTitle {
+    font-size: 32px;
+  }
+
+  .headerBlock {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .badge::after {
+    left: 20px;
+    top: -8px;
+    border-width: 0 8px 8px 8px;
+    border-color: transparent transparent #b8f33f transparent;
+  }
+}

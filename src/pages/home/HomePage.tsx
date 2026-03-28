@@ -1,4 +1,6 @@
-﻿const HomePage = () => {
-  return <div>Страница курсов (Главная) в разработке...</div>;
+﻿import { CourseList } from '@/widgets/course-card/course-list/CourseList';
+
+const HomePage = () => {
+  return <CourseList />;
 };
 export default HomePage;
