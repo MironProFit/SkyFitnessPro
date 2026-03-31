@@ -16,4 +16,4 @@ export interface ICourse {
   workouts: string[];
   order: number;
   __v?: number;
-}
+}8

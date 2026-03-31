@@ -1,5 +1,5 @@
-import type { ICourse } from '@/entities/course/types';
-import { apiClient } from '../axiosInstance';
+import type { ICourse } from '@/entities/course/model/types';
+import { apiClient } from '../../shared/api/axiosInstance';
 import { ENDPOINTS } from '@/shared/config/api.endpoints';
 
 export const courseApi = {

@@ -7,7 +7,7 @@ import MinusIcon from '@/shared/assets/icons/minus.svg';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/shared/components/Button/Button';
-import type { ICourse } from '@/entities/course/types';
+import type { ICourse } from '@/entities/course/model/types';
 import { courseImages } from '@/shared/constans/courseConfig';
 
 interface CourseCardProps {

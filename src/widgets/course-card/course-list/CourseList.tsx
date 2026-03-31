@@ -3,7 +3,7 @@ import { CourseCard } from '../CourseCard';
 import styles from './CourseList.module.css';
 import { courseApi } from '@/shared/api/endpoints/courseApi';
 import { useQuery } from '@tanstack/react-query';
-import type { ICourse } from '@/entities/course/types';
+import type { ICourse } from '@/entities/course/model/types';
 import { getCourseColor } from '@/shared/constans/courseConfig';
 import { LoadingAnimation } from '@/shared/components/LoadingAnimation/LoadingAnimation';
 
@@ -25,9 +25,9 @@ export const CourseList = () => {
     retry: 1,
   });
 
-if (isLoading) {
- return <LoadingAnimation/>
-}
+  if (isLoading) {
+    return <LoadingAnimation />;
+  }
 
   return (
     <section className={styles.section}>
@@ -45,25 +45,33 @@ if (isLoading) {
         )}
       </div>
 
-      <div className={styles.grid}>
-        {courses.map((course) => (
-          <CourseCard
-            pageProfile={pageProfile}
-            key={course._id}
-            course={course}
-            backgroundColor={getCourseColor(course.nameEN)}
-          />
-        ))}
-      </div>
-      {courses && <div className={styles.scrollTopContainer}>
-        <button
-          className={styles.scrollTopBtn}
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        >
-          Наверх ↑
-        </button>
-      </div>}
-
+      {courses && courses.length > 0 ? (
+        <>
+          <div className={styles.grid}>
+            {courses.map((course) => (
+              <CourseCard
+                pageProfile={pageProfile}
+                key={course._id}
+                course={course}
+                backgroundColor={getCourseColor(course.nameEN)}
+              />
+            ))}
+          </div>
+          <div className={styles.scrollTopContainer}>
+            <button
+              className={styles.scrollTopBtn}
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            >
+              Наверх ↑
+            </button>
+          </div>
+        </>
+      ) : (
+        <div className={styles.emptyMessage}>
+          <h2>Курсы не найдены</h2>
+          <h3 className={styles.hint}>Попробуйте позже</h3>
+        </div>
+      )}
     </section>
   );
 };

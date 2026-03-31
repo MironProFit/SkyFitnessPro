@@ -3,7 +3,7 @@ import { CourseHero } from './CourseHero';
 import { CourseFitting } from './CourseFitting';
 import { CourseDirections } from './CourseDirections';
 import { CourseCta } from './CourseCta';
-import type { ICourse } from '@/entities/course/types';
+import type { ICourse } from '@/entities/course/model/types';
 import { getCourseColor } from '@/shared/constans/courseConfig';
 
 interface CourseDetailProps {

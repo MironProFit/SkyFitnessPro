@@ -105,3 +105,8 @@
     border-color: transparent transparent #b8f33f transparent;
   }
 }
+
+.emptyMessage {
+  display: flex;
+  align-items: center;
+}

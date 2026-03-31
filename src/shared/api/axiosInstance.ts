@@ -1,13 +1,10 @@
-import axios, { AxiosError } from 'axios';
-import { ENDPOINTS } from '../config/api.endpoints';
-import toast from 'react-hot-toast';
+import axios, { AxiosError, type AxiosResponse, type InternalAxiosRequestConfig } from 'axios';
 
-declare module 'axios' {
-  interface AxiosRequestConfig {
-    skipErrorToast?: boolean;
-    customSuccessMessage?: string;
-  }
-}
+import toast from 'react-hot-toast';
+import { ENDPOINTS } from './types';
+import { isPublicPath } from './helpers';
+import { TokenStorage } from '../lib/tokenStorage';
+import { RefreshManager } from '../lib/refreshManager';
 
 export const apiClient = axios.create({
   baseURL: `${ENDPOINTS.API.URL}${ENDPOINTS.API.BASE}`,
@@ -17,37 +14,51 @@ export const apiClient = axios.create({
   },
 });
 
-// Request interceptor
-// api.interceptors.request.use(
-//   (config) => {
-//     const token = localStorage.getItem('token');
-//     if (token && config.headers) {
-//       config.headers.Authorization = `Bearer ${token}`;
-//     }
-//     return config;
-//   },
-//   (error) => Promise.reject(error)
-// );
+//Интерсептор запросов
+apiClient.interceptors.request.use((config: InternalAxiosRequestConfig) => {
+  if (config.skipAuth || isPublicPath(config.url)) {
+    return config;
+  }
+  const token = TokenStorage.getAccessToken;
 
+  if (token && config.headers) {
+    config.headers.Authorization = `Bearer${token}`;
+  }
+  return config;
+});
+
+//Интерсептор ответов
 apiClient.interceptors.response.use(
-  (response) => {
+  (response: AxiosResponse) => {
     if (response.config.customSuccessMessage) {
       toast.success(response.config.customSuccessMessage);
     }
     return response;
   },
+
   (error: AxiosError) => {
+    const originalRequest = error.config as InternalAxiosRequestConfig;
     const status = error.response?.status;
     const message = (error.response?.data as any)?.message || 'Произошла ошибка';
 
     if (status === 400) {
       toast.error(message);
     }
+    //401: Токен истёк → пытаемся получить новый
+    if (status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
 
-    if (status === 401) {
-      toast.error('Сессия истекла. Войдите снова.');
-      localStorage.removeItem('token');
-      window.location.href = '/login';
+      // Сценарий А: Рефреш УЖЕ идёт → добавляем в очередь
+      if (RefreshManager.isRefrashInProgress) {
+        return new Promise((resolve, reject) => {
+          RefreshManager.enqueue((newToken: string) => {
+            if (originalRequest.headers) {
+              originalRequest.headers.Authorization = `Bearer ${newToken}`;
+              apiClient(originalRequest).then(resolve).catch(reject);
+            }
+          });
+        });
+      }
     }
 
     if (status === 403) {
