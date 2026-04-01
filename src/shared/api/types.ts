@@ -18,6 +18,7 @@ export const ENDPOINTS = {
     PROFILE: '/user/profile',
     SETTINGS: '/user/settings',
   },
+
 } as const;
 
 export interface ApiResponse<T> {

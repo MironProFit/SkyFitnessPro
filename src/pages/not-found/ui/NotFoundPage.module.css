@@ -1,0 +1,89 @@
+/* pages/not-found/ui/NotFoundPage.module.css */
+
+.section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  font-family: 'StratosSkyeng', sans-serif;
+  min-height: calc(100vh - 200px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notFoundContainer {
+  text-align: center;
+}
+
+.errorCode {
+  font-size: 120px;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1;
+  margin: 0;
+  letter-spacing: -4px;
+  animation: floatIn 0.6s ease-out;
+}
+
+.title {
+  font-size: 40px;
+  font-weight: 400;
+  color: #1a1a1a;
+  line-height: 1.1;
+  margin: 20px 0 40px;
+  animation: fadeIn 0.6s ease-out 0.2s both;
+}
+
+.primaryButton {
+  background-color: #b8f33f;
+  color: #1a1a1a;
+  text-decoration: none;
+  border: none;
+  padding: 16px 32px;
+  border-radius: 30px;
+  font-weight: 400;
+  font-size: 18px;
+  font-family: 'StratosSkyeng', sans-serif;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    transform 0.2s;
+  display: inline-block;
+  animation: fadeIn 0.6s ease-out 0.4s both;
+}
+
+.primaryButton:hover {
+  background-color: #a6e030;
+  transform: translateY(-2px);
+}
+
+@keyframes floatIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .errorCode {
+    font-size: 80px;
+  }
+  .title {
+    font-size: 32px;
+  }
+}

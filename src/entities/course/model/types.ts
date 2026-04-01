@@ -3,7 +3,7 @@ export interface DailyDuration {
   to: number;
 }
 
-export interface ICourse {
+export interface Course {
   _id: string;
   nameRU: string;
   nameEN: string;
