@@ -110,7 +110,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const value = {
     user,
-    isAuthenticated: true,
+    isAuthenticated: false,
     isLoading,
     login,
     register,

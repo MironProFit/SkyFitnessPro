@@ -1,15 +1,15 @@
-﻿import { courseApi } from '@/shared/api/endpoints/courseApi';
-import { useQuery } from '@tanstack/react-query';
+﻿import { useQuery } from '@tanstack/react-query';
 import { useParams, Navigate } from 'react-router-dom';
 import { LoadingAnimation } from '@/shared/components/LoadingAnimation/LoadingAnimation';
 import { CourseDetail } from '@/widgets/course-card/course-list/course-detail/CourseDetail';
+import { courseApi } from '@/entities/course/api/courseApi';
 
 const CoursePage = () => {
   const { nameEN } = useParams<{ nameEN: string }>();
 
   const { data: courses = [], isLoading } = useQuery({
     queryKey: ['courses'],
-    queryFn: () => courseApi.getAll(),
+    queryFn: () => courseApi.getCourses(),
     staleTime: 1000 * 60 * 5,
   });
 

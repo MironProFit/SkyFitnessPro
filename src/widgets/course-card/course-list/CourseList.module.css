@@ -105,3 +105,138 @@
     border-color: transparent transparent #b8f33f transparent;
   }
 }
+
+.emptyMessage {
+  display: flex;
+  align-items: center;
+}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* Состояние ошибки */
+/* ═══════════════════════════════════════════════════════════════ */
+.errorState {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-secondary, #8b949e);
+}
+
+.errorTitle {
+  font-size: 1.5rem;
+  margin-bottom: 12px;
+  color: var(--text-primary, #e6edf3);
+}
+
+.errorMessage {
+  margin-bottom: 20px;
+  font-size: 1rem;
+  color: var(--error, #f85149);
+}
+
+.retryButton {
+  background: var(--accent, #00ff00);
+  color: #050505;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 1rem;
+}
+
+.retryButton:hover {
+  background: var(--accent-hover, #39ff14);
+  transform: translateY(-2px);
+}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* Индикатор фонового обновления */
+/* ═══════════════════════════════════════════════════════════════ */
+.fetchingIndicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: rgba(0, 255, 0, 0.1);
+  border: 1px solid rgba(0, 255, 0, 0.3);
+  border-radius: 6px;
+  margin-bottom: 16px;
+  font-size: 0.85rem;
+  color: var(--accent, #00ff00);
+  animation: fadeIn 0.2s ease;
+}
+
+.fetchingIndicator .spinner {
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* Пустое состояние */
+/* ═══════════════════════════════════════════════════════════════ */
+.emptyMessage {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-secondary, #8b949e);
+}
+
+.emptyMessage h2 {
+  margin-bottom: 8px;
+  color: var(--text-primary, #e6edf3);
+}
+
+.emptyMessage .hint {
+  font-size: 0.95rem;
+  font-weight: 400;
+}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* Кнопка "Наверх" */
+/* ═══════════════════════════════════════════════════════════════ */
+.scrollTopContainer {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1000;
+}
+
+.scrollTopBtn {
+  background: var(--accent, #00ff00);
+  color: #050505;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 4px 12px rgba(0, 255, 0, 0.3);
+}
+
+.scrollTopBtn:hover {
+  background: var(--accent-hover, #39ff14);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 255, 0, 0.4);
+}
