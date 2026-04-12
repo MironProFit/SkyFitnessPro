@@ -11,8 +11,11 @@ import { useAuth } from '@/context/AuthContext';
 import ProfileModal from '../profile-modal/ProfileModal';
 
 export const Header = () => {
-  const { isAuthenticated } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   const { toggleModalAuth, openModalProfile, toggleModalProfile } = useApp();
+
+  const userName = user?.email?.split('@')[0] || 'Пользователь';
+  
 
   return (
     <header className={styles.header}>
@@ -33,7 +36,7 @@ export const Header = () => {
                 src={profileIcon}
                 alt="Icon profile"
               />
-              <p className={styles.actions__profile_name}>Мирон</p>
+              <p className={styles.actions__profile_name}>{userName}</p>
               <img
                 className={`${styles.actions__profile_arrow} ${
                   openModalProfile ? styles[`actions__profile-arrow_open`] : ''
@@ -43,11 +46,7 @@ export const Header = () => {
                 alt="rectangle"
               />
 
-              {/* {openModalProfile && <div className={styles.overlay} onClick={toggleModalProfile} />} */}
-
-              <ProfileModal
-                
-              />
+              <ProfileModal />
             </>
           ) : (
             <Button color="green" onClick={() => toggleModalAuth()} variant="primary" size="sm">

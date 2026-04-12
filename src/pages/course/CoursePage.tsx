@@ -15,6 +15,7 @@ const CoursePage = () => {
 
   const course = courses.find((c) => c.nameEN === nameEN);
 
+
   if (isLoading) {
     return <LoadingAnimation />;
   }

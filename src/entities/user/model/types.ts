@@ -1,6 +1,4 @@
-export interface IUser {
-  id: number;
-  email: string;
-  name: string;
-  purchasedCourses: number[];
+export interface CourseId {
+ courseId: string;
 }
+

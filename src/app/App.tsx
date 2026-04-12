@@ -1,6 +1,5 @@
-// App.tsx
-
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+// src/app/App.tsx
+import { Route, Routes } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 
 // Импорт роутов из конфига
@@ -16,29 +15,13 @@ import { NotFoundPage } from '@/pages/not-found/ui/NotFoundPage';
 
 // Компоненты
 import { PrivateRoute } from '@/shared/components/PrivateRoute/PrivateRoute';
-import { Header } from '@/widgets/header/Header';
-import { GlobalLoader } from '@/shared/components/GlobalLoader/GlobalLoader';
-
-// Контекст
-import { useApp } from '@/context/AppContext';
+import { Header } from '@/widgets/header/Header'; // 🔹 Убедитесь, что этот импорт есть
 
 function App() {
-  const { isAppLoading, openModalAuth } = useApp();
-
-  // Показываем глобальный лоадер во время инициализации
-  if (isAppLoading) {
-    return <GlobalLoader />;
-  }
-
   return (
-    <BrowserRouter
-      future={{
-        v7_startTransition: true,
-        v7_relativeSplatPath: true,
-      }}
-    >
+    <>
       {/* Глобальные уведомления */}
-      <Toaster position="top-right" />
+      <Toaster position="top-center" />
 
       {/* Шапка сайта */}
       <Header />
@@ -47,9 +30,14 @@ function App() {
       <Routes>
         {/* Публичные роуты */}
         <Route path={ROUTES.HOME} element={<HomePage />} />
+
+        {/* Роуты для авторизации */}
+        <Route path={ROUTES.LOGIN} element={<AuthPage />} />
+        <Route path={ROUTES.REGISTER} element={<AuthPage />} />
+
         <Route path={ROUTES.COURSE_DETAIL(':nameEN')} element={<CoursePage />} />
 
-        {/* Защищённые роуты (требуют авторизации) */}
+        {/* Защищённые роуты */}
         <Route
           path={ROUTES.PROFILE}
           element={
@@ -72,8 +60,8 @@ function App() {
       </Routes>
 
       {/* Модальное окно авторизации */}
-      {openModalAuth && <AuthPage />}
-    </BrowserRouter>
+      <AuthPage />
+    </>
   );
 }
 

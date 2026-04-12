@@ -1,26 +1,27 @@
+// PrivateRoute.tsx
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
-
 import type { ReactNode } from 'react';
+import { ROUTES } from '@/shared/config/routes';
 
 interface PrivateRouteProps {
   children: ReactNode;
 }
 
 export const PrivateRoute = ({ children }: PrivateRouteProps) => {
-  const { isAuthenticated, isLoading } = useAuth();
+  // 🔹 Исправлено: isInitializing вместо isLoading
+  const { isAuthenticated, isInitializing } = useAuth();
   const location = useLocation();
 
-  // Пока идет проверка токена (загрузка), показываем индикатор или ничего
-  if (isLoading) {
+  // Пока идёт проверка токена при загрузке приложения
+  if (isInitializing) {
     return <div style={{ padding: '50px', textAlign: 'center' }}>Загрузка...</div>;
   }
 
-  // Если не авторизован — редиректим на страницу логина, запоминая, откуда пришли
+  // Если не авторизован — редирект на страницу авторизации
   if (!isAuthenticated) {
-    return <Navigate to="/auth" state={{ from: location }} replace />;
+    return <Navigate to={ROUTES.HOME} state={{ from: location }} replace />;
   }
 
-  // Если все ок — рендерим защищенный контент
   return <>{children}</>;
 };

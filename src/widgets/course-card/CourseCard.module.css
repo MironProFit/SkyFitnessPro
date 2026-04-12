@@ -80,9 +80,21 @@
 .addButton:hover {
   background-color: #b8f33f;
   color: #000;
+}
+
+.addButtonMinus:hover {
   transform: rotate(180deg);
 }
 
+.addButton:not(.addButtonMinus):hover {
+  transform: rotate(90deg);
+}
+.addButton .disabled {
+  pointer-events: none;
+  opacity: 0.5;
+  color: #000;
+  background-color: #b8f33f;
+}
 .tooltip {
   position: absolute;
   top: 100%;
@@ -259,4 +271,24 @@
   width: 1%;
   height: 6px;
   background: #00c1ff;
+}
+
+.addButton.loading {
+  pointer-events: none;
+  opacity: 0.7;
+  cursor: none;
+
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.92);
+  }
 }

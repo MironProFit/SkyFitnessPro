@@ -1,4 +1,3 @@
-/* Затемнение фона (Оверлей) */
 .overlay {
   position: fixed;
   top: 0;
@@ -14,7 +13,6 @@
   padding: 20px;
 }
 
-/* Само белое окно модалки */
 .modal {
   background: #fff;
   border-radius: 30px;
@@ -29,7 +27,6 @@
   gap: 24px;
 }
 
-/* Логотип сверху */
 .logo {
   display: flex;
   align-items: center;
@@ -51,14 +48,12 @@
   object-fit: contain;
 }
 
-/* Форма с полями */
 .form {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-/* Поля ввода (Инпуты) */
 .input {
   width: 100%;
   padding: 16px 20px;
@@ -85,7 +80,6 @@
   box-shadow: 0 0 0 3px rgba(184, 243, 63, 0.1);
 }
 
-/* Главная зеленая кнопка */
 .submitButton {
   width: 100%;
   padding: 18px;
@@ -114,9 +108,13 @@
 .submitButton:disabled {
   opacity: 0.7;
   cursor: not-allowed;
+  background-color: #ccc;
 }
 
-/* Вторичная белая кнопка с обводкой */
+.submitButton:disabled:hover {
+  transform: none;
+}
+
 .secondaryButton {
   width: 100%;
   padding: 16px;
@@ -136,7 +134,36 @@
   color: #fff;
 }
 
-/* Анимации появления */
+.passwordHints {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 8px 0 16px;
+  font-size: 12px;
+  color: #666;
+}
+
+.passwordHints span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.passwordHints .valid {
+  color: #2ea043;
+}
+
+.passwordHints .invalid {
+  color: #8b949e;
+}
+
+.error {
+  color: #f85149;
+  font-size: 14px;
+  margin: 8px 0 16px;
+  text-align: center;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -157,7 +184,6 @@
   }
 }
 
-/* Адаптив для мобильных */
 @media (max-width: 480px) {
   .modal {
     padding: 30px 20px;

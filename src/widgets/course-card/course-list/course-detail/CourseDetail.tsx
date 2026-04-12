@@ -3,14 +3,18 @@ import { CourseHero } from './CourseHero';
 import { CourseFitting } from './CourseFitting';
 import { CourseDirections } from './CourseDirections';
 import { CourseCta } from './CourseCta';
-import type { ICourse } from '@/entities/course/model/types';
 import { getCourseColor } from '@/shared/constans/courseConfig';
+import type { Course } from '@/entities/course/model/types';
+import { useEffect } from 'react';
 
 interface CourseDetailProps {
-  course: ICourse;
+  course: Course;
 }
 
 export const CourseDetail = ({ course }: CourseDetailProps) => {
+
+  useEffect(() => { console.log(course); }, [course])
+
   return (
     <div className={styles.container}>
       <CourseHero
@@ -35,7 +39,7 @@ export const CourseDetail = ({ course }: CourseDetailProps) => {
         )}
 
         <section className={styles.section}>
-          <CourseCta fitting={course.fitting} />
+          <CourseCta fitting={course.fitting} courseId ={course._id} />
         </section>
       </div>
     </div>

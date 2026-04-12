@@ -1,20 +1,24 @@
+// src/context/AuthContext.tsx
 import { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
+import { authApi } from '@/entities/auth/api/authApi';
+import toast from 'react-hot-toast';
+import { TokenStorage } from '@/shared/lib/tokenStorage';
 
-interface User {
-  id: string;
-  name: string;
+export interface User {
   email: string;
-  token: string;
+  selectedCourses: string[];
 }
 
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
-  isLoading: boolean;
+  isInitializing: boolean;
+  isAuthenticating: boolean;
   login: (email: string, password: string) => Promise<void>;
-  register: (name: string, email: string, password: string) => Promise<void>;
+  register: (email: string, password: string) => Promise<void>;
   logout: () => void;
+  refreshUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -25,102 +29,115 @@ interface AuthProviderProps {
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isInitializing, setIsInitializing] = useState(true);
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
 
-  // Проверка токена при загрузке приложения
+  // Инициализация: восстанавливаем пользователя из кэша при загрузке
   useEffect(() => {
-    const checkAuth = async () => {
+    const initializeAuth = async () => {
       try {
-        const token = localStorage.getItem('token');
-        if (token) {
-          // Здесь можно сделать запрос к API для валидации токена
-          // const userData = await api.get('/me');
-          // setUser(userData);
+        const token = TokenStorage.getAccessToken();
+        const cachedEmail = TokenStorage.getCachedUserEmail();
 
-          // Пока заглушка: если токен есть, считаем пользователя авторизованным
-          setUser({
-            id: '1',
-            name: 'Miron',
-            email: 'miron@example.com',
-            token,
-          });
+        if (token && cachedEmail) {
+          // Восстанавливаем пользователя из кэша
+          setUser({ email: cachedEmail, selectedCourses: [] });
+          console.log('👤 User restored from cache:', cachedEmail);
+        } else if (!token) {
+          // Токена нет — точно не авторизован
+          setUser(null);
         }
+        // Если токен есть, но кэша нет — пользователь не авторизован,
+        // но можно добавить фоновый запрос к серверу при необходимости
       } catch (error) {
-        console.error('Auth check failed', error);
-        localStorage.removeItem('token');
+        console.error('Auth initialization failed:', error);
+        TokenStorage.clear();
+        setUser(null);
       } finally {
-        setIsLoading(false);
+        setIsInitializing(false);
       }
     };
 
-    checkAuth();
+    initializeAuth();
   }, []);
 
-  // Логин
   const login = async (email: string, password: string) => {
-    setIsLoading(true);
+    setIsAuthenticating(true);
     try {
-      // Имитация запроса к API
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const response = await authApi.login({ email, password });
 
-      const fakeToken = 'fake-jwt-token-12345';
-      localStorage.setItem('token', fakeToken);
+      if (response.token) {
+        // Сохраняем токен И email в кэш
+        TokenStorage.setTokens(response.token, response.token, email);
 
-      setUser({
-        id: '1',
-        name: 'Miron',
-        email,
-        token: fakeToken,
-      });
-    } catch (error) {
-      throw new Error('Login failed');
+        // Создаём пользователя из данных формы
+        setUser({ email, selectedCourses: [] });
+
+        console.log('👤 User set from login:', { email });
+        toast.success('Успешный вход!');
+      } else {
+        throw new Error('No token received');
+      }
+    } catch (error: any) {
+      const message = error?.response?.data?.message || 'Ошибка при входе';
+      toast.error(message);
+      throw error;
     } finally {
-      setIsLoading(false);
+      setIsAuthenticating(false);
     }
   };
 
-  // Регистрация
-  const register = async (name: string, email: string, password: string) => {
-    setIsLoading(true);
+  const register = async (email: string, password: string) => {
+    setIsAuthenticating(true);
     try {
-      // Имитация запроса к API
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await authApi.register({ email, password });
+      const loginResponse = await authApi.login({ email, password });
 
-      const fakeToken = 'fake-jwt-token-67890';
-      localStorage.setItem('token', fakeToken);
+      if (loginResponse.token) {
+        // Сохраняем токен И email в кэш
+        TokenStorage.setTokens(loginResponse.token, loginResponse.token, email);
 
-      setUser({
-        id: '2',
-        name,
-        email,
-        token: fakeToken,
-      });
-    } catch (error) {
-      throw new Error('Registration failed');
+        // Создаём пользователя из данных формы
+        setUser({ email, selectedCourses: [] });
+
+        toast.success('Регистрация прошла успешно!');
+      }
+    } catch (error: any) {
+      const message = error?.response?.data?.message || 'Ошибка при регистрации';
+      toast.error(message);
+      throw error;
     } finally {
-      setIsLoading(false);
+      setIsAuthenticating(false);
     }
   };
 
-  // Логаут
   const logout = () => {
-    localStorage.removeItem('token');
+    // Очищаем всё: токен, рефреш, кэш пользователя
+    TokenStorage.clear();
     setUser(null);
+    toast.success('Вы вышли из аккаунта');
   };
 
-  const value = {
+  // Функция для принудительного обновления (если в будущем добавите запрос профиля)
+  const refreshUser = async () => {
+    // Пока заглушка
+  };
+
+  const value: AuthContextType = {
     user,
-    isAuthenticated: false,
-    isLoading,
+    isAuthenticated: !!user,
+    isInitializing,
+    isAuthenticating,
     login,
     register,
     logout,
+    refreshUser,
   };
 
+  // Всегда оборачиваем в Provider
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-// Хук для удобного использования
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {

@@ -1,31 +1,39 @@
-//Общее хранилище токенов
 export class TokenStorage {
-  private static readonly ACCESS_TOKEN_KEY = 'access_token';
+  private static readonly ACCESS_TOKEN_KEY = 'token';
   private static readonly REFRESH_TOKEN_KEY = 'refresh_token';
+  private static readonly USER_CACHE_KEY = 'user_cache';
 
-  //Сохраняем оба токена в localstorage
-  static setTokens(accessToken: string, refreshToken: string): void {
-    (localStorage.setItem(this.ACCESS_TOKEN_KEY, accessToken),
-      localStorage.setItem(this.REFRESH_TOKEN_KEY, refreshToken));
+  static setTokens(accessToken: string, refreshToken: string, userEmail?: string): void {
+    localStorage.setItem(this.ACCESS_TOKEN_KEY, accessToken);
+    localStorage.setItem(this.REFRESH_TOKEN_KEY, refreshToken);
+    if (userEmail) {
+      localStorage.setItem(this.USER_CACHE_KEY, userEmail);
+    }
   }
-  //Обновляем только access токен
+
   static updateAccessToken(accessToken: string): void {
     localStorage.setItem(this.ACCESS_TOKEN_KEY, accessToken);
   }
-  //Получаем токен refresh
-  static getRefreshToken(): string | null {
-    return localStorage.getItem(this.REFRESH_TOKEN_KEY);
-  }
-  //Получаем токен access
+
   static getAccessToken(): string | null {
     return localStorage.getItem(this.ACCESS_TOKEN_KEY);
   }
-  //Очищаем токены
-  static clear(): void {
-    (localStorage.removeItem(this.ACCESS_TOKEN_KEY),
-      localStorage.removeItem(this.REFRESH_TOKEN_KEY));
+
+  static getRefreshToken(): string | null {
+    return localStorage.getItem(this.REFRESH_TOKEN_KEY);
   }
-  //Проверяем наличие токена access
+
+  static getCachedUserEmail(): string | null {
+    return localStorage.getItem(this.USER_CACHE_KEY);
+  }
+
+  static clear(): void {
+    localStorage.removeItem(this.ACCESS_TOKEN_KEY);
+    localStorage.removeItem(this.REFRESH_TOKEN_KEY);
+    localStorage.removeItem(this.USER_CACHE_KEY); 
+    localStorage.removeItem(this.USER_CACHE_KEY); 
+  }
+
   static isAuthenticated(): boolean {
     return !!this.getAccessToken();
   }

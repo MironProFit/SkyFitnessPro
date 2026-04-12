@@ -1,3 +1,4 @@
+// src/widgets/course-card/CourseCard.tsx
 import styles from './CourseCard.module.css';
 import CalendarIcon from '@/shared/assets/icons/Calendar.svg';
 import TimeIcon from '@/shared/assets/icons/Time.svg';
@@ -7,11 +8,18 @@ import MinusIcon from '@/shared/assets/icons/minus.svg';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/shared/components/Button/Button';
-import type { ICourse } from '@/entities/course/model/types';
 import { courseImages } from '@/shared/constans/courseConfig';
+import type { Course } from '@/entities/course/model/types';
+import { ROUTES } from '@/shared/config/routes';
+import { useAuth } from '@/context/AuthContext';
+import { useApp } from '@/context/AppContext';
+import { useQuery } from '@tanstack/react-query';
+import type { User } from '@/shared/api/types';
+import { userApi } from '@/entities/user/api/userApi';
+import clsx from 'clsx';
 
 interface CourseCardProps {
-  course: ICourse;
+  course: Course;
   pageProfile: boolean;
   backgroundColor: string | undefined;
 }
@@ -32,45 +40,97 @@ const getDifficultyLabel = (level: number) => {
 
 export const CourseCard = ({ pageProfile, course, backgroundColor }: CourseCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
+  const { isAuthenticated } = useAuth();
+  const { addCourseForUser, removeCourseForUser } = useApp();
+  const [isToogle, setisToogle] = useState(true);
 
-  const { nameRU, nameEN, durationInDays, dailyDurationInMinutes, difficulty } = course;
+  const {
+    nameRU,
+    nameEN,
+    durationInDays,
+    dailyDurationInMinutes,
+    difficulty,
+    _id: courseId,
+  } = course;
 
   const durationText = `${dailyDurationInMinutes.from}-${dailyDurationInMinutes.to} мин/день`;
   const level = getDifficultyLevel(difficulty);
   const label = getDifficultyLabel(level);
 
-  const imageName = nameEN ? nameEN.toLowerCase() : '';
-  const backgroundImage = courseImages[imageName] || '';
+  // 🔹 ВОССТАНОВЛЕНО: Твой исходный код с isLoadingUpdateCouses
+  const { data: userData, isLoading: isLoadingUpdateCouses } = useQuery<User>({
+    queryKey: ['user'],
+    queryFn: () => userApi.getMe(),
+    enabled: isAuthenticated,
+    staleTime: 1000 * 60 * 5,
+    retry: 1,
+  });
+
+  // 🔹 Проверяем, выбран ли этот курс у пользователя
+  const isSelected = isAuthenticated
+    ? (userData?.user?.selectedCourses || []).includes(courseId)
+    : false;
+
+  const handleToggleCourse = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    // 🔹 Блокируем повторные клики, если запрос уже выполняется
+    if (isToogle) return;
+
+    setisToogle(true);
+    try {
+      if (isSelected) {
+        await removeCourseForUser(courseId);
+      } else {
+        await addCourseForUser(courseId);
+      }
+    } catch (error) {
+      console.error('Не удалось переключить курсы:', error);
+    } finally {
+      // 🔹 ИСПРАВЛЕНО: сбрасываем статус загрузки, а не ховер
+      setisToogle(false);
+    }
+  };
+
+  const imageNameLower = nameEN?.toLowerCase() || '';
+  const courseBackgroundImage = courseImages[imageNameLower];
 
   return (
     <div
       className={styles.card}
       style={{ order: course.order }}
-      onMouseEnter={() => setIsHovered(true)}
+      onMouseEnter={!isToogle ? () => setIsHovered(true):''}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <Link to={`/course/${course.nameEN}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+      <Link
+        to={ROUTES.COURSE_DETAIL(course.nameEN)}
+        style={{ textDecoration: 'none', color: 'inherit' }}
+      >
         <div className={styles.imageWrapper} style={{ backgroundColor: backgroundColor }}>
-          {backgroundImage ? (
-            <img src={backgroundImage} alt={nameRU} className={styles.image} />
+          {courseBackgroundImage ? (
+            <img className={styles.image} src={courseBackgroundImage} alt={nameRU} />
           ) : (
             <div className={styles.placeholderImage}>
               <span>{nameRU.charAt(0)}</span>
             </div>
           )}
 
-          <div className={styles.addButtonWrapper}>
-            <img
-              className={styles.addButton}
-              src={pageProfile ? MinusIcon : PlusIcon}
-              alt="Добавить курс"
-              onClick={(e) => {
-                e.preventDefault();
-                console.log('Нажата кнопка добавления', nameRU);
-              }}
-            />
-            <span className={styles.tooltip}>{`Добавить курс`}</span>
-          </div>
+          {/* 🔹 Кнопка +/- показывается только авторизованным */}
+          {isAuthenticated && (
+            <div className={styles.addButtonWrapper}>
+              <img
+                // 🔹 Добавлен класс styles.loading при загрузке
+                className={clsx(styles.addButton, isSelected && styles.addButtonMinus, isToogle && styles.loading)}
+                src={isSelected ? MinusIcon : PlusIcon}
+                alt={isSelected ? 'Удалить курс' : 'Добавить курс'}
+                onClick={handleToggleCourse}
+              />
+              <span className={styles.tooltip}>
+                {isSelected ? 'Удалить курс' : 'Добавить курс'}
+              </span>
+            </div>
+          )}
         </div>
 
         <div className={styles.content}>
@@ -102,14 +162,12 @@ export const CourseCard = ({ pageProfile, course, backgroundColor }: CourseCardP
           {pageProfile ? (
             <>
               <div className={styles.progressBar}>
-                <h3 className={styles.progressBar_title}>{`Прогресс 40%`}</h3>
+                <h3 className={styles.progressBar_title}>Прогресс 40%</h3>
                 <div className={styles.progressBar_bar}></div>
               </div>
               <Button size="lg">Продолжить тренировку</Button>
             </>
-          ) : (
-            ''
-          )}
+          ) : null}
         </div>
       </Link>
     </div>

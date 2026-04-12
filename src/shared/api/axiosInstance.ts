@@ -1,12 +1,13 @@
-// shared/api/axiosInstance.ts
-
+// src/shared/api/axiosInstance.ts
+import { isPublicPath } from '@/shared/api/helpers';
+import { ENDPOINTS } from '@/shared/api/types';
+import { RefreshManager } from '@/shared/lib/refreshManager';
+import { TokenStorage } from '@/shared/lib/tokenStorage';
+import { authApi } from '@/entities/auth/api/authApi';
 import axios, { AxiosError, type AxiosResponse, type InternalAxiosRequestConfig } from 'axios';
-
 import toast from 'react-hot-toast';
-import { ENDPOINTS } from './types';
-import { isPublicPath } from './helpers';
-import { TokenStorage } from '../lib/tokenStorage';
-import { RefreshManager } from '../lib/refreshManager';
+
+const isDev = process.env.NODE_ENV === 'development';
 
 export const apiClient = axios.create({
   baseURL: `${ENDPOINTS.API.URL}${ENDPOINTS.API.BASE}`,
@@ -16,53 +17,88 @@ export const apiClient = axios.create({
   },
 });
 
-// ─────────────────────────────────────────────────────────
-// REQUEST INTERCEPTOR: добавляем токен
-// ─────────────────────────────────────────────────────────
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    // Пропускаем авторизацию для публичных запросов
     if (config.skipAuth || isPublicPath(config.url)) {
       return config;
     }
 
     const token = TokenStorage.getAccessToken();
 
+    // Логирование для отладки
+    if (isDev) {
+      console.log('🔐 Вложение токена:', {
+        hasToken: !!token,
+        tokenPreview: token ? token.slice(0, 20) + '...' : null,
+        url: config.url,
+      });
+    }
+
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
+      if (isDev) {
+        console.log('✅ Заголовок авторизации установлен');
+      }
+    } else if (!token && isDev) {
+      console.warn('⚠️ Токен не найден, пропуск вложения заголовка авторизации');
+    }
+
+    if (isDev) {
+      console.group('Запрос к API');
+      console.log('URL:', config.url);
+      console.log('Метод:', config.method?.toUpperCase());
+      console.log('Параметры:', config.params);
+      console.log('Тело:', config.data);
+      console.log('Заголовки:', {
+        ...config.headers,
+        authorization: config.headers.authorization ? 'Bearer ***' : undefined,
+      });
+      console.groupEnd();
     }
 
     return config;
   },
-  (error: AxiosError) => Promise.reject(error)
+  (error: AxiosError) => {
+    if (isDev) {
+      console.error('Ошибка при запросе:', error.message);
+    }
+    return Promise.reject(error);
+  }
 );
 
-// ─────────────────────────────────────────────────────────
-// RESPONSE INTERCEPTOR: обработка ошибок и рефреш токена
-// ─────────────────────────────────────────────────────────
 apiClient.interceptors.response.use(
-  // ✅ ВОЗВРАЩАЕМ ВЕСЬ ОТВЕТ (AxiosResponse) — типы сохраняются!
   (response: AxiosResponse) => {
+    if (isDev) {
+      console.group('Ответ API');
+      console.log('URL:', response.config.url);
+      console.log('Статус:', response.status);
+      console.log('Данные:', response.data);
+      console.groupEnd();
+    }
+
     if (response.config.customSuccessMessage) {
       toast.success(response.config.customSuccessMessage);
     }
-    return response; // ← Не response.data!
+    return response;
   },
 
   async (error: AxiosError) => {
-    const originalRequest = error.config as InternalAxiosRequestConfig;
+    const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
     const status = error.response?.status;
 
-    // ─────────────────────────────────────────────────────
-    // 🔴 401: Токен истёк → пытаемся получить новый
-    // ─────────────────────────────────────────────────────
+    if (isDev) {
+      console.group('Ошибка API');
+      console.log('URL:', originalRequest.url);
+      console.log('Статус:', status);
+      console.log('Сообщение:', error.message);
+      console.log('Ответ:', error.response?.data);
+      console.groupEnd();
+    }
+
     if (status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
-      // ─────────────────────────────────────────────────
-      // Сценарий А: Рефреш УЖЕ идёт → добавляем в очередь
-      // ─────────────────────────────────────────────────
-      if (RefreshManager.isRefrashInProgress) {
+      if (RefreshManager.isRefreshInProgress) {
         return new Promise((resolve, reject) => {
           RefreshManager.enqueue((newToken: string) => {
             if (originalRequest.headers) {
@@ -73,55 +109,38 @@ apiClient.interceptors.response.use(
         });
       }
 
-      // ─────────────────────────────────────────────────
-      // Сценарий Б: Рефреш НЕ идёт → запускаем его
-      // ─────────────────────────────────────────────────
-      RefreshManager.setRefrashingStatus(true);
+      RefreshManager.setRefreshingStatus(true);
 
       try {
         const refreshToken = TokenStorage.getRefreshToken();
 
         if (!refreshToken) {
-          throw new Error('Нет доступного обновления токена');
+          throw new Error('Нет доступного токена для обновления');
         }
 
-        // 📡 Запрос на обновление токена
-        const { data } = await axios.post<{
-          accessToken: string;
-          refreshToken?: string;
-        }>(
-          `${ENDPOINTS.API.URL}${ENDPOINTS.API.BASE}${ENDPOINTS.AUTH.REFRESH}`,
-          { refreshToken },
-          { headers: { 'Content-Type': 'application/json' } }
-        );
+        // 🔹 Используем authApi.refresh (на fetch) для обновления токена
+        const { accessToken, refreshToken: newRefreshToken } = await authApi.refresh(refreshToken);
 
-        const { accessToken, refreshToken: newRefreshToken } = data;
-
-        // 💾 Сохраняем новые токены
         if (newRefreshToken) {
           TokenStorage.setTokens(accessToken, newRefreshToken);
         } else {
           TokenStorage.updateAccessToken(accessToken);
         }
 
-        // ✅ Уведомляем ВСЕ запросы в очереди
         RefreshManager.resolveQueue(accessToken);
-        RefreshManager.setRefrashingStatus(false);
+        RefreshManager.setRefreshingStatus(false);
 
-        // 🔄 Повторяем ОРИГИНАЛЬНЫЙ запрос с новым токеном
         if (originalRequest.headers) {
           originalRequest.headers.Authorization = `Bearer ${accessToken}`;
         }
 
         return apiClient(originalRequest);
       } catch (refreshError: any) {
-        // ❌ РЕФРЕШ НЕ УДАЛСЯ → полный логаут
-
-        console.error('Ошибка рефреша токена', refreshError);
+        console.error('Ошибка при обновлении токена:', refreshError);
 
         TokenStorage.clear();
         RefreshManager.rejectQueue();
-        RefreshManager.setRefrashingStatus(false);
+        RefreshManager.setRefreshingStatus(false);
 
         toast.error('Сессия истекла. Пожалуйста, войдите снова');
         window.location.href = '/login';
@@ -130,9 +149,6 @@ apiClient.interceptors.response.use(
       }
     }
 
-    // ─────────────────────────────────────────────────────
-    // 🟡 Обработка остальных ошибок (не 401)
-    // ─────────────────────────────────────────────────────
     const message = (error.response?.data as any)?.message || 'Произошла ошибка';
     const skipToast = originalRequest?.skipErrorToast;
 
@@ -142,19 +158,19 @@ apiClient.interceptors.response.use(
           toast.error(message);
           break;
         case 403:
-          toast.error('🔒 Доступ запрещён');
+          toast.error('Доступ запрещён');
           break;
         case 404:
-          toast.error('📭 Ресурс не найден');
+          toast.error('Ресурс не найден');
           break;
         case 500:
         case 502:
         case 503:
-          toast.error('🔧 Ошибка сервера. Попробуйте позже.');
+          toast.error('Ошибка сервера. Попробуйте позже.');
           break;
         default:
           if (!error.response) {
-            toast.error('🌐 Нет соединения с сервером');
+            toast.error('Нет соединения с сервером');
           }
       }
     }
@@ -162,5 +178,3 @@ apiClient.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
-export default apiClient;
