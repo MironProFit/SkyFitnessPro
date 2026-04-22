@@ -1,62 +1,96 @@
 // src/shared/lib/fetchWithoutContentType.ts
 import { ENDPOINTS } from '@/shared/api/types';
 import { TokenStorage } from '@/shared/lib/tokenStorage';
+import { authApi } from '@/entities/auth/api/authApi';
 
 type FetchOptions = {
   method: 'POST' | 'DELETE' | 'PUT';
   body?: unknown;
 };
 
-/**
- * Выполняет fetch-запрос БЕЗ заголовка Content-Type: application/json
- * Используется для эндпоинтов, которые не принимают JSON-заголовок
- */
 export const fetchWithoutContentType = async <T>(
   endpoint: string,
   { method, body }: FetchOptions
 ): Promise<T> => {
-  //Собираем полный URL
   const baseUrl = `${ENDPOINTS.API.URL}${ENDPOINTS.API.BASE}`;
   const url = `${baseUrl}${endpoint}`;
 
-  //Тело запроса: преобразуем в Blob без типа
-  // Это предотвращает автоматическое добавление заголовка Content-Type браузером
+  // 🔹 Подготовка тела
   let fetchBody: BodyInit | undefined;
   if (body !== undefined) {
     const jsonString = JSON.stringify(body);
     fetchBody = new Blob([jsonString], { type: '' });
   }
 
-  //Заголовки: только Authorization, БЕЗ Content-Type!
-  const token = TokenStorage.getAccessToken();
-  const headers: Record<string, string> = {};
-  if (token) {
-    headers.Authorization = `Bearer ${token}`;
-  }
+  // 🔹 Функция для выполнения запроса с текущим токеном
+  const executeRequest = async (token: string | null) => {
+    const headers: Record<string, string> = {};
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
 
-  const response = await fetch(url, {
-    method,
-    body: fetchBody,
-    headers: Object.keys(headers).length > 0 ? headers : undefined,
-  });
+    const response = await fetch(url, {
+      method,
+      body: fetchBody,
+      headers: Object.keys(headers).length > 0 ? headers : undefined,
+      credentials: 'include',
+    });
 
-  const text = await response.text();
+    const text = await response.text();
 
-  //Обработка ошибок
-  if (!response.ok) {
-    const error: any = new Error(`API error: ${response.status}`);
-    error.response = {
-      status: response.status,
-      statusText: response.statusText,
-      data: text,
-    };
-    throw error;
-  }
+    if (!response.ok) {
+      const error: any = new Error(`API error: ${response.status}`);
+      error.response = {
+        status: response.status,
+        statusText: response.statusText,
+        data: text,
+      };
+      throw error;
+    }
 
-  //Парсим ответ: пытаемся JSON, если не выходит — возвращаем текст
+    try {
+      return JSON.parse(text) as T;
+    } catch {
+      return text as unknown as T;
+    }
+  };
+
+  // 🔹 Первый запрос с текущим токеном
+  let token = TokenStorage.getAccessToken();
+
   try {
-    return JSON.parse(text) as T;
-  } catch {
-    return text as unknown as T;
+    return await executeRequest(token);
+  } catch (error: any) {
+    // 🔹 Если получили 401 — пробуем рефрешнуть токен
+    if (error.response?.status === 401) {
+      try {
+        const refreshToken = TokenStorage.getRefreshToken();
+        if (!refreshToken) {
+          throw new Error('No refresh token available');
+        }
+
+        // 🔹 Рефрешим токен через authApi
+        const { accessToken, refreshToken: newRefreshToken } = await authApi.refresh(refreshToken);
+
+        // 🔹 Сохраняем новые токены
+        if (newRefreshToken) {
+          TokenStorage.setTokens(accessToken, newRefreshToken);
+        } else {
+          TokenStorage.updateAccessToken(accessToken);
+        }
+
+        // 🔹 Повторяем запрос с новым токеном
+        return await executeRequest(accessToken);
+      } catch (refreshError) {
+        // 🔹 Если рефреш не удался — очищаем токены и пробрасываем ошибку
+        console.error('Token refresh failed:', refreshError);
+        TokenStorage.clear();
+        window.location.href = '/login'; // 🔹 Редирект на логин
+        throw refreshError;
+      }
+    }
+
+    // 🔹 Если ошибка не 401 — пробрасываем как есть
+    throw error;
   }
 };

@@ -100,7 +100,9 @@ export const CourseCard = ({ pageProfile, course, backgroundColor }: CourseCardP
     <div
       className={styles.card}
       style={{ order: course.order }}
-      onMouseEnter={!isToogle ? () => setIsHovered(true):''}
+      onMouseEnter={() => {
+        if (!isToogle) setIsHovered(true);
+      }}
       onMouseLeave={() => setIsHovered(false)}
     >
       <Link
@@ -121,7 +123,11 @@ export const CourseCard = ({ pageProfile, course, backgroundColor }: CourseCardP
             <div className={styles.addButtonWrapper}>
               <img
                 // 🔹 Добавлен класс styles.loading при загрузке
-                className={clsx(styles.addButton, isSelected && styles.addButtonMinus, isToogle && styles.loading)}
+                className={clsx(
+                  styles.addButton,
+                  isSelected && styles.addButtonMinus,
+                  isToogle && styles.loading
+                )}
                 src={isSelected ? MinusIcon : PlusIcon}
                 alt={isSelected ? 'Удалить курс' : 'Добавить курс'}
                 onClick={handleToggleCourse}

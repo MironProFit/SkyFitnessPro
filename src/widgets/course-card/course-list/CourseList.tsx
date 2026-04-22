@@ -164,9 +164,9 @@ export const CourseList = () => {
 
   if (isLoading) {
     return (
-      // <section className={styles.section}>
+      <section className={styles.section}>
         <CourseListSkeleton />
-      // </section>
+      </section>
     );
   }
 
