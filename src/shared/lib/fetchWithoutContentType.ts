@@ -15,7 +15,7 @@ export const fetchWithoutContentType = async <T>(
   const baseUrl = `${ENDPOINTS.API.URL}${ENDPOINTS.API.BASE}`;
   const url = `${baseUrl}${endpoint}`;
 
-  // 🔹 Подготовка тела
+  // 🔹 Подготовка тела: Blob без типа → браузер не добавляет Content-Type
   let fetchBody: BodyInit | undefined;
   if (body !== undefined) {
     const jsonString = JSON.stringify(body);
@@ -29,11 +29,12 @@ export const fetchWithoutContentType = async <T>(
       headers.Authorization = `Bearer ${token}`;
     }
 
+    // 🔹 УБРАЛИ credentials: 'include' — это вызывает ошибку CORS с '*'
     const response = await fetch(url, {
       method,
       body: fetchBody,
       headers: Object.keys(headers).length > 0 ? headers : undefined,
-      credentials: 'include',
+      // credentials: 'include',  ← 🔹 УДАЛЕНО!
     });
 
     const text = await response.text();
@@ -57,7 +58,6 @@ export const fetchWithoutContentType = async <T>(
 
   // 🔹 Первый запрос с текущим токеном
   let token = TokenStorage.getAccessToken();
-
   try {
     return await executeRequest(token);
   } catch (error: any) {
@@ -85,11 +85,10 @@ export const fetchWithoutContentType = async <T>(
         // 🔹 Если рефреш не удался — очищаем токены и пробрасываем ошибку
         console.error('Token refresh failed:', refreshError);
         TokenStorage.clear();
-        window.location.href = '/login'; // 🔹 Редирект на логин
+        window.location.href = '/login';
         throw refreshError;
       }
     }
-
     // 🔹 Если ошибка не 401 — пробрасываем как есть
     throw error;
   }

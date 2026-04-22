@@ -57,7 +57,6 @@ export const CourseCard = ({ pageProfile, course, backgroundColor }: CourseCardP
   const level = getDifficultyLevel(difficulty);
   const label = getDifficultyLabel(level);
 
-  // 🔹 ВОССТАНОВЛЕНО: Твой исходный код с isLoadingUpdateCouses
   const { data: userData, isLoading: isLoadingUpdateCouses } = useQuery<User>({
     queryKey: ['user'],
     queryFn: () => userApi.getMe(),
@@ -66,7 +65,6 @@ export const CourseCard = ({ pageProfile, course, backgroundColor }: CourseCardP
     retry: 1,
   });
 
-  // 🔹 Проверяем, выбран ли этот курс у пользователя
   const isSelected = isAuthenticated
     ? (userData?.user?.selectedCourses || []).includes(courseId)
     : false;
@@ -74,8 +72,8 @@ export const CourseCard = ({ pageProfile, course, backgroundColor }: CourseCardP
   const handleToggleCourse = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    console.log(courseId);
 
-    // 🔹 Блокируем повторные клики, если запрос уже выполняется
     if (isToogle) return;
 
     setisToogle(true);
@@ -88,7 +86,6 @@ export const CourseCard = ({ pageProfile, course, backgroundColor }: CourseCardP
     } catch (error) {
       console.error('Не удалось переключить курсы:', error);
     } finally {
-      // 🔹 ИСПРАВЛЕНО: сбрасываем статус загрузки, а не ховер
       setisToogle(false);
     }
   };

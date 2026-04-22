@@ -1,6 +1,7 @@
 // ===== ENDPOINTS =====
 export const ENDPOINTS = {
   API: {
+    URL: 'https://wedev-api.sky.pro',
     BASE: '/api/fitness',
   },
   AUTH: {
