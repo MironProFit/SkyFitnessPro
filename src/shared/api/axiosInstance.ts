@@ -1,5 +1,5 @@
 // src/shared/api/axiosInstance.ts
-import { isPublicPath } from '@/shared/api/helpers';
+import { isPublicPath } from '@/shared/api/helpers/isPublicPath';
 import { ENDPOINTS } from '@/shared/api/types';
 import { RefreshManager } from '@/shared/lib/refreshManager';
 import { TokenStorage } from '@/shared/lib/tokenStorage';

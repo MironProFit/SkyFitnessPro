@@ -9,7 +9,7 @@ import { ROUTES } from '@/shared/config/routes';
 import HomePage from '../pages/home/HomePage';
 import CoursePage from '../pages/course/CoursePage';
 import ProfilePage from '../pages/profile/ProfilePage';
-import LessonPage from '../pages/lesson/LessonPage';
+import { WorkoutPage } from '../pages/workout/WorkoutPage';
 import AuthPage from '../pages/auth/AuthPage';
 import { NotFoundPage } from '@/pages/not-found/ui/NotFoundPage';
 
@@ -46,11 +46,12 @@ function App() {
             </PrivateRoute>
           }
         />
+
         <Route
-          path={ROUTES.WORKOUT_DETAIL(':courseId/:lessonId')}
+          path="/course/:courseName/workout"
           element={
             <PrivateRoute>
-              <LessonPage />
+              <WorkoutPage />
             </PrivateRoute>
           }
         />

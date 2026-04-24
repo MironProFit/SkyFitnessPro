@@ -23,7 +23,7 @@ export const CourseDetail = ({ course }: CourseDetailProps) => {
         nameEN={course.nameEN}
       />
 
-      <div className={styles.contentWrapper}>
+      <div className={styles.content__wrapper}>
         {course.fitting && (
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>Подойдет для вас, если:</h2>
