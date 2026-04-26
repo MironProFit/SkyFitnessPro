@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './Button.module.css';
 
 type ButtonVariant = 'primary' | 'disabled';
-type ButtonSize = 'sm' | 'md' | 'lg';
+type ButtonSize = 'sm' | 'md' | 'lg' | 'xl';
 type ButtonsColor = 'green' | 'white';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -18,7 +18,7 @@ export const Button: React.FC<ButtonProps> = ({
   size = 'md',
   isLoading = false,
   disabled,
-  color = 'green' ,
+  color = 'green',
   className = '',
   ...props
 }) => {

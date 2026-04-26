@@ -15,7 +15,7 @@
 }
 
 .loader__content {
-  background-color: white;
+  background-color: var(--bg-primary);
   padding: 50px;
   display: flex;
   flex-direction: column;

@@ -1,6 +1,6 @@
 ﻿// src/widgets/auth-widget/AuthModal.tsx
 import logoIcon from '@/shared/assets/icons/logoIcon.svg';
-import logoText from '@/shared/assets/icons/logoText.svg';
+
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom'; // 🔹 Добавили useNavigate
@@ -9,6 +9,7 @@ import toast from 'react-hot-toast';
 import styles from './AuthModal.module.css';
 import { useApp } from '@/context/AppContext';
 import { ROUTES } from '@/shared/config/routes'; // 🔹 Импортируем ROUTES
+import Logo from '@/shared/components/Logo/Logo';
 
 const validatePassword = (password: string): { valid: boolean; error?: string } => {
   if (password.length < 6) {
@@ -93,8 +94,7 @@ export const AuthModal = () => {
     <div className={styles.overlay} onClick={toggleModalAuth}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <Link to="/" className={styles.logo}>
-          <img src={logoIcon} alt="Logo" className={styles.logoIcon} />
-          <img src={logoText} alt="Logo" className={styles.logoText} />
+          <Logo/>
         </Link>
 
         <form className={styles.form} onSubmit={handleSubmit}>

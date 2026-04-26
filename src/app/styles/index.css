@@ -30,18 +30,64 @@
   font-display: swap;
 }
 
+/* Светлая тема (по умолчанию) */
 :root {
   font-family: 'StratosSkyeng', sans-serif;
+
+  --bg-primary: #ffffff;
+  --bg-primary-rev: #1a1a1a;
+  --bg-secondary: #f5f5f5;
+  --bg-secondary-rev: #2a2a2a;
+  --bg-fittingCard: #2a2a2a;
+  --bg-card: #ffffff;
+  --text-primary: #1a1a1a;
+  --text-primary-rev: #ffffff;
+  --text-secondary: #666666;
+  --text-muted: #888888;
+  --border-color: #e0e0e0;
+  --accent-color: #b8f33f;
+  --accent-hover: #a3e035;
+  --error-color: #ff4d4f;
+  --success-color: #52c41a;
+  --shadow-color: rgba(0, 0, 0, 0.1);
 }
 
+/* Темная тема */
+[data-theme='dark'] {
+  --bg-primary: #1a1a1a;
+  --bg-primary-rev: #ffffff;
+  --bg-secondary: #2a2a2a;
+  --bg-secondary-rev: #f5f5f5;
+  --bg-fittingCard: #404040;
+  --bg-card: #2a2a2a;
+  --text-primary: #ffffff;
+  --text-primary-rev: #1a1a1a;
+  --text-secondary: #cccccc;
+  --text-muted: #999999;
+  --border-color: #404040;
+  --accent-color: #b8f33f;
+  --accent-hover: #a3e035;
+  --error-color: #ff4d4f;
+  --success-color: #52c41a;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+}
+
+/* Глобальные стили с использованием переменных */
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
   font-family: 'StratosSkyeng', sans-serif;
+
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
-p{
+p {
+  /* color: var(--text-secondary); */
   margin: 0;
   padding: 0;
 }

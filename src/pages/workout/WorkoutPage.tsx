@@ -8,6 +8,7 @@ import type { Workout, CourseProgress } from '@/shared/api/types';
 import styles from './WorkoutPage.module.css';
 import CheckIcon from '@/shared/assets/icons/check.svg';
 import toast from 'react-hot-toast';
+import arrowLeftIcon from '@/shared/assets/icons/arrow-left.svg';
 
 // Иконки стрелок
 const ArrowLeftIcon = () => (
@@ -88,7 +89,7 @@ export const WorkoutPage = () => {
     staleTime: 1000 * 60 * 5,
   });
 
-  const {data:  courseProgress } = useQuery<CourseProgress>({
+  const { data: courseProgress } = useQuery<CourseProgress>({
     queryKey: ['progress', courseId],
     queryFn: () => progressApi.getCourseProgress(courseId),
     enabled: !!courseId,
@@ -242,7 +243,8 @@ export const WorkoutPage = () => {
     <div className={styles.page}>
       <header className={styles.header}>
         <button className={styles.backBtn} onClick={handleBackToProfile}>
-          ← В профиль
+          <img src="arrowLeftIcon" alt="back in profile" />
+          <div>В профиль</div>
         </button>
         <h1 className={styles.courseTitle}>{/* Название курса */}</h1>
 
@@ -295,16 +297,12 @@ export const WorkoutPage = () => {
         <div className={styles.controls}>
           {/* Показываем кнопку "Назад" только если тренировок больше 1 */}
           {showNavigation && (
-            <Button
-              onClick={handlePrev}
-              disabled={currentIndex === 0}
-              className={styles.navBtn}
-            >
+            <Button onClick={handlePrev} disabled={currentIndex === 0} className={styles.navBtn}>
               <ArrowLeftIcon /> Назад
             </Button>
           )}
 
-          <Button onClick={handleOpenModal} className={styles.saveBtn} >
+          <Button onClick={handleOpenModal} className={styles.saveBtn}>
             Обновить свой прогресс
           </Button>
 
