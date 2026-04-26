@@ -1,107 +1,189 @@
-﻿// src/pages/WorkoutPage/WorkoutPage.tsx
-import { useState, useEffect, useMemo } from 'react';
-import { useNavigate, useSearchParams, useParams } from 'react-router-dom';
+﻿import { useState, useEffect, useMemo } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom'; // Убрали useParams
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Button } from '@/shared/components/Button/Button';
 import { workoutApi } from '@/entities/workout/api/workoutApi';
 import { progressApi } from '@/entities/progress/api/progressApi';
 import type { Workout, CourseProgress } from '@/shared/api/types';
 import styles from './WorkoutPage.module.css';
-import ArrowLeftIcon from '@/shared/assets/icons/arrow-left.svg';
-import ArrowRightIcon from '@/shared/assets/icons/arrow-right.svg';
+import CheckIcon from '@/shared/assets/icons/check.svg';
+import toast from 'react-hot-toast';
+
+// Иконки стрелок
+const ArrowLeftIcon = () => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M19 12H5" />
+    <path d="M12 19l-7-7 7-7" />
+  </svg>
+);
+const ArrowRightIcon = () => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M5 12h14" />
+    <path d="M12 5l7 7-7 7" />
+  </svg>
+);
+// Иконка корзины/сброса
+const ResetIcon = () => (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <polyline points="3 6 5 6 21 6"></polyline>
+    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+  </svg>
+);
 
 export const WorkoutPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { courseName } = useParams<{ courseName: string }>();
   const queryClient = useQueryClient();
 
-  // Парсим список выбранных тренировок из URL
+  const courseId = searchParams.get('courseId') || '';
+
+  // Список ID тренировок
   const workoutIds = useMemo(() => {
     const idsParam = searchParams.get('workouts');
     return idsParam ? idsParam.split(',').filter(Boolean) : [];
   }, [searchParams]);
 
-  const [currentWorkoutIndex, setCurrentWorkoutIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const currentWorkoutId = workoutIds[currentIndex];
+
   const [exerciseValues, setExerciseValues] = useState<number[]>([]);
+  const [initialValues, setInitialValues] = useState<number[]>([]);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  // Убрали isResettingCourse, так как он не использовался в UI
 
-  const currentWorkoutId = workoutIds[currentWorkoutIndex];
-
-  // Загружаем данные текущей тренировки
-  const { data: workout, isLoading: isLoadingWorkout } = useQuery<Workout>({
+  const { data: currentWorkout, isLoading: isLoadingWorkout } = useQuery<Workout>({
     queryKey: ['workout', currentWorkoutId],
     queryFn: () => workoutApi.getWorkoutById(currentWorkoutId!),
     enabled: !!currentWorkoutId,
     staleTime: 1000 * 60 * 5,
   });
 
-  // Загружаем прогресс курса (нужен для courseId)
   const {data:  courseProgress } = useQuery<CourseProgress>({
-    queryKey: ['progress', workout?.courseId], // 🔹 Нужно добавить courseId в ответ Workout или передать иначе
-    queryFn: () => progressApi.getCourseProgress(workout?.courseId || ''),
-    enabled: !!workout?.courseId,
+    queryKey: ['progress', courseId],
+    queryFn: () => progressApi.getCourseProgress(courseId),
+    enabled: !!courseId,
     staleTime: 1000 * 60 * 2,
   });
 
-  // 🔹 Мутация сохранения прогресса
+  // Мутация сохранения прогресса одной тренировки
   const { mutate: saveProgressMutate } = useMutation({
-    mutationFn: ({
-      courseId,
-      workoutId,
-      progressData,
-    }: {
-      courseId: string;
-      workoutId: string;
-      progressData: number[];
-    }) => progressApi.saveWorkoutProgress(courseId, workoutId, progressData),
+    mutationFn: ({ cid, wid, pData }: { cid: string; wid: string; pData: number[] }) =>
+      progressApi.saveWorkoutProgress(cid, wid, pData),
     onSuccess: () => {
-      // Обновляем кэш прогресса
-      queryClient.invalidateQueries({ queryKey: ['progress'] });
+      queryClient.invalidateQueries({ queryKey: ['progress', courseId] });
+      setInitialValues([...exerciseValues]);
+      setIsModalOpen(false);
+      setIsSuccessModalOpen(true);
+      setTimeout(() => setIsSuccessModalOpen(false), 2000);
     },
-    onError: (error) => {
-      console.error('Ошибка сохранения прогресса:', error);
+    onError: (error: any) => {
+      console.error('Ошибка сохранения:', error);
+      setIsSaving(false);
     },
   });
 
-  // Инициализируем значения упражнений при загрузке тренировки
-  useEffect(() => {
-    if (workout?.exercises && courseProgress?.workoutsProgress) {
-      const savedProgress = courseProgress.workoutsProgress.find(
-        (wp) => wp.workoutId === workout._id
-      );
-
-      if (savedProgress?.progressData?.length) {
-        setExerciseValues(savedProgress.progressData);
-      } else {
-        // Инициализируем нулями по количеству упражнений
-        setExerciseValues(new Array(workout.exercises.length).fill(0));
+  // Мутация сброса ПРОГРЕССА ВСЕГО КУРСА
+  const { mutate: resetCourseProgressMutate } = useMutation({
+    mutationFn: () => progressApi.resetCourseProgress(courseId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['progress', courseId] });
+      if (currentWorkout) {
+        const zeros = new Array(currentWorkout.exercises.length).fill(0);
+        setExerciseValues(zeros);
+        setInitialValues([...zeros]);
       }
-    }
-  }, [workout, courseProgress]);
+      toast.success('Прогресс курса сброшен!');
+    },
+    onError: (error: any) => {
+      console.error('Ошибка сброса:', error);
+      toast.error('Не удалось сбросить прогресс');
+    },
+  });
 
-  // Обработчик изменения значения упражнения
-  const handleExerciseChange = (index: number, value: string) => {
-    const numValue = parseInt(value, 10);
-    if (isNaN(numValue) || numValue < 0) return;
+  useEffect(() => {
+    if (!currentWorkout?.exercises) return;
+
+    const expectedLength = currentWorkout.exercises.length;
+
+    const savedProgress = courseProgress?.workoutsProgress?.find(
+      (wp) => wp.workoutId === currentWorkout._id
+    );
+
+    let values: number[] = [];
+
+    if (savedProgress?.progressData && savedProgress.progressData.length === expectedLength) {
+      values = [...savedProgress.progressData];
+    } else {
+      values = new Array(expectedLength).fill(0);
+    }
+
+    setExerciseValues(values);
+    setInitialValues([...values]);
+  }, [currentWorkout, courseProgress, currentIndex]);
+
+  const handleInputChange = (index: number, value: string) => {
+    const num = parseInt(value, 10);
+    if (isNaN(num) || num < 0) return;
 
     setExerciseValues((prev) => {
-      const newValues = [...prev];
-      newValues[index] = numValue;
-      return newValues;
+      const next = [...prev];
+      next[index] = num;
+      return next;
     });
   };
 
-  // Сохранение прогресса
-  const handleSaveProgress = () => {
-    if (!workout || !workout.courseId) return;
+  const hasChanges = useMemo(() => {
+    if (exerciseValues.length === 0 || initialValues.length === 0) return false;
+    return exerciseValues.some((val, idx) => val !== initialValues[idx]);
+  }, [exerciseValues, initialValues]);
 
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleSave = () => {
+    if (!currentWorkout || !courseId) return;
     setIsSaving(true);
+
     saveProgressMutate(
       {
-        courseId: workout.courseId,
-        workoutId: workout._id,
-        progressData: exerciseValues,
+        cid: courseId,
+        wid: currentWorkout._id,
+        pData: exerciseValues,
       },
       {
         onSettled: () => setIsSaving(false),
@@ -109,50 +191,45 @@ export const WorkoutPage = () => {
     );
   };
 
-  // Навигация между тренировками
-  const handlePrevWorkout = () => {
-    if (currentWorkoutIndex > 0) {
-      // Сохраняем прогресс перед переходом
-      if (workout?.courseId) {
-        saveProgressMutate({
-          courseId: workout.courseId,
-          workoutId: workout._id,
-          progressData: exerciseValues,
-        });
-      }
-      setCurrentWorkoutIndex((prev) => prev - 1);
-      setExerciseValues([]); // Сброс для следующей тренировки (загрузится в useEffect)
+  const handleResetCourse = () => {
+    if (
+      !window.confirm(
+        'Вы уверены, что хотите сбросить весь прогресс этого курса? Все данные будут потеряны.'
+      )
+    ) {
+      return;
     }
+    // Вызываем мутацию напрямую, так как состояние isResettingCourse убрали
+    resetCourseProgressMutate();
   };
 
-  const handleNextWorkout = () => {
-    if (currentWorkoutIndex < workoutIds.length - 1) {
-      if (workout?.courseId) {
-        saveProgressMutate({
-          courseId: workout.courseId,
-          workoutId: workout._id,
-          progressData: exerciseValues,
-        });
-      }
-      setCurrentWorkoutIndex((prev) => prev + 1);
-      setExerciseValues([]);
-    }
+  const handlePrev = () => {
+    if (currentIndex > 0) setCurrentIndex((prev) => prev - 1);
+  };
+
+  const handleNext = () => {
+    if (currentIndex < workoutIds.length - 1) setCurrentIndex((prev) => prev + 1);
   };
 
   const handleBackToProfile = () => {
-    // Сохраняем перед уходом
-    if (workout?.courseId) {
-      saveProgressMutate({
-        courseId: workout.courseId,
-        workoutId: workout._id,
-        progressData: exerciseValues,
-      });
-    }
     navigate('/profile');
   };
 
-  // Заглушка, если данные ещё не загружены
-  if (isLoadingWorkout || !workout) {
+  const getExercisePercent = (index: number): number => {
+    if (!currentWorkout?.exercises[index]) return 0;
+    const target = currentWorkout.exercises[index].quantity || 0;
+    const current = exerciseValues[index] || 0;
+
+    if (target > 0) {
+      return Math.min(100, Math.round((current / target) * 100));
+    }
+    return current > 0 ? 100 : 0;
+  };
+
+  // Проверяем, нужно ли показывать навигацию
+  const showNavigation = workoutIds.length > 1;
+
+  if (isLoadingWorkout || !currentWorkout) {
     return (
       <div className={styles.loading}>
         <div className={styles.spinner} />
@@ -163,31 +240,30 @@ export const WorkoutPage = () => {
 
   return (
     <div className={styles.page}>
-      {/* Шапка с навигацией */}
       <header className={styles.header}>
         <button className={styles.backBtn} onClick={handleBackToProfile}>
-          <img src={ArrowLeftIcon} alt="←" />
-          <span>В профиль</span>
+          ← В профиль
         </button>
+        <h1 className={styles.courseTitle}>{/* Название курса */}</h1>
 
-        <h1 className={styles.courseTitle}>{workout.courseName || courseName}</h1>
-
-        <div className={styles.workoutCounter}>
-          {currentWorkoutIndex + 1} / {workoutIds.length}
-        </div>
+        {/* Кнопка сброса прогресса курса в шапке */}
+        <button
+          className={styles.resetCourseBtn}
+          onClick={handleResetCourse}
+          title="Сбросить прогресс всего курса"
+        >
+          <ResetIcon />
+        </button>
       </header>
 
-      {/* Контент тренировки */}
       <main className={styles.content}>
-        {/* Название тренировки */}
-        <h2 className={styles.workoutTitle}>{workout.name}</h2>
+        <h2 className={styles.workoutTitle}>{currentWorkout.name}</h2>
 
-        {/* YouTube плеер */}
         <div className={styles.videoWrapper}>
-          {workout.video ? (
+          {currentWorkout.video ? (
             <iframe
-              src={workout.video}
-              title={workout.name}
+              src={currentWorkout.video}
+              title={currentWorkout.name}
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
@@ -198,69 +274,99 @@ export const WorkoutPage = () => {
           )}
         </div>
 
-        {/* Упражнения */}
-        <section className={styles.exercises}>
-          <h3 className={styles.exercisesTitle}>Задания</h3>
+        <section className={styles.exercisesGrid}>
+          {currentWorkout.exercises.map((exercise, index) => {
+            const percent = getExercisePercent(index);
 
-          {workout.exercises?.length > 0 ? (
-            <ul className={styles.exerciseList}>
-              {workout.exercises.map((exercise, index) => (
-                <li key={exercise._id || index} className={styles.exerciseItem}>
+            return (
+              <div key={exercise._id || index} className={styles.exerciseCard}>
+                <div className={styles.exerciseInfo}>
                   <span className={styles.exerciseName}>{exercise.name}</span>
-                  <div className={styles.exerciseInput}>
-                    <label>
-                      Повторения:
-                      <input
-                        type="number"
-                        min="0"
-                        value={exerciseValues[index] || 0}
-                        onChange={(e) => handleExerciseChange(index, e.target.value)}
-                        className={styles.numberInput}
-                      />
-                    </label>
-                    <span className={styles.exerciseTarget}>/ {exercise.quantity || '?'}</span>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className={styles.noExercises}>В этой тренировке нет заданий</p>
-          )}
+                  <span className={styles.exercisePercent}>{percent}%</span>
+                </div>
+                <div className={styles.progressBarBg}>
+                  <div className={styles.progressBarFill} style={{ width: `${percent}%` }} />
+                </div>
+              </div>
+            );
+          })}
         </section>
 
-        {/* Кнопки управления */}
         <div className={styles.controls}>
-          <Button
-            type="button"
-            onClick={handlePrevWorkout}
-            disabled={currentWorkoutIndex === 0}
-            variant="secondary"
-            className={styles.navBtn}
-          >
-            <img src={ArrowLeftIcon} alt="←" />
-            Назад
+          {/* Показываем кнопку "Назад" только если тренировок больше 1 */}
+          {showNavigation && (
+            <Button
+              onClick={handlePrev}
+              disabled={currentIndex === 0}
+              className={styles.navBtn}
+            >
+              <ArrowLeftIcon /> Назад
+            </Button>
+          )}
+
+          <Button onClick={handleOpenModal} className={styles.saveBtn} >
+            Обновить свой прогресс
           </Button>
 
-          <Button
-            type="button"
-            onClick={handleSaveProgress}
-            disabled={isSaving || exerciseValues.length === 0}
-            className={styles.saveBtn}
-          >
-            {isSaving ? 'Сохранение...' : 'Сохранить прогресс'}
-          </Button>
-
-          <Button
-            type="button"
-            onClick={handleNextWorkout}
-            disabled={currentWorkoutIndex === workoutIds.length - 1}
-            className={styles.navBtn}
-          >
-            Вперёд
-            <img src={ArrowRightIcon} alt="→" />
-          </Button>
+          {/* Показываем кнопку "Вперед" только если тренировок больше 1 */}
+          {showNavigation && (
+            <Button
+              onClick={handleNext}
+              disabled={currentIndex === workoutIds.length - 1}
+              className={styles.navBtn}
+            >
+              Вперед <ArrowRightIcon />
+            </Button>
+          )}
         </div>
       </main>
+
+      {/* Модалка ввода */}
+      {isModalOpen && (
+        <div className={styles.modalOverlay} onClick={handleCloseModal}>
+          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+            <h3 className={styles.modalTitle}>Мой прогресс</h3>
+
+            <div className={styles.modalForm}>
+              {currentWorkout.exercises.map((ex, idx) => (
+                <div key={idx} className={styles.formGroup}>
+                  <label htmlFor={`ex-${idx}`}>
+                    Сколько раз вы сделали {ex.name.toLowerCase()}?
+                  </label>
+                  <input
+                    id={`ex-${idx}`}
+                    type="number"
+                    min="0"
+                    value={exerciseValues[idx] || ''}
+                    onChange={(e) => handleInputChange(idx, e.target.value)}
+                    className={styles.numberInputLarge}
+                    placeholder="0"
+                  />
+                </div>
+              ))}
+            </div>
+
+            <Button
+              size="lg"
+              className={styles.saveBtnModal}
+              onClick={handleSave}
+              disabled={isSaving}
+            >
+              {isSaving ? 'Сохранение...' : 'Сохранить'}
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* Модалка успеха */}
+      {isSuccessModalOpen && (
+        <div className={styles.successOverlay}>
+          <div className={styles.successContent}>
+            <img src={CheckIcon} alt="Success" className={styles.checkIcon} />
+            <h3>Ваш прогресс засчитан!</h3>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -28,7 +28,7 @@ export const CourseList = () => {
   const {
     data: allCourses = [],
     isLoading: isLoadingCourses,
-    isFetching: isFetchingCourses,
+    // isFetching: isFetchingCourses,
     isError: isErrorCourses,
     error: errorCourses,
     refetch: refetchCourses,
@@ -178,13 +178,13 @@ export const CourseList = () => {
           <p className={styles['error-state__message']}>
             {error?.message || 'Произошла неизвестная ошибка'}
           </p>
-          <button
+          <Button
             className={styles['error-state__retry-btn']}
             onClick={() => refetchCourses()}
             type="button"
           >
             🔄 Повторить
-          </button>
+          </Button>
         </div>
       </section>
     );
@@ -224,7 +224,6 @@ export const CourseList = () => {
               type="button"
               onClick={handleScrollToTop}
               aria-label="Прокрутить наверх"
-              className={styles['scroll-top__btn']}
             >
               Наверх ↑
             </Button>

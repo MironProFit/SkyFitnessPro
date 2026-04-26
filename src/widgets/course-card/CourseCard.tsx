@@ -4,9 +4,9 @@ import CalendarIcon from '@/shared/assets/icons/Calendar.svg';
 import TimeIcon from '@/shared/assets/icons/Time.svg';
 import PlusIcon from '@/shared/assets/icons/plus.svg';
 import MinusIcon from '@/shared/assets/icons/minus.svg';
-import CheckIcon from '@/shared/assets/icons/check.svg'; // 🔹 Твоя иконка
+import CheckIcon from '@/shared/assets/icons/check.svg';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/shared/components/Button/Button';
 import { courseImages } from '@/shared/constans/courseConfig';
@@ -15,7 +15,7 @@ import type { Workout, CourseProgress } from '@/shared/api/types';
 import { ROUTES } from '@/shared/config/routes';
 import { useAuth } from '@/context/AuthContext';
 import { useApp } from '@/context/AppContext';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import type { User } from '@/shared/api/types';
 import { userApi } from '@/entities/user/api/userApi';
 import { progressApi } from '@/entities/progress/api/progressApi';
@@ -42,11 +42,34 @@ const getDifficultyLabel = (level: number): string => {
   return 'Сложный';
 };
 
-const calculateCourseProgress = (progress?: CourseProgress): number => {
+// Функция для точного расчета прогресса по упражнениям
+const calculateExactProgress = (
+  progress: CourseProgress | undefined,
+  workoutDetails: Record<string, Workout>
+): number => {
   if (!progress?.workoutsProgress || progress.workoutsProgress.length === 0) return 0;
-  const completed = progress.workoutsProgress.filter((w) => w.workoutCompleted).length;
-  const total = progress.workoutsProgress.length;
-  return Math.round((completed / total) * 100);
+
+  let totalTargetReps = 0;
+  let totalDoneReps = 0;
+
+  progress.workoutsProgress.forEach((wp) => {
+    const workoutDetail = workoutDetails[wp.workoutId];
+
+    if (workoutDetail && workoutDetail.exercises && workoutDetail.exercises.length > 0) {
+      const targetSum = workoutDetail.exercises.reduce((sum, ex) => sum + (ex.quantity || 0), 0);
+      totalTargetReps += targetSum;
+
+      const doneSum = wp.progressData.reduce((sum, val) => {
+        return sum + (val || 0);
+      }, 0);
+
+      totalDoneReps += doneSum;
+    }
+  });
+
+  if (totalTargetReps === 0) return 0;
+
+  return Math.round((totalDoneReps / totalTargetReps) * 100);
 };
 
 const extractLessonNumber = (name: string): number | null => {
@@ -70,15 +93,17 @@ export const CourseCard = ({ pageProfile, course, backgroundColor }: CourseCardP
   const [isHovered, setIsHovered] = useState(false);
   const [isToogle, setisToogle] = useState(false);
 
-  // 🔹 Состояние для списка тренировок
   const [isWorkoutListOpen, setIsWorkoutListOpen] = useState(false);
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [selectedWorkouts, setSelectedWorkouts] = useState<Set<string>>(new Set());
   const [isLoadingWorkouts, setIsLoadingWorkouts] = useState(false);
 
+  const [workoutsDetails, setWorkoutsDetails] = useState<Record<string, Workout>>({});
+
   const { isAuthenticated } = useAuth();
   const { addCourseForUser, removeCourseForUser } = useApp();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const {
     nameRU,
@@ -87,6 +112,7 @@ export const CourseCard = ({ pageProfile, course, backgroundColor }: CourseCardP
     dailyDurationInMinutes,
     difficulty,
     _id: courseId,
+    workouts: courseWorkoutIds,
   } = course;
 
   const durationText = `${dailyDurationInMinutes.from}-${dailyDurationInMinutes.to} мин/день`;
@@ -107,23 +133,72 @@ export const CourseCard = ({ pageProfile, course, backgroundColor }: CourseCardP
     staleTime: 1000 * 60 * 2,
   });
 
+
+  // Эффект для загрузки деталей тренировок для точного расчета %
+  useEffect(() => {
+    if (!isAuthenticated || !pageProfile || !courseWorkoutIds || courseWorkoutIds.length === 0)
+      return;
+
+    const allLoaded = courseWorkoutIds.every((id) => workoutsDetails[id]);
+    if (allLoaded) return;
+
+    const loadAllDetails = async () => {
+      try {
+        const promises = courseWorkoutIds.map((id) => workoutApi.getWorkoutById(id));
+        const results = await Promise.all(promises);
+
+        const newDetails: Record<string, Workout> = {};
+        results.forEach((workout) => {
+          if (workout) newDetails[workout._id] = workout;
+        });
+
+        setWorkoutsDetails((prev) => ({ ...prev, ...newDetails }));
+      } catch (error) {
+        console.error('Ошибка загрузки деталей тренировок:', error);
+      }
+    };
+
+    loadAllDetails();
+  }, [courseWorkoutIds, isAuthenticated, pageProfile, workoutsDetails]);
+
   const isSelected = isAuthenticated
     ? (userData?.user?.selectedCourses || []).includes(courseId)
     : false;
 
-  const progressPercent = useMemo(() => calculateCourseProgress(courseProgress), [courseProgress]);
+  const progressPercent = useMemo(
+    () => calculateExactProgress(courseProgress, workoutsDetails),
+    [courseProgress, workoutsDetails]
+  );
+
+  // 🔹 Мутация для сброса ПРОГРЕССА ВСЕГО КУРСА
+  const { mutate: resetCourseProgressMutate, isPending: isResetting } = useMutation({
+    mutationFn: () => progressApi.resetCourseProgress(courseId),
+    onSuccess: () => {
+      console.log('✅ Прогресс курса сброшен');
+      queryClient.invalidateQueries({ queryKey: ['progress', courseId] });
+      setIsWorkoutListOpen(false);
+    },
+    onError: (error) => {
+      console.error('Не удалось сбросить прогресс:', error);
+    },
+  });
 
   const getWorkoutButtonText = (): string => {
     if (!courseProgress) return 'Загрузка...';
-    if (progressPercent === 0) return 'Начать тренировку';
     if (progressPercent === 100) return 'Начать заново';
+    if (progressPercent === 0) return 'Начать тренировку';
     return 'Продолжить тренировку';
   };
 
-  // 🔹 Открытие списка
   const handleWorkoutButtonClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
+
+    // 🔹 Если прогресс 100%, вызываем сброс всего курса
+    if (progressPercent === 100) {
+      resetCourseProgressMutate();
+      return;
+    }
 
     setIsLoadingWorkouts(true);
     try {
@@ -165,14 +240,12 @@ export const CourseCard = ({ pageProfile, course, backgroundColor }: CourseCardP
     });
   };
 
-const handleStartWorkout = (e: React.MouseEvent) => {
-  e.stopPropagation();
-  if (selectedWorkouts.size === 0) return;
-  
-  const workoutIds = Array.from(selectedWorkouts).join(',');
-  // 🔹 Добавляем courseId для страницы тренировки
-  navigate(`/course/${course.nameEN}/workout?workouts=${workoutIds}&courseId=${courseId}`);
-};
+  const handleStartWorkout = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (selectedWorkouts.size === 0) return;
+    const workoutIds = Array.from(selectedWorkouts).join(',');
+    navigate(`/course/${course.nameEN}/workout?workouts=${workoutIds}&courseId=${courseId}`);
+  };
 
   const handleToggleCourse = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -193,12 +266,15 @@ const handleStartWorkout = (e: React.MouseEvent) => {
   const imageNameLower = nameEN?.toLowerCase() || '';
   const courseBackgroundImage = courseImages[imageNameLower];
 
+
+  useEffect(() => { console.log(pageProfile); }, [pageProfile])
+
   return (
     <div
       className={clsx(
         styles.card,
         isHovered && styles.cardHovered,
-        isWorkoutListOpen && styles.workoutListOpen // 🔹 Добавлено
+        isWorkoutListOpen && styles.workoutListOpen
       )}
       style={{ order: course.order }}
       onClick={() => {
@@ -217,7 +293,6 @@ const handleStartWorkout = (e: React.MouseEvent) => {
         }
       }}
     >
-      {/* 🔹 1. Основной контент (исчезает при открытии списка) */}
       <div className={clsx(styles.cardContent, isWorkoutListOpen && styles.cardContentHidden)}>
         <div className={styles.imageWrapper} style={{ backgroundColor }}>
           {courseBackgroundImage ? (
@@ -273,7 +348,7 @@ const handleStartWorkout = (e: React.MouseEvent) => {
             </div>
           </div>
 
-          {pageProfile && isAuthenticated && (
+          {isAuthenticated && pageProfile && (
             <>
               <div className={styles.progressBar}>
                 <h3 className={styles.progressBar_title}>Прогресс {progressPercent}%</h3>
@@ -289,16 +364,19 @@ const handleStartWorkout = (e: React.MouseEvent) => {
                 type="button"
                 onClick={handleWorkoutButtonClick}
                 size="lg"
-                disabled={!courseProgress || isLoadingWorkouts}
+                disabled={!courseProgress || isLoadingWorkouts || isResetting}
               >
-                {isLoadingWorkouts ? 'Загрузка...' : getWorkoutButtonText()}
+                {isResetting
+                  ? 'Сброс...'
+                  : isLoadingWorkouts
+                    ? 'Загрузка...'
+                    : getWorkoutButtonText()}
               </Button>
             </>
           )}
         </div>
       </div>
 
-      {/* 🔹 2. Панель списка тренировок (выезжает снизу) */}
       <div
         className={clsx(styles.workoutListPanel, isWorkoutListOpen && styles.workoutListPanelOpen)}
       >
@@ -324,8 +402,8 @@ const handleStartWorkout = (e: React.MouseEvent) => {
                   key={workout._id}
                   className={clsx(styles.listItem, isSelected && styles.listItemActive)}
                   onClick={(e) => {
-                    e.stopPropagation(); // 🔹 Оставляем: блокируем переход на страницу курса
-                    handleWorkoutToggle(workout._id); // 🔹 Добавляем: переключаем выбор
+                    e.stopPropagation();
+                    handleWorkoutToggle(workout._id);
                   }}
                 >
                   <div className={styles.checkboxContainer}>

@@ -1,31 +1,47 @@
 // src/shared/api/axiosInstance.ts
-import { isPublicPath } from '@/shared/api/helpers/isPublicPath';
 import { ENDPOINTS } from '@/shared/api/types';
 import { RefreshManager } from '@/shared/lib/refreshManager';
 import { TokenStorage } from '@/shared/lib/tokenStorage';
 import { authApi } from '@/entities/auth/api/authApi';
 import axios, { AxiosError, type AxiosResponse, type InternalAxiosRequestConfig } from 'axios';
 import toast from 'react-hot-toast';
+import { isPublicPath } from './helpers/isPublicPath';
 
 const isDev = process.env.NODE_ENV === 'development';
+
+// 🔹 ЕДИНСТВЕННОЕ объявление расширения типов для Axios в этом проекте
+// Убедитесь, что такого блока НЕТ в других файлах!
+declare module 'axios' {
+  export interface InternalAxiosRequestConfig {
+    skipAuth?: boolean;
+    skipErrorToast?: boolean;
+    skipContentType?: boolean;
+    customSuccessMessage?: string;
+    _retry?: boolean;
+  }
+}
 
 export const apiClient = axios.create({
   baseURL: `${ENDPOINTS.API.URL}${ENDPOINTS.API.BASE}`,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
+    'Accept': 'application/json',
   },
 });
 
+// 🔹 Интерцептор запроса
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    if (config.skipAuth || isPublicPath(config.url)) {
+    // Используем any для безопасного доступа к кастомным полям
+    const cfg = config as any;
+    
+    if (cfg.skipAuth || isPublicPath(config.url)) {
       return config;
     }
 
     const token = TokenStorage.getAccessToken();
 
-    // Логирование для отладки
     if (isDev) {
       console.log('🔐 Вложение токена:', {
         hasToken: !!token,
@@ -39,8 +55,14 @@ apiClient.interceptors.request.use(
       if (isDev) {
         console.log('✅ Заголовок авторизации установлен');
       }
-    } else if (!token && isDev) {
-      console.warn('⚠️ Токен не найден, пропуск вложения заголовка авторизации');
+    }
+
+    // Удаляем Content-Type, если запрошено
+    if (cfg.skipContentType && config.headers) {
+      delete config.headers['Content-Type'];
+      if (isDev) {
+        console.log('🗑️ Content-Type удалён');
+      }
     }
 
     if (isDev) {
@@ -66,6 +88,7 @@ apiClient.interceptors.request.use(
   }
 );
 
+// 🔹 Интерцептор ответа
 apiClient.interceptors.response.use(
   (response: AxiosResponse) => {
     if (isDev) {
@@ -76,13 +99,15 @@ apiClient.interceptors.response.use(
       console.groupEnd();
     }
 
-    if (response.config.customSuccessMessage) {
-      toast.success(response.config.customSuccessMessage);
+    const cfg = response.config as any;
+    if (cfg.customSuccessMessage) {
+      toast.success(cfg.customSuccessMessage);
     }
     return response;
   },
 
   async (error: AxiosError) => {
+    // Приводим к типу с нашим расширением
     const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
     const status = error.response?.status;
 
@@ -95,6 +120,7 @@ apiClient.interceptors.response.use(
       console.groupEnd();
     }
 
+    // Логика повторной попытки при 401
     if (status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
@@ -113,12 +139,8 @@ apiClient.interceptors.response.use(
 
       try {
         const refreshToken = TokenStorage.getRefreshToken();
+        if (!refreshToken) throw new Error('Нет доступного токена для обновления');
 
-        if (!refreshToken) {
-          throw new Error('Нет доступного токена для обновления');
-        }
-
-        // 🔹 Используем authApi.refresh (на fetch) для обновления токена
         const { accessToken, refreshToken: newRefreshToken } = await authApi.refresh(refreshToken);
 
         if (newRefreshToken) {
@@ -137,20 +159,18 @@ apiClient.interceptors.response.use(
         return apiClient(originalRequest);
       } catch (refreshError: any) {
         console.error('Ошибка при обновлении токена:', refreshError);
-
         TokenStorage.clear();
         RefreshManager.rejectQueue();
         RefreshManager.setRefreshingStatus(false);
-
         toast.error('Сессия истекла. Пожалуйста, войдите снова');
         window.location.href = '/login';
-
         return Promise.reject(refreshError);
       }
     }
 
     const message = (error.response?.data as any)?.message || 'Произошла ошибка';
-    const skipToast = originalRequest?.skipErrorToast;
+    const cfg = originalRequest as any;
+    const skipToast = cfg?.skipErrorToast;
 
     if (!skipToast) {
       switch (status) {

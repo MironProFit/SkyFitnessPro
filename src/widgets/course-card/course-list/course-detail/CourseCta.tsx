@@ -1,10 +1,15 @@
 // src/widgets/course-cta/CourseCta.tsx
 import { useApp } from '@/context/AppContext';
-import styles from './CourseDetail.module.css';
+import styles from './CourseDetail.module.css'; // Убедитесь, что путь к стилям верный
 import CtaImage from '@/shared/assets/courses/cta_img.png';
 import CtaImageLine from '@/shared/assets/courses/cta_line.png';
+
 import { useAuth } from '@/context/AuthContext';
-import { useEffect } from 'react';
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import type { User } from '@/shared/api/types';
+import { userApi } from '@/entities/user/api/userApi';
+import { Button } from '@/shared/components/Button/Button';
 
 interface CourseCtaProps {
   fitting?: string[];
@@ -12,26 +17,53 @@ interface CourseCtaProps {
 }
 
 export const CourseCta = ({ fitting, courseId }: CourseCtaProps) => {
-  const { toggleModalAuth } = useApp();
-
- 
+  const { toggleModalAuth, addCourseForUser, removeCourseForUser } = useApp();
   const { isAuthenticated, isAuthenticating } = useAuth();
 
-  useEffect(() => {
-    console.log('🔍 CourseCta auth state:', {
-      isAuthenticated,
-      isAuthenticating,
-    });
-  }, [isAuthenticated, isAuthenticating]);
+  // Состояние для анимации кнопки (загрузка)
+  const [isToggling, setIsToggling] = useState(false);
 
-  const addCourseForUser = () => {
-    console.log('Adding course:', courseId);
-  };
+  const { data: userData } = useQuery<User>({
+    queryKey: ['user'],
+    queryFn: () => userApi.getMe(),
+    enabled: isAuthenticated,
+    staleTime: 1000 * 60 * 5,
+  });
+
+  // Проверяем, добавлен ли курс пользователем
+  const isSelected = isAuthenticated
+    ? (userData?.user?.selectedCourses || []).includes(courseId!)
+    : false;
 
   const benefits =
     fitting && fitting.length > 0
       ? fitting
       : ['проработка всех групп мышц', 'тренировка суставов', 'улучшение циркуляции крови'];
+
+  const handleToggleCourse = async () => {
+    if (!courseId) return;
+
+    setIsToggling(true); // 🔹 Включаем загрузку
+    try {
+      if (isSelected) {
+        await removeCourseForUser(courseId);
+      } else {
+        await addCourseForUser(courseId);
+      }
+    } catch (error) {
+      console.error('Не удалось переключить статус курса:', error);
+    } finally {
+      setIsToggling(false); // 🔹 Выключаем загрузку
+    }
+  };
+
+  const handleClick = () => {
+    if (!isAuthenticated) {
+      toggleModalAuth();
+    } else {
+      handleToggleCourse();
+    }
+  };
 
   return (
     <div className={styles.ctaBlock}>
@@ -44,18 +76,19 @@ export const CourseCta = ({ fitting, courseId }: CourseCtaProps) => {
           ))}
         </ul>
 
-        {/* 🔹 Проверяем isAuthenticated для показа правильной кнопки */}
-        <button
-          onClick={isAuthenticated ? () => addCourseForUser() : () => toggleModalAuth()}
-          className={styles.ctaButton}
-          disabled={isAuthenticating}
-        >
-          {isAuthenticating
-            ? 'Загрузка...'
-            : isAuthenticated
-              ? 'Добавить курс'
-              : 'Войдите, чтобы добавить курс'}
-        </button>
+        {/* 🔹 Кнопка с логикой добавления/удаления и загрузкой */}
+        <Button onClick={handleClick} size="lg" disabled={isAuthenticating || isToggling}>
+          {isAuthenticating ? (
+            'Загрузка...'
+          ) : !isAuthenticated ? (
+            'Войдите, чтобы добавить курс'
+          ) : isToggling ? (
+            // 🔹 Показываем спиннер или текст при загрузке
+            <span className={styles.spinner}>Загрузка...</span>
+          ) : (
+            <>{isSelected ? 'Удалить курс' : 'Добавить курс'}</>
+          )}
+        </Button>
       </div>
 
       <img src={CtaImageLine} className={styles.ctaImageLine} alt="" />

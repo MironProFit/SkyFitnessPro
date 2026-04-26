@@ -1,3 +1,5 @@
+/* src/widgets/user-profile/UserProfile.module.css */
+
 .section {
   max-width: 1200px;
   margin: 0 auto;
@@ -21,6 +23,7 @@
   max-width: 947px;
   margin-bottom: 40px;
 }
+
 .profile_container {
   display: flex;
   align-items: center;
@@ -38,14 +41,18 @@
   width: 200px;
   height: 200px;
 }
+
 .profile_box {
   display: flex;
   gap: 30px;
+  width: 100%; /* Добавлено для корректного распределения места */
 }
+
 .profile_container__info {
   display: flex;
   flex-direction: column;
   gap: 30px;
+  flex: 1; /* Занимает оставшееся место */
 }
 
 .info_name {
@@ -58,6 +65,68 @@
   font-weight: 400;
   font-size: 18px;
 }
+
 .info_button {
+  width: 100%;
+}
+
+/* 🔹 НОВЫЕ СТИЛИ ДЛЯ КНОПКИ СБРОСА И ОБЕРТКИ */
+
+.buttonsWrapper {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+/* Стиль для красной кнопки сброса */
+.resetBtn {
+  background-color: #ff4d4f !important; /* Красный цвет */
+  color: white !important;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px; /* Или твой радиус из Button компонента */
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  width: 100%; /* Чтобы соответствовала ширине кнопки выхода, если нужно */
+}
+
+.resetBtn:hover:not(:disabled) {
+  background-color: #d9363e !important;
+}
+
+.resetBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Адаптив для мобильных устройств */
+@media (max-width: 768px) {
+  .profile_container {
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .profile_box {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .profile_container__info {
+    align-items: center;
     width: 100%;
+  }
+
+  .buttonsWrapper {
+    flex-direction: column;
+  }
+  
+  .resetBtn, 
+  .info_button {
+    width: 100%;
+  }
 }

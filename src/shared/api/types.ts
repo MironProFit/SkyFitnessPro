@@ -1,4 +1,3 @@
-// ENDPOINTS
 export const ENDPOINTS = {
   API: {
     URL: 'https://wedev-api.sky.pro',
@@ -13,6 +12,7 @@ export const ENDPOINTS = {
   COURSES: {
     LIST: '/courses',
     BY_ID: (id: string) => `/courses/${id}`,
+    RESET_COURSE: (courseId: string) => `/courses/${courseId}/reset`,
   },
   USER: {
     PROFILE: '/user/profile',
@@ -21,7 +21,7 @@ export const ENDPOINTS = {
     ADD_COURSE: '/users/me/courses',
     DEL_COURSE: (courseId: string) => `/users/me/courses/${courseId}`,
   },
-  
+
   WORKOUTS: {
     BY_COURSE: (courseId: string) => `/courses/${courseId}/workouts`,
     BY_ID: (workoutId: string) => `/workouts/${workoutId}`,
@@ -30,18 +30,20 @@ export const ENDPOINTS = {
   PROGRESS: {
     // GET: прогресс по всему курсу
     BY_COURSE: (courseId: string) => `/users/me/progress?courseId=${courseId}`,
-    
+
     // GET: прогресс по конкретной тренировке
-    BY_WORKOUT: (courseId: string, workoutId: string) => 
+    BY_WORKOUT: (courseId: string, workoutId: string) =>
       `/users/me/progress?courseId=${courseId}&workoutId=${workoutId}`,
-    
+
     // PATCH: сохранить прогресс тренировки
-    SAVE: (courseId: string, workoutId: string) => 
-      `/courses/${courseId}/workouts/${workoutId}`,
-    
+    SAVE: (courseId: string, workoutId: string) => `/courses/${courseId}/workouts/${workoutId}`,
+
     // PATCH: сбросить прогресс тренировки
-    RESET: (courseId: string, workoutId: string) => 
+    RESET_WORKOUT: (courseId: string, workoutId: string) =>
       `/courses/${courseId}/workouts/${workoutId}/reset`,
+
+    // 🔹 PATCH: сбросить весь прогресс по курсу
+    RESET_COURSE: (courseId: string) => `/courses/${courseId}/reset`,
   },
 } as const;
 
@@ -68,7 +70,7 @@ export type RefreshResponse = { accessToken: string; refreshToken?: string };
 // USER
 export type User = {
   email: string;
-  user: { selectedCourses: string[] };
+  user: { selectedCourses: string[]; email: string };
 };
 
 // COURSE
