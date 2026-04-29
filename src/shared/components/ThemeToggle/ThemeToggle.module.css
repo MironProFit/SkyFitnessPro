@@ -1,58 +1,87 @@
 /* src/shared/components/ThemeToggle/ThemeToggle.module.css */
 
 .toggle {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+}
+
+/* Трек: создает эффект "канавки", в которой скользит кнопка */
+.toggleTrack {
   position: relative;
-  display: flex;
-  align-items: center;
-  width: 60px; /* Фиксированная ширина переключателя */
+  width: 64px;
   height: 32px;
   border-radius: 50px;
-  border: 2px solid var(--border-color);
   background-color: var(--bg-secondary);
-  cursor: pointer;
-  transition:
-    background-color 0.3s ease,
-    border-color 0.3s ease;
-  padding: 0; /* Убираем внутренние отступы */
+  border: 1px solid var(--accent-color);
+
+
+
+  /* Глубокая внутренняя тень для эффекта вдавленности */
+  box-shadow:
+    inset 2px 2px 5px rgba(0, 0, 0, 0.1),
+    inset -2px -2px 5px rgba(255, 255, 255, 0.7);
+
+  transition: all 0.3s ease;
 }
 
-.toggle:hover {
-  border-color: var(--accent-color);
+/* Темная тема для трека */
+[data-theme='dark'] .toggleTrack {
+  background-color: #2a2a2a;
+  box-shadow:
+    inset 2px 2px 5px rgba(0, 0, 0, 0.5),
+    inset -2px -2px 5px rgba(255, 255, 255, 0.05);
 }
 
-/* Круглый ползунок с иконкой */
-.toggleSlider {
+/* Ползунок: круглая кнопка с иконкой */
+.toggleKnob {
   position: absolute;
-  left: 4px; /* Начальная позиция для светлой темы */
-  top: 50%;
-  transform: translateY(-50%); /* Центрирование по вертикали */
+  top: 4px;
+  left: 4px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: var(--bg-card);
 
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px; /* Размер кружка */
-  height: 24px;
-  border-radius: 50%;
-  background-color: var(--bg-card);
-  border: 2px solid var(--border-color);
-  color: var(--text-primary);
 
-  /* Плавная анимация перемещения */
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Выпуклая тень для эффекта объема */
+  box-shadow:
+    2px 2px 5px rgba(0, 0, 0, 0.1),
+    -2px -2px 5px rgba(255, 255, 255, 0.8);
+
+  transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Пружинистая анимация */
+  z-index: 2;
 }
 
-/* Состояние для темной темы: перемещаем ползунок вправо */
-.toggle.dark .toggleSlider {
-  left: calc(
-    100% - 28px
-  ); /* 100% ширины минус ширина кружка и отступы (60px - 24px - 4px*2 = 28px) */
-  background-color: #ffffff; /* Белый фон для контраста в темной теме */
-  border-color: #ffffff;
-  color: #1a1a1a; /* Темная иконка на белом фоне */
+/* Темная тема для ползунка */
+[data-theme='dark'] .toggleKnob {
+  background-color: #3a3a3a;
+  box-shadow:
+    2px 2px 5px rgba(0, 0, 0, 0.5),
+    -2px -2px 5px rgba(255, 255, 255, 0.05);
 }
 
-/* Меняем фон самого переключателя в темной теме */
-.toggle.dark {
-  background-color: #2a2a2a;
-  border-color: #404040;
+/* Состояние: сдвиг вправо */
+.knobRight {
+  transform: translateX(
+    32px
+  ); /* 64px (ширина трека) - 24px (ширина кнопки) - 8px (отступы по 4px) */
+}
+
+/* Эффект при наведении на весь переключатель */
+.toggle:hover .toggleKnob {
+  box-shadow:
+    3px 3px 7px rgba(0, 0, 0, 0.15),
+    -3px -3px 7px rgba(255, 255, 255, 0.9);
+}
+
+[data-theme='dark'] .toggle:hover .toggleKnob {
+  box-shadow:
+    3px 3px 7px rgba(0, 0, 0, 0.6),
+    -3px -3px 7px rgba(255, 255, 255, 0.1);
 }

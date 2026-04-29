@@ -30,7 +30,6 @@
   font-display: swap;
 }
 
-/* Светлая тема (по умолчанию) */
 :root {
   font-family: 'StratosSkyeng', sans-serif;
 
@@ -40,19 +39,29 @@
   --bg-secondary-rev: #2a2a2a;
   --bg-fittingCard: #2a2a2a;
   --bg-card: #ffffff;
+  --bg-meta-item: #f5f5f5;
+
+  --bg-skeleton-base: #d0d0d0;
+  --bg-skeleton-highlight: #e0e0e0;
+  --bg-error-state: #fff0f0;
+
   --text-primary: #1a1a1a;
   --text-primary-rev: #ffffff;
   --text-secondary: #666666;
   --text-muted: #888888;
+
   --border-color: #e0e0e0;
   --accent-color: #b8f33f;
   --accent-hover: #a3e035;
+  --primary-color: #00c1ff;
+
+
   --error-color: #ff4d4f;
   --success-color: #52c41a;
+
   --shadow-color: rgba(0, 0, 0, 0.1);
 }
 
-/* Темная тема */
 [data-theme='dark'] {
   --bg-primary: #1a1a1a;
   --bg-primary-rev: #ffffff;
@@ -60,25 +69,33 @@
   --bg-secondary-rev: #f5f5f5;
   --bg-fittingCard: #404040;
   --bg-card: #2a2a2a;
+  --bg-meta-item: #232222;
+
+  --bg-skeleton-base: #707070;
+  --bg-skeleton-highlight: #838383;
+  --bg-error-state: #2a1a1a;
   --text-primary: #ffffff;
   --text-primary-rev: #1a1a1a;
   --text-secondary: #cccccc;
   --text-muted: #999999;
+
   --border-color: #404040;
   --accent-color: #b8f33f;
   --accent-hover: #a3e035;
+
+  --primary-color: #00c1ff;
+
   --error-color: #ff4d4f;
   --success-color: #52c41a;
+
   --shadow-color: rgba(0, 0, 0, 0.3);
 }
 
-/* Глобальные стили с использованием переменных */
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
   font-family: 'StratosSkyeng', sans-serif;
-
   background-color: var(--bg-primary);
   color: var(--text-primary);
   transition:
@@ -87,7 +104,6 @@ body {
 }
 
 p {
-  /* color: var(--text-secondary); */
   margin: 0;
   padding: 0;
 }

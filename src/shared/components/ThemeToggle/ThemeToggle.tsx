@@ -2,15 +2,14 @@
 import { useTheme } from '@/context/ThemeContext';
 import styles from './ThemeToggle.module.css';
 
-// Иконки
 const SunIcon = () => (
   <svg
     width="20"
     height="20"
     viewBox="0 0 24 24"
     fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
+    stroke="#9CA3AF"
+    strokeWidth="2.5"
     strokeLinecap="round"
     strokeLinejoin="round"
   >
@@ -32,8 +31,8 @@ const MoonIcon = () => (
     height="20"
     viewBox="0 0 24 24"
     fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
+    stroke="#b8f33f"
+    strokeWidth="2.5"
     strokeLinecap="round"
     strokeLinejoin="round"
   >
@@ -45,13 +44,14 @@ export const ThemeToggle = () => {
   const { theme, toggleTheme } = useTheme();
 
   return (
-    <button
-      className={`${styles.toggle} ${theme === 'dark' ? styles.dark : ''}`}
-      onClick={toggleTheme}
-      aria-label={`Переключить на ${theme === 'light' ? 'темную' : 'светлую'} тему`}
-    >
-      {/* Круглый ползунок, который будет двигаться */}
-      <div className={styles.toggleSlider}>{theme === 'light' ? <SunIcon /> : <MoonIcon />}</div>
+    <button className={styles.toggle} onClick={toggleTheme} aria-label={`Переключить тему`}>
+      {/* Трек переключателя (вдавленная часть) */}
+      <div className={styles.toggleTrack}>
+        {/* Ползунок (выпуклая часть с иконкой) */}
+        <div className={`${styles.toggleKnob} ${theme === 'dark' ? styles.knobRight : ''}`}>
+          {theme === 'light' ? <SunIcon /> : <MoonIcon />}
+        </div>
+      </div>
     </button>
   );
 };

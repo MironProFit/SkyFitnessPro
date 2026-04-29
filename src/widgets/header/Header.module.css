@@ -1,6 +1,6 @@
 .header {
   background-color: var(--bg-primary);
-  padding: 16px 0;
+  padding: 16px 0 60px 0;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -90,15 +90,14 @@
   font-style: normal;
   font-weight: 400;
   font-size: 24px;
-  color:var(--text-secondary);
+  color: var(--text-secondary);
 }
 
 .actions__profile_arrow {
-  width: 10px;
-  height: 10px;
+  /* width: 10px;
+  height: 10px; */
   cursor: pointer;
   transition: transform 0.3s ease;
-  fill: red;
 }
 .actions__profile_arrow:hover {
   filter: grayscale(50%) brightness(120%) drop-shadow(2px 2px 10px rgba(0, 0, 0, 0.5));

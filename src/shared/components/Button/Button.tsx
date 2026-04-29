@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './Button.module.css';
 
 type ButtonVariant = 'primary' | 'disabled';
-type ButtonSize = 'sm' | 'md' | 'lg' | 'xl';
+type ButtonSize = 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
 type ButtonsColor = 'green' | 'white';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
