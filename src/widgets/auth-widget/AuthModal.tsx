@@ -3,12 +3,12 @@ import logoIcon from '@/shared/assets/icons/logoIcon.svg';
 import logoText from '@/shared/assets/icons/logoText.svg';
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { Link, useNavigate } from 'react-router-dom'; // 🔹 Добавили useNavigate
+import { Link, useNavigate } from 'react-router-dom'; //  Добавили useNavigate
 import toast from 'react-hot-toast';
 
 import styles from './AuthModal.module.css';
 import { useApp } from '@/context/AppContext';
-import { ROUTES } from '@/shared/config/routes'; // 🔹 Импортируем ROUTES
+import { ROUTES } from '@/shared/config/routes'; //  Импортируем ROUTES
 
 const validatePassword = (password: string): { valid: boolean; error?: string } => {
   if (password.length < 6) {
@@ -31,7 +31,7 @@ const validateEmail = (email: string): boolean => {
 export const AuthModal = () => {
   const [isLogin, setIsLogin] = useState(true);
   const { openModalAuth: isOpen, toggleModalAuth } = useApp();
-  const navigate = useNavigate(); // 🔹 Создаём навигатор
+  const navigate = useNavigate(); //  Создаём навигатор
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -66,11 +66,11 @@ export const AuthModal = () => {
       if (isLogin) {
         await login(email, password);
         toggleModalAuth(); // Закрываем модалку
-        navigate(ROUTES.HOME, { replace: true }); // 🔹 Переходим на главную
+        navigate(ROUTES.HOME, { replace: true }); //  Переходим на главную
       } else {
         await register(email, password);
         toggleModalAuth(); // Закрываем модалку
-        navigate(ROUTES.HOME, { replace: true }); // 🔹 Переходим на главную
+        navigate(ROUTES.HOME, { replace: true }); //  Переходим на главную
       }
     } catch (error: any) {
       const message = error?.response?.data?.message || 'Произошла ошибка';

@@ -139,9 +139,8 @@
   cursor: pointer;
   transition: all 0.2s;
   font-size: 1rem; */
- white-space: nowrap;
- width: unset;
-  
+  white-space: nowrap;
+  width: unset;
 }
 
 .error-state__retry-btn:hover {
@@ -196,7 +195,7 @@
   gap: 16px;
   height: 100%;
   box-sizing: border-box;
-  overflow: hidden; /* 🔹 Важно для анимации */
+  overflow: hidden; /*  Важно для анимации */
 }
 
 /* Image section */
@@ -205,7 +204,7 @@
   border-radius: 16px;
   overflow: hidden;
   height: 300px;
-  background-color: #f0f0f0; /* 🔹 Мягкий серый фон */
+  background-color: #f0f0f0; /*  Мягкий серый фон */
 }
 
 /* Add button in corner */
@@ -227,14 +226,14 @@
 }
 
 /* ===== ГЛОБАЛЬНЫЕ СТИЛИ ДЛЯ REACT-LOADING-SKELETON ===== */
-/* 🔹 Переопределяем цвета библиотеки на мягкие серые */
+/*  Переопределяем цвета библиотеки на мягкие серые */
 :global(.react-loading-skeleton) {
-  --base-color: #f0f0f0; /* 🔹 Светло-серый фон */
-  --highlight-color: #e0e0e0; /* 🔹 Чуть темнее для плавного блика */
-  --animation-duration: 1.5s; /* 🔹 Плавная анимация */
+  --base-color: #f0f0f0; /*  Светло-серый фон */
+  --highlight-color: #e0e0e0; /*  Чуть темнее для плавного блика */
+  --animation-duration: 1.5s; /*  Плавная анимация */
 }
 
-/* 🔹 Мягкий белый блик для эффекта "шиммера" */
+/*  Мягкий белый блик для эффекта "шиммера" */
 :global(.react-loading-skeleton::after) {
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
 }
@@ -278,11 +277,11 @@
   width: 12px;
   height: 6px;
   border-radius: 3px;
-  background-color: #f0f0f0; /* 🔹 Мягкий серый */
+  background-color: #f0f0f0; /*  Мягкий серый */
 }
 
 .skeleton__bar--active {
-  background-color: #d0d0d0; /* 🔹 Чуть темнее для активных */
+  background-color: #d0d0d0; /*  Чуть темнее для активных */
 }
 
 .skeleton__difficulty-text {

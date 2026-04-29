@@ -1,4 +1,3 @@
-// src/context/AuthContext.tsx
 import { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { authApi } from '@/entities/auth/api/authApi';
@@ -47,8 +46,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           // Токена нет — точно не авторизован
           setUser(null);
         }
-        // Если токен есть, но кэша нет — пользователь не авторизован,
-        // но можно добавить фоновый запрос к серверу при необходимости
+        // Если токен есть, но кэша нет — пользователь не авторизован
       } catch (error) {
         console.error('Auth initialization failed:', error);
         TokenStorage.clear();
@@ -118,9 +116,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     toast.success('Вы вышли из аккаунта');
   };
 
-  // Функция для принудительного обновления (если в будущем добавите запрос профиля)
+  // Функция для принудительного обновления 
   const refreshUser = async () => {
-    // Пока заглушка
+    // заглушка
   };
 
   const value: AuthContextType = {
@@ -134,7 +132,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     refreshUser,
   };
 
-  // Всегда оборачиваем в Provider
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 

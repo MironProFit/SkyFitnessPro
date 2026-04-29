@@ -1,5 +1,5 @@
 ﻿import { useState, useEffect, useMemo } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom'; // Убрали useParams
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Button } from '@/shared/components/Button/Button';
 import { workoutApi } from '@/entities/workout/api/workoutApi';
@@ -79,7 +79,6 @@ export const WorkoutPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  // Убрали isResettingCourse, так как он не использовался в UI
 
   const { data: currentWorkout, isLoading: isLoadingWorkout } = useQuery<Workout>({
     queryKey: ['workout', currentWorkoutId],
@@ -88,7 +87,7 @@ export const WorkoutPage = () => {
     staleTime: 1000 * 60 * 5,
   });
 
-  const {data:  courseProgress } = useQuery<CourseProgress>({
+  const { data: courseProgress } = useQuery<CourseProgress>({
     queryKey: ['progress', courseId],
     queryFn: () => progressApi.getCourseProgress(courseId),
     enabled: !!courseId,
@@ -295,16 +294,12 @@ export const WorkoutPage = () => {
         <div className={styles.controls}>
           {/* Показываем кнопку "Назад" только если тренировок больше 1 */}
           {showNavigation && (
-            <Button
-              onClick={handlePrev}
-              disabled={currentIndex === 0}
-              className={styles.navBtn}
-            >
+            <Button onClick={handlePrev} disabled={currentIndex === 0} className={styles.navBtn}>
               <ArrowLeftIcon /> Назад
             </Button>
           )}
 
-          <Button onClick={handleOpenModal} className={styles.saveBtn} >
+          <Button onClick={handleOpenModal} className={styles.saveBtn}>
             Обновить свой прогресс
           </Button>
 

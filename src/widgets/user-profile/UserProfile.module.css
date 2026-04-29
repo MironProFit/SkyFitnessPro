@@ -70,7 +70,7 @@
   width: 100%;
 }
 
-/* 🔹 НОВЫЕ СТИЛИ ДЛЯ КНОПКИ СБРОСА И ОБЕРТКИ */
+/*  НОВЫЕ СТИЛИ ДЛЯ КНОПКИ СБРОСА И ОБЕРТКИ */
 
 .buttonsWrapper {
   display: flex;
@@ -124,8 +124,8 @@
   .buttonsWrapper {
     flex-direction: column;
   }
-  
-  .resetBtn, 
+
+  .resetBtn,
   .info_button {
     width: 100%;
   }

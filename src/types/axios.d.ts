@@ -7,12 +7,12 @@ declare module 'axios' {
     skipErrorToast?: boolean;
     customSuccessMessage?: string;
     skipAuth?: boolean;
-    // 🔹 Добавляем недостающие поля, которые используются в axiosInstance
+    //  Добавляем недостающие поля, которые используются в axiosInstance
     skipContentType?: boolean;
   }
 
   export interface InternalAxiosRequestConfig extends AxiosRequestConfig {
-    // 🔹 Важно: делаем _retry опциональным (?), чтобы не было ошибок при создании конфига
+    //  Важно: делаем _retry опциональным (?), чтобы не было ошибок при создании конфига
     _retry?: boolean;
   }
 }

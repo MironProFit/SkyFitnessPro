@@ -9,11 +9,12 @@ import App from './app/App';
 import { AuthProvider } from './context/AuthContext';
 import { AppProvider } from './context/AppContext';
 import { BrowserRouter } from 'react-router-dom';
+import { StrictMode } from 'react';
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 60 * 5, // 5 минут
+      staleTime: 1000 * 60 * 5,
       retry: 1,
       refetchOnWindowFocus: false,
     },
@@ -21,21 +22,21 @@ const queryClient = new QueryClient({
 });
 
 createRoot(document.getElementById('root')!).render(
-  // <StrictMode>
-  <BrowserRouter
-    future={{
-      v7_startTransition: true,
-      v7_relativeSplatPath: true,
-    }}
-  >
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <AppProvider>
-          <App />
-          <ReactQueryDevtools initialIsOpen={false} />
-        </AppProvider>
-      </AuthProvider>
-    </QueryClientProvider>
-  </BrowserRouter>
-  // </StrictMode>
+  <StrictMode>
+    <BrowserRouter
+      future={{
+        v7_startTransition: true,
+        v7_relativeSplatPath: true,
+      }}
+    >
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <AppProvider>
+            <App />
+            <ReactQueryDevtools initialIsOpen={false} />
+          </AppProvider>
+        </AuthProvider>
+      </QueryClientProvider>
+    </BrowserRouter>
+  </StrictMode>
 );

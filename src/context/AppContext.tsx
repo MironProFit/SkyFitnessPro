@@ -1,4 +1,3 @@
-// src/context/AppContext.tsx
 import { ROUTES } from '@/shared/config/routes';
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -30,15 +29,13 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   const [openModalProfile, setOpenModalProfile] = useState(false);
   const [isAppLoading, setIsAppLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
+
   const location = useLocation();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    const isAuthRoute = 
-      location.pathname === ROUTES.LOGIN || 
-      location.pathname === ROUTES.REGISTER;
+    const isAuthRoute = location.pathname === ROUTES.LOGIN || location.pathname === ROUTES.REGISTER;
     setOpenModalAuth(isAuthRoute);
   }, [location.pathname]);
 
@@ -47,7 +44,6 @@ export const AppProvider = ({ children }: AppProviderProps) => {
       try {
         const token = localStorage.getItem('token');
         if (token) {
-          // Можно добавить запрос профиля при необходимости
         }
       } catch (err) {
         console.error('Auth check failed:', err);
@@ -61,7 +57,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   const addCourseForUser = async (courseId: string) => {
     try {
       await userApi.addCourse(courseId);
-      // 🔹 Инвалидируем кэш, чтобы данные обновились
+      // Инвалидируем кэш, чтобы данные обновились
       await queryClient.invalidateQueries({ queryKey: ['user'] });
       console.log('✅ Course added:', courseId);
     } catch (err) {
@@ -83,14 +79,12 @@ export const AppProvider = ({ children }: AppProviderProps) => {
 
   const toggleModalAuth = () => {
     setOpenModalAuth((prev) => !prev);
-    const isAuthRoute = 
-      location.pathname === ROUTES.LOGIN || 
-      location.pathname === ROUTES.REGISTER;
+    const isAuthRoute = location.pathname === ROUTES.LOGIN || location.pathname === ROUTES.REGISTER;
     if (isAuthRoute) {
       navigate(ROUTES.HOME, { replace: true });
     }
   };
-  
+
   const toggleModalProfile = () => setOpenModalProfile((prev) => !prev);
 
   const value = {
