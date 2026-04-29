@@ -1,4 +1,3 @@
-/* ===== SECTION & LAYOUT ===== */
 .section {
   max-width: 1200px;
   margin: 0 auto;
@@ -14,11 +13,14 @@
   gap: 16px;
 }
 
-/* ===== TYPOGRAPHY ===== */
+/* ==========================================
+   TYPOGRAPHY
+   ========================================== */
+
 .main-title {
   font-size: 60px;
   font-weight: 400;
-  color: #1a1a1a;
+  color: var(--text-primary);
   line-height: 1.1;
   margin: 0;
   max-width: 947px;
@@ -27,15 +29,15 @@
 .main-title--profile {
   font-size: 40px;
   font-weight: 400;
-  color: #1a1a1a;
+  color: var(--text-primary);
   line-height: 1.1;
   margin: 0;
   max-width: 947px;
 }
 
 .badge {
-  background-color: #bcec30;
-  color: #1a1a1a;
+  background-color: var(--accent-color);
+  color: #1a1a1a; /* Текст внутри бейджа всегда темный для контраста с зеленым */
   border-radius: 5px;
   padding: 12px 20px;
   font-weight: 400;
@@ -60,15 +62,19 @@
   background-repeat: no-repeat;
 }
 
-/* ===== GRID ===== */
+/* ==========================================
+   GRID
+   ========================================== */
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
   gap: 40px;
-  margin-bottom: 40px;
+  /* margin-bottom: 40px; */
 }
 
 /* ===== SCROLL TO TOP ===== */
+
 .scroll-top {
   opacity: 0;
   visibility: hidden;
@@ -89,76 +95,65 @@
   pointer-events: auto;
 }
 
-.scroll-top__btn {
-  background: var(--accent, #00ff00);
-  color: #050505;
-  border: none;
-  padding: 12px 20px;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  box-shadow: 0 4px 12px rgba(0, 255, 0, 0.3);
-}
+
 
 .scroll-top__btn:hover {
-  background: var(--accent-hover, #39ff14);
+  background: var(--accent-hover);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 255, 0, 0.4);
+  box-shadow: 0 6px 16px rgba(184, 243, 63, 0.4);
 }
 
-/* ===== ERROR STATE ===== */
+/* ==========================================
+   ERROR STATE
+   ========================================== */
+
 .error-state {
   text-align: center;
   padding: 60px 20px;
-  color: var(--text-secondary, #8b949e);
+  color: var(--text-secondary);
+  background-color: var(--bg-error-state); /* Используем переменную фона */
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
 }
 
 .error-state__title {
   font-size: 1.5rem;
   margin-bottom: 12px;
-  color: var(--text-primary, #e6edf3);
+  color: var(--text-primary);
 }
 
 .error-state__message {
   margin-bottom: 20px;
   font-size: 1rem;
-  color: var(--error, #f85149);
+  color: var(--error-color);
 }
 
 .error-state__retry-btn {
-  /* background: var(--accent, #00ff00);
-  color: #050505;
-  border: none;
-  padding: 10px 24px;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-size: 1rem; */
- white-space: nowrap;
- width: unset;
-  
+  white-space: nowrap;
+  width: unset;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
 }
 
 .error-state__retry-btn:hover {
-  background: var(--accent-hover, #39ff14);
+  background: var(--bg-secondary-rev);
   transform: translateY(-2px);
 }
 
-/* ===== EMPTY STATE ===== */
+/* ==========================================
+   EMPTY STATE
+   ========================================== */
+
 .empty-message {
   text-align: center;
   padding: 40px 20px;
-  color: var(--text-secondary, #8b949e);
+  color: var(--text-secondary);
 }
 
 .empty-message__title {
   margin-bottom: 8px;
-  color: var(--text-primary, #e6edf3);
+  color: var(--text-primary);
 }
 
 .empty-message__hint {
@@ -166,18 +161,25 @@
   font-weight: 400;
 }
 
-/* ===== FETCHING INDICATOR ===== */
+.empty-message__hint a {
+  color: var(--accent-color);
+}
+
+/* ==========================================
+   FETCHING INDICATOR
+   ========================================== */
+
 .fetching-indicator {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 6px 12px;
-  background: rgba(0, 255, 0, 0.1);
-  border: 1px solid rgba(0, 255, 0, 0.3);
+  background: rgba(184, 243, 63, 0.1); /* Прозрачный акцент */
+  border: 1px solid rgba(184, 243, 63, 0.3);
   border-radius: 6px;
   margin-bottom: 16px;
   font-size: 0.85rem;
-  color: var(--accent, #00ff00);
+  color: var(--accent-color);
   animation: fade-in 0.2s ease;
 }
 
@@ -185,18 +187,21 @@
   animation: pulse 1s infinite;
 }
 
-/* ===== SKELETON: Card ===== */
+/* ==========================================
+   SKELETON: Card
+   ========================================== */
+
 .card-skeleton {
-  background: #fff;
+  background: var(--bg-card);
   border-radius: 20px;
-  padding: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 20px var(--shadow-color);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  /* gap: 16px; */
   height: 100%;
   box-sizing: border-box;
-  overflow: hidden; /* 🔹 Важно для анимации */
+  overflow: hidden;
+  border: 1px solid var(--border-color);
 }
 
 /* Image section */
@@ -205,7 +210,8 @@
   border-radius: 16px;
   overflow: hidden;
   height: 300px;
-  background-color: #f0f0f0; /* 🔹 Мягкий серый фон */
+  background-color: var(--bg-skeleton-highlight);
+  /* animation: fade-in 0.3s; */
 }
 
 /* Add button in corner */
@@ -216,7 +222,8 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #fff;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
 }
 
 /* Content */
@@ -224,26 +231,25 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  padding: 24px 16px;
 }
 
-/* ===== ГЛОБАЛЬНЫЕ СТИЛИ ДЛЯ REACT-LOADING-SKELETON ===== */
-/* 🔹 Переопределяем цвета библиотеки на мягкие серые */
+/* ==========================================
+   GLOBAL SKELETON OVERRIDES
+   ========================================== */
+
+/* 🔹 Переопределяем цвета библиотеки react-loading-skeleton через переменные */
 :global(.react-loading-skeleton) {
-  --base-color: #f0f0f0; /* 🔹 Светло-серый фон */
-  --highlight-color: #e0e0e0; /* 🔹 Чуть темнее для плавного блика */
-  --animation-duration: 1.5s; /* 🔹 Плавная анимация */
-}
-
-/* 🔹 Мягкий белый блик для эффекта "шиммера" */
-:global(.react-loading-skeleton::after) {
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  --base-color: var(--bg-skeleton-base);
+  --highlight-color: var(--bg-skeleton-highlight);
 }
 
 /* Title */
 .skeleton__title {
-  height: 24px !important;
+  height: 36px !important;
   width: 85% !important;
-  border-radius: 6px !important;
+  border-radius: 16px !important;
+  background-color: var(--bg-skeleton-base);
 }
 
 /* Meta info */
@@ -265,8 +271,9 @@
   align-items: center;
   gap: 8px;
   padding: 8px 12px;
-  background: #fafafa;
+  background: var(--bg-secondary); /* Вместо #fafafa */
   border-radius: 8px;
+  border: 1px solid var(--border-color);
 }
 
 .skeleton__bars {
@@ -278,11 +285,11 @@
   width: 12px;
   height: 6px;
   border-radius: 3px;
-  background-color: #f0f0f0; /* 🔹 Мягкий серый */
+  background-color: var(--bg-skeleton-base); /* Вместо #f0f0f0 */
 }
 
 .skeleton__bar--active {
-  background-color: #d0d0d0; /* 🔹 Чуть темнее для активных */
+  background-color: var(--bg-skeleton-highlight); /* Вместо #d0d0d0 */
 }
 
 .skeleton__difficulty-text {
@@ -297,8 +304,9 @@
   flex-direction: column;
   gap: 8px;
   padding: 12px;
-  background: #fafafa;
+  background: var(--bg-secondary); /* Вместо #fafafa */
   border-radius: 12px;
+  border: 1px solid var(--border-color);
 }
 
 .skeleton__progress-title {
@@ -314,10 +322,15 @@
 }
 
 /* Button */
+
+.skeleton__wrapper-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
 .skeleton__button {
-  height: 44px !important;
-  width: 100% !important;
-  border-radius: 12px !important;
+  height: 38px !important;
+  border-radius: 50px !important;
 }
 
 /* Header skeletons */
@@ -333,7 +346,10 @@
   border-radius: 5px !important;
 }
 
-/* ===== АНИМАЦИИ ===== */
+/* ==========================================
+   ANIMATIONS
+   ========================================== */
+
 @keyframes pulse {
   0%,
   100% {
@@ -355,65 +371,10 @@
   }
 }
 
-/* ===== АЛЬТЕРНАТИВНАЯ АНИМАЦИЯ ШИММЕРА (если не используете библиотеку) ===== */
-/*
-.skeleton__shimmer {
-  position: relative;
-  overflow: hidden;
-  background-color: #f0f0f0;
-}
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
 
-.skeleton__shimmer::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.6),
-    transparent
-  );
-  animation: shimmer 1.5s infinite;
-}
-
-@keyframes shimmer {
-  0% { left: -100%; }
-  100% { left: 100%; }
-}
-*/
-
-/* ===== ТЁМНАЯ ТЕМА (опционально) ===== */
-@media (prefers-color-scheme: dark) {
-  :global(.react-loading-skeleton) {
-    --base-color: #2a3138;
-    --highlight-color: #373e47;
-  }
-
-  .skeleton__bar {
-    background-color: #2a3138;
-  }
-
-  .skeleton__bar--active {
-    background-color: #373e47;
-  }
-
-  .skeleton__progress {
-    background: #1f2428;
-  }
-
-  .skeleton__image-wrapper {
-    background-color: #2a3138;
-  }
-
-  .skeleton__add-button {
-    background: #161b22;
-  }
-}
-
-/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
   .main-title {
     font-size: 32px;
@@ -428,7 +389,7 @@
     left: 20px;
     top: -8px;
     border-width: 0 8px 8px 8px;
-    border-color: transparent transparent #b8f33f transparent;
+    border-color: transparent transparent var(--accent-color) transparent;
   }
 
   .card-skeleton {

@@ -14,7 +14,7 @@
 }
 
 .modal {
-  background: #fff;
+  background: var(--bg-primary);
   border-radius: 30px;
   padding: 40px 30px;
   width: 100%;
@@ -36,18 +36,6 @@
   margin-bottom: 10px;
 }
 
-.logoIcon {
-  width: 32px;
-  height: 32px;
-  object-fit: contain;
-}
-
-.logoText {
-  height: 35px;
-  width: auto;
-  object-fit: contain;
-}
-
 .form {
   display: flex;
   flex-direction: column;
@@ -66,18 +54,25 @@
     border-color 0.2s,
     box-shadow 0.2s;
   box-sizing: border-box;
-  background-color: #fafafa;
+  background-color: var(--bg-primary);
   color: #333;
 }
 
 .input::placeholder {
-  color: #a0a0a0;
+  color: var(--text-primary-rev);
 }
 
 .input:focus {
   border-color: #b8f33f;
-  background-color: #fff;
+  background-color: var(--bg-primary);
+
   box-shadow: 0 0 0 3px rgba(184, 243, 63, 0.1);
+}
+
+.input:not(:placeholder-shown) {
+  /* например, изменить цвет текста или рамки */
+  border-color: #4caf50; /* зеленый, например */
+  color: var(--text-primary); /* черный цвет текста */
 }
 
 .submitButton {
@@ -119,19 +114,19 @@
   width: 100%;
   padding: 16px;
   background-color: transparent;
-  border: 2px solid #1a1a1a;
+  border: 2px solid var(--border-color);
   border-radius: 50px;
   font-size: 18px;
   font-weight: 600;
   font-family: 'StratosSkyeng', sans-serif;
-  color: #1a1a1a;
+  color: var(--text-primary);
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .secondaryButton:hover {
-  background-color: #1a1a1a;
-  color: #fff;
+  background-color: var(--bg-secondary-rev);
+  color: var(--text-primary-rev);
 }
 
 .passwordHints {

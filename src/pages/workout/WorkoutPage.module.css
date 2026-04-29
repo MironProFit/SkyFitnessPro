@@ -1,66 +1,84 @@
+/* src/pages/WorkoutPage/WorkoutPage.module.css */
+
 .page {
   min-height: 100vh;
-  background: #f9f9f9; /* Легкий фон для контраста */
+  background: var(--bg-primary);
   display: flex;
   flex-direction: column;
 }
 
+/* 🔹 Хедер: ширина 1200px, БЕЗ боковых отступов (padding: 0) */
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 24px;
-  background: #fff;
-  border-bottom: 1px solid #eee;
+  padding-bottom: 40px;
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
   box-sizing: border-box;
 }
 
-.backBtn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 14px;
-  color: #666;
+/* 🔹 Скрытые кнопки с ховер-эффектом (для хедера) */
+.hiddenBtn {
   display: flex;
   align-items: center;
   gap: 8px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary); 
+  padding: 10px 16px;
+  /* border-radius: 8px; */
+  opacity: 0; /* Невидимы по умолчанию */
+  transition: all 0.3s ease;
+}
+
+/* Появление при наведении на хедер или саму кнопку */
+.header:hover .hiddenBtn,
+.hiddenBtn:hover {
+  opacity: 1;
+  color: var(--text-primary);
+  background-color: var(--bg-secondary); /* Фон при наведении */
+}
+
+/* Дополнительный ховер для акцента */
+.hiddenBtn:hover {
+  background-color: var(--border-color);
+  transform: translateY(-1px);
 }
 
 .courseTitle {
-  font-size: 20px;
-  font-weight: 600;
-  color: #1a1a1a;
+  color: var(--text-primary);
   margin: 0;
+  font-weight: 400;
+  font-size: 60px;
+  line-height: 60px;
+  flex-grow: 1;
 }
 
+/* 🔹 Контент: ширина 1200px, БЕЗ боковых отступов */
 .content {
   flex: 1;
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
-  padding: 24px;
+  padding: 0; /* Убираем боковые отступы */
   box-sizing: border-box;
 }
 
-.workoutTitle {
-  font-size: 24px;
-  font-weight: 600;
-  margin-bottom: 20px;
-  color: #1a1a1a;
-}
-
-/* Видео */
+/* Видео iframe */
 .videoWrapper {
   position: relative;
   padding-bottom: 56.25%; /* 16:9 */
   height: 0;
   background: #000;
-  border-radius: 12px;
+  border-radius: 30px;
   overflow: hidden;
   margin-bottom: 30px;
+  width: 100%;
 }
 
 .videoFrame {
@@ -70,6 +88,7 @@
   width: 100%;
   height: 100%;
   border: none;
+  border-radius: 30px;
 }
 
 .videoPlaceholder {
@@ -84,18 +103,36 @@
   color: #fff;
 }
 
-/* Сетка упражнений (3 колонки) */
+/* Сетка упражнений */
 .exercisesGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   margin-bottom: 40px;
+  margin-top: 40px;
+  background: var(--bg-secondary);
+  border-radius: 30px;
+  padding: 40px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.gridHeader {
+  font-size: 32px;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin: 0 0 20px 0;
+  grid-column: 1 / -1;
+}
+
+.gridInner {
+  display: contents;
 }
 
 .exerciseCard {
-  background: #fff;
   padding: 16px;
   border-radius: 12px;
+  background: var(--bg-card);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
@@ -112,42 +149,26 @@
 .exerciseName {
   font-size: 14px;
   font-weight: 500;
-  color: #333;
+  color: var(--text-primary);
 }
 
 .exercisePercent {
   font-size: 14px;
   font-weight: 600;
-  color: #00c1ff;
+  color: var(--text-primary);
 }
 
 .progressBarBg {
   height: 6px;
-  background: #eee;
+  background: var(--border-color);
   border-radius: 3px;
   overflow: hidden;
 }
 
 .progressBarFill {
   height: 100%;
-  background: #00c1ff;
+  background: var(--accent-color);
   transition: width 0.3s ease;
-}
-
-/* Инпут внутри карточки (если нужен для ручного ввода) */
-.exerciseInput {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 14px;
-  text-align: center;
-  margin-top: 5px;
-}
-
-.exerciseInput:focus {
-  outline: none;
-  border-color: #00c1ff;
 }
 
 /* Панель управления внизу */
@@ -156,8 +177,14 @@
   justify-content: space-between;
   align-items: center;
   gap: 16px;
-  padding-top: 20px;
-  border-top: 1px solid #eee;
+  width: 100%;
+  padding-bottom: 40px;
+}
+
+/* Контейнер для кнопок навигации */
+.navContainer {
+  display: flex;
+  gap: 16px;
 }
 
 .navBtn {
@@ -168,19 +195,15 @@
   justify-content: center;
 }
 
+/* 🔹 Стили для кнопки сохранения */
 .saveBtn {
-  background-color: #b8f33f;
-  color: #000;
-  font-weight: 600;
-  padding: 12px 24px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  min-width: 180px;
+  white-space: nowrap; /* Текст без переноса */
+  padding: 0 20px;
+  min-width: 300px;
 }
 
 .saveBtn:hover:not(:disabled) {
-  background-color: #a3e035;
+  background-color: var(--accent-hover);
 }
 
 .saveBtn:disabled {
@@ -195,14 +218,14 @@
   justify-content: center;
   min-height: 100vh;
   gap: 16px;
-  color: #666;
+  color: var(--text-secondary);
 }
 
 .spinner {
   width: 40px;
   height: 40px;
-  border: 3px solid #f0f0f0;
-  border-top-color: #00c1ff;
+  border: 3px solid var(--border-color);
+  border-top-color: var(--accent-color);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -215,23 +238,49 @@
 
 /* Адаптив */
 @media (max-width: 768px) {
+  .header {
+    padding: 16px 0;
+  }
+
   .exercisesGrid {
-    grid-template-columns: 1fr; /* Одна колонка на мобильных */
+    grid-template-columns: 1fr;
+    padding: 20px;
+    border-radius: 20px;
   }
 
   .controls {
-    flex-direction: column;
+    flex-direction: column-reverse; /* Кнопка сохранения сверху, навигация снизу */
+    gap: 20px;
+  }
+
+  .navContainer {
+    width: 100%;
+    justify-content: space-between;
   }
 
   .navBtn,
   .saveBtn {
     width: 100%;
   }
+
+  .courseTitle {
+    font-size: 32px;
+    line-height: 1.2;
+  }
+
+  /* На мобильных кнопки всегда видны */
+  .hiddenBtn {
+    opacity: 1;
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  .hiddenBtn span {
+    display: none;
+  }
 }
 
-/* ... предыдущие стили ... */
-
-/* Модальное окно ввода */
+/* Модальные окна */
 .modalOverlay {
   position: fixed;
   top: 0;
@@ -247,13 +296,14 @@
 }
 
 .modalContent {
-  background: white;
+  background: var(--bg-card);
   padding: 30px;
   border-radius: 20px;
   width: 100%;
   max-width: 400px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 40px var(--shadow-color);
   animation: slideUp 0.3s ease-out;
+  color: var(--text-primary);
 }
 
 @keyframes slideUp {
@@ -272,7 +322,7 @@
   font-weight: 600;
   margin-bottom: 20px;
   text-align: center;
-  color: #1a1a1a;
+  color: var(--text-primary);
 }
 
 .modalForm {
@@ -287,28 +337,30 @@
 .formGroup label {
   display: block;
   font-size: 13px;
-  color: #666;
+  color: var(--text-secondary);
   margin-bottom: 6px;
 }
 
 .numberInputLarge {
   width: 100%;
   padding: 10px 12px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   font-size: 16px;
   outline: none;
   transition: border-color 0.2s;
   box-sizing: border-box;
+  background: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 .numberInputLarge:focus {
-  border-color: #b8f33f;
+  border-color: var(--accent-color);
 }
 
 .saveBtnModal {
   width: 100%;
-  background-color: #b8f33f;
+  background-color: var(--accent-color);
   color: #000;
   font-weight: 600;
   border: none;
@@ -320,7 +372,7 @@
 }
 
 .saveBtnModal:hover:not(:disabled) {
-  background-color: #a3e035;
+  background-color: var(--accent-hover);
 }
 
 .saveBtnModal:disabled {
@@ -328,7 +380,6 @@
   cursor: not-allowed;
 }
 
-/* Модальное окно успеха */
 .successOverlay {
   position: fixed;
   top: 0;
@@ -343,12 +394,13 @@
 }
 
 .successContent {
-  background: white;
+  background: var(--bg-card);
   padding: 30px 40px;
   border-radius: 16px;
   text-align: center;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 40px var(--shadow-color);
   animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  color: var(--text-primary);
 }
 
 @keyframes popIn {
@@ -365,7 +417,7 @@
 .successContent h3 {
   margin-top: 10px;
   font-size: 18px;
-  color: #1a1a1a;
+  color: var(--text-primary);
 }
 
 .checkIcon {
@@ -373,7 +425,6 @@
   height: 48px;
 }
 
-/* Адаптив */
 @media (max-width: 768px) {
   .modalContent {
     width: 90%;

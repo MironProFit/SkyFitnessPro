@@ -21,7 +21,6 @@
   padding: 8px 16px;
   font-size: 18px;
   font-weight: 400;
-
 }
 
 .btn--md {
@@ -39,7 +38,17 @@
 }
 
 
-
+.btn--xl {
+  width: 192px;
+  height: 52px;
+  font-size: 18px;
+  font-weight: 400;
+}
+.btn--xxl {
+  height: 52px;
+  font-size: 18px;
+  font-weight: 400;
+}
 .btn:hover:not(:disabled) {
   background-color: #c6ff00;
   transform: translateY(-1px);
@@ -61,7 +70,6 @@
 .btn:focus-visible {
   box-shadow: 0 0 0 3px rgba(184, 243, 63, 0.4);
 }
-
 
 /* Белый вариант кнопки */
 .btn--white {

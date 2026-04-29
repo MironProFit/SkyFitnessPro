@@ -1,6 +1,6 @@
 .header {
-  background-color: #ffffff;
-  padding: 16px 0;
+  background-color: var(--bg-primary);
+  padding: 16px 0 60px 0;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -51,7 +51,7 @@
 
 .logo__tagline {
   font-size: 16px;
-  color: #555;
+  color: var(--text-primary);
   font-weight: 400;
   opacity: 0.5;
 }
@@ -90,12 +90,12 @@
   font-style: normal;
   font-weight: 400;
   font-size: 24px;
-  color: #000000;
+  color: var(--text-secondary);
 }
 
 .actions__profile_arrow {
-  width: 10px;
-  height: 10px;
+  /* width: 10px;
+  height: 10px; */
   cursor: pointer;
   transition: transform 0.3s ease;
 }
@@ -108,4 +108,8 @@
   transform: translateY(5px) rotate(180deg);
 }
 
-
+.buttonsWrap {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}

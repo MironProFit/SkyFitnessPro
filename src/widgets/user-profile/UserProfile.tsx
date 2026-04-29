@@ -9,6 +9,7 @@ import { ROUTES } from '@/shared/config/routes';
 import { userApi } from '@/entities/user/api/userApi';
 import toast from 'react-hot-toast';
 import type { User } from '@/shared/api/types';
+// Импортируем UserResponse, так как API возвращает { user: UserData }
 
 export default function UserProfile() {
   const { logout } = useAuth();
@@ -16,7 +17,7 @@ export default function UserProfile() {
   const queryClient = useQueryClient();
   const [isResetting, setIsResetting] = useState(false);
 
-  // Загружаем данные пользователя (ответ вида { user: UserData })
+  // Загружаем данные пользователя
   const { data: userData, isLoading } = useQuery<User>({
     queryKey: ['user'],
     queryFn: () => userApi.getMe(),
@@ -24,7 +25,12 @@ export default function UserProfile() {
   });
 
   const userObj = userData?.user;
-  const userName = userObj?.email ? userObj.email.split('@')[0] : 'Пользователь';
+
+  // Формируем имя: берем часть до @, делаем первую букву заглавной
+  const userName = userObj?.email
+    ? userObj.email.split('@')[0].charAt(0).toUpperCase() + userObj.email.split('@')[0].slice(1)
+    : 'Пользователь';
+
   const userEmail = userObj?.email || '';
   const selectedCourses = userObj?.selectedCourses || [];
 
@@ -79,12 +85,13 @@ export default function UserProfile() {
               <div className={styles.info_login}>Логин: {userEmail}</div>
 
               <div className={styles.buttonsWrapper}>
-                <Button color="white" className={styles.info_button} onClick={handleLogout}>
+                <Button color="white" size="xl" onClick={handleLogout}>
                   Выйти
                 </Button>
 
                 {selectedCourses.length > 0 && (
                   <Button
+                    size="xl"
                     className={styles.resetBtn}
                     onClick={handleResetAllCourses}
                     disabled={isResetting}

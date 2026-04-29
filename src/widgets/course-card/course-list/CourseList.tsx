@@ -82,82 +82,24 @@ export const CourseList = () => {
   const CourseListSkeleton = () => (
     <div className={styles.grid}>
       {Array.from({ length: 3 }).map((_, index) => (
-        <div key={index} className={styles['card-skeleton']}>
-          <div className={styles['skeleton__image-wrapper']}>
-            {/* <div className={styles['skeleton__add-button']}>
-              <Skeleton
-                circle
-                height={32}
-                width={32}
-                baseColor="#2a3138"
-                highlightColor="#373e47"
-              />
-            </div> */}
-          </div>
+          <div key={index} className={styles['card-skeleton']}>
+            <Skeleton className={styles['skeleton__image-wrapper']}></Skeleton>
+            <div className={styles['skeleton__content']}>
+              <Skeleton className={styles['skeleton__title']} />
 
-          <div className={styles['skeleton__content']}>
-            <Skeleton
-              className={styles['skeleton__title']}
-              baseColor="#2a3138"
-              highlightColor="#373e47"
-            />
-
-            <div className={styles['skeleton__meta']}>
-              <Skeleton
-                className={styles['skeleton__meta-item']}
-                baseColor="#2a3138"
-                highlightColor="#373e47"
-              />
-              <Skeleton
-                className={styles['skeleton__meta-item']}
-                baseColor="#2a3138"
-                highlightColor="#373e47"
-              />
-            </div>
-
-            <div className={styles['skeleton__difficulty']}>
-              <div className={styles['skeleton__bars']}>
-                {[1, 2, 3, 4, 5].map((i) => (
-                  <Skeleton
-                    key={i}
-                    className={clsx(
-                      styles['skeleton__bar'],
-                      i <= 3 && styles['skeleton__bar--active']
-                    )}
-                    baseColor="#2a3138"
-                    highlightColor="#373e47"
-                  />
-                ))}
+              {pageProfile && (
+                <div className={styles['skeleton__progress']}>
+                  <Skeleton className={styles['skeleton__progress-title']} />
+                  <Skeleton className={styles['skeleton__progress-bar']} />
+                </div>
+              )}
+              <div className={styles['skeleton__wrapper-buttons']}>
+                <Skeleton className={styles['skeleton__button']} />
+                <Skeleton className={styles['skeleton__button']} />
+                <Skeleton className={styles['skeleton__button']} />
               </div>
-              <Skeleton
-                className={styles['skeleton__difficulty-text']}
-                baseColor="#2a3138"
-                highlightColor="#373e47"
-              />
             </div>
-
-            {pageProfile && (
-              <div className={styles['skeleton__progress']}>
-                <Skeleton
-                  className={styles['skeleton__progress-title']}
-                  baseColor="#2a3138"
-                  highlightColor="#373e47"
-                />
-                <Skeleton
-                  className={styles['skeleton__progress-bar']}
-                  baseColor="#2a3138"
-                  highlightColor="#373e47"
-                />
-              </div>
-            )}
-
-            <Skeleton
-              className={styles['skeleton__button']}
-              baseColor="#2a3138"
-              highlightColor="#373e47"
-            />
           </div>
-        </div>
       ))}
     </div>
   );
@@ -220,11 +162,7 @@ export const CourseList = () => {
           </div>
 
           <div className={clsx(styles['scroll-top'], showScrollTop && styles['scroll-top--show'])}>
-            <Button
-              type="button"
-              onClick={handleScrollToTop}
-              aria-label="Прокрутить наверх"
-            >
+            <Button type="button" onClick={handleScrollToTop} aria-label="Прокрутить наверх">
               Наверх ↑
             </Button>
           </div>

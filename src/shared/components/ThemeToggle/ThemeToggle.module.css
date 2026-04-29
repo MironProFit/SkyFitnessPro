@@ -1,0 +1,87 @@
+/* src/shared/components/ThemeToggle/ThemeToggle.module.css */
+
+.toggle {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+}
+
+/* Трек: создает эффект "канавки", в которой скользит кнопка */
+.toggleTrack {
+  position: relative;
+  width: 64px;
+  height: 32px;
+  border-radius: 50px;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--accent-color);
+
+
+
+  /* Глубокая внутренняя тень для эффекта вдавленности */
+  box-shadow:
+    inset 2px 2px 5px rgba(0, 0, 0, 0.1),
+    inset -2px -2px 5px rgba(255, 255, 255, 0.7);
+
+  transition: all 0.3s ease;
+}
+
+/* Темная тема для трека */
+[data-theme='dark'] .toggleTrack {
+  background-color: #2a2a2a;
+  box-shadow:
+    inset 2px 2px 5px rgba(0, 0, 0, 0.5),
+    inset -2px -2px 5px rgba(255, 255, 255, 0.05);
+}
+
+/* Ползунок: круглая кнопка с иконкой */
+.toggleKnob {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: var(--bg-card);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Выпуклая тень для эффекта объема */
+  box-shadow:
+    2px 2px 5px rgba(0, 0, 0, 0.1),
+    -2px -2px 5px rgba(255, 255, 255, 0.8);
+
+  transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Пружинистая анимация */
+  z-index: 2;
+}
+
+/* Темная тема для ползунка */
+[data-theme='dark'] .toggleKnob {
+  background-color: #3a3a3a;
+  box-shadow:
+    2px 2px 5px rgba(0, 0, 0, 0.5),
+    -2px -2px 5px rgba(255, 255, 255, 0.05);
+}
+
+/* Состояние: сдвиг вправо */
+.knobRight {
+  transform: translateX(
+    32px
+  ); /* 64px (ширина трека) - 24px (ширина кнопки) - 8px (отступы по 4px) */
+}
+
+/* Эффект при наведении на весь переключатель */
+.toggle:hover .toggleKnob {
+  box-shadow:
+    3px 3px 7px rgba(0, 0, 0, 0.15),
+    -3px -3px 7px rgba(255, 255, 255, 0.9);
+}
+
+[data-theme='dark'] .toggle:hover .toggleKnob {
+  box-shadow:
+    3px 3px 7px rgba(0, 0, 0, 0.6),
+    -3px -3px 7px rgba(255, 255, 255, 0.1);
+}
