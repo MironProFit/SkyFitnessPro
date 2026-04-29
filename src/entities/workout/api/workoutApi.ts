@@ -1,9 +1,13 @@
 import { apiClient } from '@/shared/api/axiosInstance';
+import { ENDPOINTS } from '@/shared/api/types';
+import type { Workout } from '@/shared/api/types'; 
 
 export const workoutApi = {
-  //Получаем тренировки
-  getWorkout: (id: string) => apiClient.get(`workouts/${id}`),
-  //Получаем прогресс
+  getWorkoutsByCourseId: (courseId: string) => 
+    apiClient.get<Workout[]>(ENDPOINTS.WORKOUTS.BY_COURSE(courseId))
+      .then((res) => res.data),
 
-  saveProgress: (id: string, data: any) => apiClient.post(`workout/${id}/progress`, data),
+  getWorkoutById: (workoutId: string) =>
+    apiClient.get<Workout>(ENDPOINTS.WORKOUTS.BY_ID(workoutId))
+      .then((res) => res.data),
 };
