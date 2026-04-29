@@ -1,6 +1,3 @@
-// src/shared/api/fetch.d.ts
-
-// Расширяем глобальный интерфейс RequestInit для добавления кастомных свойств
 declare global {
   interface RequestInit {
     skipAuth?: boolean;
@@ -9,5 +6,4 @@ declare global {
   }
 }
 
-// Экспорт нужен, чтобы файл считался модулем
 export {};

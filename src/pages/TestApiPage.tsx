@@ -1,4 +1,3 @@
-// src/pages/TestApiPage.tsx
 import { useEffect, useState } from 'react';
 import { courseApi } from '@/entities/course/api/courseApi';
 import type { Course } from '@/entities/course/model/types';

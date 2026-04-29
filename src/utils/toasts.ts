@@ -1,4 +1,3 @@
-// utils/toasts.ts ← создайте этот файл
 import toast from 'react-hot-toast';
 
 export const showSuccessToast = (message: string) => {

@@ -1,4 +1,3 @@
-// src/shared/api/axiosInstance.ts
 import { ENDPOINTS } from '@/shared/api/types';
 import { RefreshManager } from '@/shared/lib/refreshManager';
 import { TokenStorage } from '@/shared/lib/tokenStorage';
@@ -9,8 +8,6 @@ import { isPublicPath } from './helpers/isPublicPath';
 
 const isDev = process.env.NODE_ENV === 'development';
 
-// 🔹 ЕДИНСТВЕННОЕ объявление расширения типов для Axios в этом проекте
-// Убедитесь, что такого блока НЕТ в других файлах!
 declare module 'axios' {
   export interface InternalAxiosRequestConfig {
     skipAuth?: boolean;
@@ -26,16 +23,16 @@ export const apiClient = axios.create({
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
-    'Accept': 'application/json',
+    Accept: 'application/json',
   },
 });
 
-// 🔹 Интерцептор запроса
+//Интерцептор запроса
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    // Используем any для безопасного доступа к кастомным полям
+    //Используем any для безопасного доступа к кастомным полям
     const cfg = config as any;
-    
+
     if (cfg.skipAuth || isPublicPath(config.url)) {
       return config;
     }
@@ -57,7 +54,7 @@ apiClient.interceptors.request.use(
       }
     }
 
-    // Удаляем Content-Type, если запрошено
+    //Удаляем Content-Type, если запрошено
     if (cfg.skipContentType && config.headers) {
       delete config.headers['Content-Type'];
       if (isDev) {
@@ -88,7 +85,7 @@ apiClient.interceptors.request.use(
   }
 );
 
-// 🔹 Интерцептор ответа
+//Интерцептор ответа
 apiClient.interceptors.response.use(
   (response: AxiosResponse) => {
     if (isDev) {
@@ -107,7 +104,7 @@ apiClient.interceptors.response.use(
   },
 
   async (error: AxiosError) => {
-    // Приводим к типу с нашим расширением
+    //Приводим к типу с нашим расширением
     const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
     const status = error.response?.status;
 
@@ -120,7 +117,7 @@ apiClient.interceptors.response.use(
       console.groupEnd();
     }
 
-    // Логика повторной попытки при 401
+    //Логика повторной попытки при 401
     if (status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 

@@ -1,4 +1,3 @@
-// src/context/AuthContext.tsx
 import { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { authApi } from '@/entities/auth/api/authApi';
@@ -18,7 +17,6 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   register: (email: string, password: string) => Promise<void>;
   logout: () => void;
-  refreshUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -32,7 +30,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isInitializing, setIsInitializing] = useState(true);
   const [isAuthenticating, setIsAuthenticating] = useState(false);
 
-  // Инициализация: восстанавливаем пользователя из кэша при загрузке
+  //Инициализация: восстанавливаем пользователя из кэша при загрузке
   useEffect(() => {
     const initializeAuth = async () => {
       try {
@@ -40,15 +38,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         const cachedEmail = TokenStorage.getCachedUserEmail();
 
         if (token && cachedEmail) {
-          // Восстанавливаем пользователя из кэша
+          //Восстанавливаем пользователя из кэша
           setUser({ email: cachedEmail, selectedCourses: [] });
           console.log('👤 User restored from cache:', cachedEmail);
         } else if (!token) {
-          // Токена нет — точно не авторизован
+          //Токена нет — точно не авторизован
           setUser(null);
         }
-        // Если токен есть, но кэша нет — пользователь не авторизован,
-        // но можно добавить фоновый запрос к серверу при необходимости
+        //Если токен есть, но кэша нет — пользователь не авторизован
       } catch (error) {
         console.error('Auth initialization failed:', error);
         TokenStorage.clear();
@@ -67,10 +64,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       const response = await authApi.login({ email, password });
 
       if (response.token) {
-        // Сохраняем токен И email в кэш
+        //Сохраняем токен И email в кэш
         TokenStorage.setTokens(response.token, response.token, email);
 
-        // Создаём пользователя из данных формы
+        //Создаём пользователя из данных формы
         setUser({ email, selectedCourses: [] });
 
         console.log('👤 User set from login:', { email });
@@ -94,10 +91,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       const loginResponse = await authApi.login({ email, password });
 
       if (loginResponse.token) {
-        // Сохраняем токен И email в кэш
+        //Сохраняем токен И email в кэш
         TokenStorage.setTokens(loginResponse.token, loginResponse.token, email);
 
-        // Создаём пользователя из данных формы
+        //Создаём пользователя из данных формы
         setUser({ email, selectedCourses: [] });
 
         toast.success('Регистрация прошла успешно!');
@@ -112,15 +109,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const logout = () => {
-    // Очищаем всё: токен, рефреш, кэш пользователя
+    //Очищаем всё: токен, рефреш, кэш пользователя
     TokenStorage.clear();
     setUser(null);
     toast.success('Вы вышли из аккаунта');
-  };
-
-  // Функция для принудительного обновления (если в будущем добавите запрос профиля)
-  const refreshUser = async () => {
-    // Пока заглушка
   };
 
   const value: AuthContextType = {
@@ -131,10 +123,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     login,
     register,
     logout,
-    refreshUser,
   };
 
-  // Всегда оборачиваем в Provider
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 

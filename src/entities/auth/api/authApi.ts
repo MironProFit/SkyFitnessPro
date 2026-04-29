@@ -1,4 +1,3 @@
-// src/entities/auth/api/authApi.ts
 import { ENDPOINTS } from '@/shared/api/types';
 import type {
   LoginDto,
@@ -10,33 +9,18 @@ import type {
 import { fetchWithoutContentType } from '@/shared/lib/fetchWithoutContentType';
 
 export const authApi = {
-  /**
-   * Авторизация пользователя
-   * POST /auth/login
-   * Body: { email, password }
-   * Response: { token }
-   */
+  //Авторизация пользователя
   login: (data: LoginDto): Promise<LoginResponse> =>
     fetchWithoutContentType<LoginResponse>(ENDPOINTS.AUTH.LOGIN, { method: 'POST', body: data }),
 
-  /**
-   * Регистрация пользователя
-   * POST /auth/register
-   * Body: { email, password }
-   * Response: { message }
-   */
+  //Регистрация пользователя
   register: (data: RegisterDto): Promise<RegisterResponse> =>
     fetchWithoutContentType<RegisterResponse>(ENDPOINTS.AUTH.REGISTER, {
       method: 'POST',
       body: data,
     }),
 
-  /**
-   * Обновление токена
-   * POST /auth/refresh
-   * Body: { refreshToken }
-   * Response: { accessToken, refreshToken? }
-   */
+  //Обновление токена
   refresh: (refreshToken: string): Promise<RefreshResponse> =>
     fetchWithoutContentType<RefreshResponse>(ENDPOINTS.AUTH.REFRESH, {
       method: 'POST',

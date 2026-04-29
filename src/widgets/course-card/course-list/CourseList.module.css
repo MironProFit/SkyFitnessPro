@@ -95,8 +95,6 @@
   pointer-events: auto;
 }
 
-
-
 .scroll-top__btn:hover {
   background: var(--accent-hover);
   transform: translateY(-2px);
@@ -238,7 +236,7 @@
    GLOBAL SKELETON OVERRIDES
    ========================================== */
 
-/* 🔹 Переопределяем цвета библиотеки react-loading-skeleton через переменные */
+/* Переопределяем цвета библиотеки react-loading-skeleton через переменные */
 :global(.react-loading-skeleton) {
   --base-color: var(--bg-skeleton-base);
   --highlight-color: var(--bg-skeleton-highlight);

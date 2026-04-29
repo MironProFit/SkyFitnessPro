@@ -8,8 +8,7 @@ export default function AuthPage() {
   const { openModalAuth, toggleModalAuth } = useApp();
   const location = useLocation();
 
-  // Если открыли как отдельную страницу (прямой переход на /login),
-  // гарантируем, что модалка открыта
+  //Если открыли как отдельную страницу (прямой переход на /login), гарантируем, что модалка открыта
   useEffect(() => {
     const isDirectPageAccess =
       location.pathname === ROUTES.LOGIN || location.pathname === ROUTES.REGISTER;

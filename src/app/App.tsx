@@ -1,11 +1,8 @@
-// src/app/App.tsx
 import { Route, Routes } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 
-// Импорт роутов из конфига
 import { ROUTES } from '@/shared/config/routes';
 
-// Страницы
 import HomePage from '../pages/home/HomePage';
 import CoursePage from '../pages/course/CoursePage';
 import ProfilePage from '../pages/profile/ProfilePage';
@@ -13,9 +10,8 @@ import { WorkoutPage } from '../pages/workout/WorkoutPage';
 import AuthPage from '../pages/auth/AuthPage';
 import { NotFoundPage } from '@/pages/not-found/ui/NotFoundPage';
 
-// Компоненты
 import { PrivateRoute } from '@/shared/components/PrivateRoute/PrivateRoute';
-import { Header } from '@/widgets/header/Header'; // 🔹 Убедитесь, что этот импорт есть
+import { Header } from '@/widgets/header/Header'; 
 
 function App() {
   return (

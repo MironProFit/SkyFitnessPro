@@ -1,4 +1,3 @@
-// src/context/ThemeContext.
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 
 type Theme = 'light' | 'dark';
@@ -23,19 +22,19 @@ interface ThemeProviderProps {
 }
 
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
-  // Проверяем сохраненную тему в localStorage или используем системные настройки
+  //Проверяем сохраненную тему в localStorage или используем системные настройки
   const [theme, setTheme] = useState<Theme>(() => {
     const savedTheme = localStorage.getItem('theme') as Theme | null;
     if (savedTheme) return savedTheme;
 
-    // Проверка системных настроек
+    //Проверка системных настроек
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
       return 'dark';
     }
     return 'light';
   });
 
-  // Применяем тему к document.documentElement
+  //Применяем тему к document.documentElement
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);

@@ -9,7 +9,6 @@ import { ROUTES } from '@/shared/config/routes';
 import { userApi } from '@/entities/user/api/userApi';
 import toast from 'react-hot-toast';
 import type { User } from '@/shared/api/types';
-// Импортируем UserResponse, так как API возвращает { user: UserData }
 
 export default function UserProfile() {
   const { logout } = useAuth();
@@ -17,7 +16,7 @@ export default function UserProfile() {
   const queryClient = useQueryClient();
   const [isResetting, setIsResetting] = useState(false);
 
-  // Загружаем данные пользователя
+  //Загружаем данные пользователя
   const { data: userData, isLoading } = useQuery<User>({
     queryKey: ['user'],
     queryFn: () => userApi.getMe(),
@@ -26,7 +25,7 @@ export default function UserProfile() {
 
   const userObj = userData?.user;
 
-  // Формируем имя: берем часть до @, делаем первую букву заглавной
+  //Формируем имя: берем часть до @, делаем первую букву заглавной
   const userName = userObj?.email
     ? userObj.email.split('@')[0].charAt(0).toUpperCase() + userObj.email.split('@')[0].slice(1)
     : 'Пользователь';

@@ -10,7 +10,7 @@ import styles from './WorkoutPage.module.css';
 import CheckIcon from '@/shared/assets/icons/check.svg';
 import toast from 'react-hot-toast';
 
-// Иконки
+//Иконки
 const ArrowLeftIcon = () => (
   <svg
     width="24"
@@ -78,7 +78,7 @@ export const WorkoutPage = () => {
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
-  // Состояние для показа кнопок навигации при наведении на нижнюю панель
+  //Состояние для показа кнопок навигации при наведении на нижнюю панель
   const [showNavButtons, setShowNavButtons] = useState(false);
 
   const { data: currentWorkout, isLoading: isLoadingWorkout } = useQuery<Workout>({
@@ -220,7 +220,12 @@ export const WorkoutPage = () => {
         <h1 className={styles.courseTitle}>{courseName}</h1>
 
         {/* Кнопка В ПРОФИЛЬ (скрытая) */}
-        <Button className={styles.hiddenBtn} style={{marginRight: '20px'}} size="xl" onClick={handleBackToProfile}>
+        <Button
+          className={styles.hiddenBtn}
+          style={{ marginRight: '20px' }}
+          size="xl"
+          onClick={handleBackToProfile}
+        >
           <ArrowLeftIcon />
           <span>В профиль</span>
         </Button>
@@ -292,9 +297,7 @@ export const WorkoutPage = () => {
                 onClick={handlePrev}
                 disabled={currentIndex === 0}
                 size="lg"
-                // Используем hiddenBtn для получения тех же стилей шрифта/отступов, что и в хедере
                 className={`${styles.navBtn} ${styles.hiddenBtn}`}
-                // Управляем видимостью через opacity, так как CSS hover работает только для header
                 style={{ opacity: showNavButtons ? 1 : 0 }}
               >
                 <ArrowLeftIcon /> Назад

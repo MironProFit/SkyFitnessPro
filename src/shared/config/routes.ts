@@ -1,37 +1,37 @@
-// Центральное хранилище всех путей приложения
+//Центральное хранилище всех путей приложения
 export const ROUTES = {
-  // Авторизация
+  //Авторизация
   LOGIN: '/login',
   REGISTER: '/register',
   LOGOUT: '/logout',
 
-  // Основное приложение
+  //Основное приложение
   HOME: '/',
   COURSES: '/courses',
   COURSE_DETAIL: (id: string) => `/courses/${id}`,
 
-  // Профиль
+  //Профиль
   PROFILE: '/profile',
   PROFILE_EDIT: '/profile/edit',
   PROFILE_SETTINGS: '/profile/settings',
 
-  // Тренировки
+  //Тренировки
   WORKOUT: '/workout',
   WORKOUT_DETAIL: (id: string) => `/workout/${id}`,
   PROGRESS: '/progress',
 
-  // Системные страницы
+  //Системные страницы
   NOT_FOUND: '*',
   SERVER_ERROR: '/error',
 } as const;
 
-// Тип для ключей роутов
+//Тип для ключей роутов
 export type RouteKey = keyof typeof ROUTES;
 
-// Тип для значений роутов
+//Тип для значений роутов
 export type RoutePath = (typeof ROUTES)[RouteKey];
 
-// Список публичных роутов (не требуют авторизации)
+//Список публичных роутов (не требуют авторизации)
 export const PUBLIC_ROUTES: RoutePath[] = [
   ROUTES.LOGIN,
   ROUTES.REGISTER,
@@ -39,7 +39,7 @@ export const PUBLIC_ROUTES: RoutePath[] = [
   ROUTES.SERVER_ERROR,
 ];
 
-// Список защищенных роутов
+//Список защищенных роутов
 export const PROTECTED_ROUTES: RoutePath[] = [
   ROUTES.HOME,
   ROUTES.COURSES,
@@ -50,22 +50,22 @@ export const PROTECTED_ROUTES: RoutePath[] = [
   ROUTES.PROGRESS,
 ];
 
-// Проверка: является ли путь публичным
+//Проверка: является ли путь публичным
 export const isPublicRoute = (pathname: string): boolean => {
   if (PUBLIC_ROUTES.includes(pathname as RoutePath)) {
     return true;
   }
-  // Проверка динамических путей
+  //Проверка динамических путей
   const dynamicPublicPatterns = [/^\/courses\/[^/]+$/];
   return dynamicPublicPatterns.some((pattern) => pattern.test(pathname));
 };
 
-// Проверка: требует ли путь авторизации
+//Проверка: требует ли путь авторизации
 export const isProtectedRoute = (pathname: string): boolean => {
   return !isPublicRoute(pathname);
 };
 
-// Получение пути по ключу (для динамических роутов)
+//Получение пути по ключу (для динамических роутов)
 export const getRoutePath = (key: RouteKey, params?: Record<string, string>): string => {
   const route = ROUTES[key];
   if (typeof route === 'function') {
@@ -74,8 +74,8 @@ export const getRoutePath = (key: RouteKey, params?: Record<string, string>): st
   return route;
 };
 
-// Редирект после авторизации
+//Редирект после авторизации
 export const REDIRECT_AFTER_AUTH = ROUTES.COURSES;
 
-// Редирект после логаута
+//Редирект после логаута
 export const REDIRECT_AFTER_LOGOUT = ROUTES.LOGIN;

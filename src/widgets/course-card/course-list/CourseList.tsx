@@ -1,4 +1,3 @@
-// features/course/course-list/ui/CourseList.tsx
 import { useLocation } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import type { AxiosError } from 'axios';
@@ -28,7 +27,6 @@ export const CourseList = () => {
   const {
     data: allCourses = [],
     isLoading: isLoadingCourses,
-    // isFetching: isFetchingCourses,
     isError: isErrorCourses,
     error: errorCourses,
     refetch: refetchCourses,
@@ -66,7 +64,7 @@ export const CourseList = () => {
   const isError = pageProfile ? isErrorCourses || isErrorUser : isErrorCourses;
   const error = errorCourses;
 
-  // Обработчик скролла для кнопки "Наверх"
+  //Обработчик скролла для кнопки "Наверх"
   useEffect(() => {
     const handleScroll = () => setShowScrollTop(window.scrollY > SCROLL_THRESHOLD);
     handleScroll();
@@ -82,24 +80,24 @@ export const CourseList = () => {
   const CourseListSkeleton = () => (
     <div className={styles.grid}>
       {Array.from({ length: 3 }).map((_, index) => (
-          <div key={index} className={styles['card-skeleton']}>
-            <Skeleton className={styles['skeleton__image-wrapper']}></Skeleton>
-            <div className={styles['skeleton__content']}>
-              <Skeleton className={styles['skeleton__title']} />
+        <div key={index} className={styles['card-skeleton']}>
+          <Skeleton className={styles['skeleton__image-wrapper']}></Skeleton>
+          <div className={styles['skeleton__content']}>
+            <Skeleton className={styles['skeleton__title']} />
 
-              {pageProfile && (
-                <div className={styles['skeleton__progress']}>
-                  <Skeleton className={styles['skeleton__progress-title']} />
-                  <Skeleton className={styles['skeleton__progress-bar']} />
-                </div>
-              )}
-              <div className={styles['skeleton__wrapper-buttons']}>
-                <Skeleton className={styles['skeleton__button']} />
-                <Skeleton className={styles['skeleton__button']} />
-                <Skeleton className={styles['skeleton__button']} />
+            {pageProfile && (
+              <div className={styles['skeleton__progress']}>
+                <Skeleton className={styles['skeleton__progress-title']} />
+                <Skeleton className={styles['skeleton__progress-bar']} />
               </div>
+            )}
+            <div className={styles['skeleton__wrapper-buttons']}>
+              <Skeleton className={styles['skeleton__button']} />
+              <Skeleton className={styles['skeleton__button']} />
+              <Skeleton className={styles['skeleton__button']} />
             </div>
           </div>
+        </div>
       ))}
     </div>
   );

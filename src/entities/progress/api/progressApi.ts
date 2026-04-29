@@ -1,4 +1,3 @@
-// src/entities/progress/api/progressApi.ts
 import { apiClient } from '@/shared/api/axiosInstance';
 import { ENDPOINTS } from '@/shared/api/types';
 import type { CourseProgress } from '@/shared/api/types';
@@ -13,7 +12,7 @@ export const progressApi = {
       .get<CourseProgress>(ENDPOINTS.PROGRESS.BY_WORKOUT(courseId, workoutId))
       .then((res) => res.data),
 
-  // 🔹 ИСПРАВЛЕННЫЙ МЕТОД СОХРАНЕНИЯ через FETCH
+  //Слхранение прогресса через fetch-запрос
   saveWorkoutProgress: async (courseId: string, workoutId: string, progressData: number[]) => {
     console.log('📦 Отправка прогресса:', { courseId, workoutId, progressData });
 
@@ -30,9 +29,8 @@ export const progressApi = {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: 'application/json',
-          // ВАЖНО: Мы НЕ указываем Content-Type, как требует сервер
         },
-        body: JSON.stringify({ progressData }), // Тело отправляем как строку JSON
+        body: JSON.stringify({ progressData }), //Тело отправляем как строку JSON
       });
 
       if (!response.ok) {
@@ -47,11 +45,11 @@ export const progressApi = {
     }
   },
 
-  // Сброс прогресса всей тренировки
+  //Сброс прогресса всей тренировки
   resetWorkoutProgress: (courseId: string, workoutId: string) =>
     apiClient.patch(ENDPOINTS.PROGRESS.RESET_WORKOUT(courseId, workoutId)).then((res) => res.data),
 
-  // Сброс прогресса всего курса
+  //Сброс прогресса всего курса
   resetCourseProgress: (courseId: string) => {
     console.log(`🔄 Сброс прогресса всего курса: ${courseId}`);
     return apiClient

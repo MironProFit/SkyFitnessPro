@@ -1,4 +1,3 @@
-// src/features/workout-selection/WorkoutSelectionModal.tsx
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/shared/components/Button/Button';
@@ -29,7 +28,7 @@ export const WorkoutSelectionModal = ({
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Загружаем тренировки при открытии модалки
+  //Загружаем тренировки при открытии модалки
   useEffect(() => {
     const fetchData = async () => {
       if (!isOpen) return;
@@ -40,7 +39,7 @@ export const WorkoutSelectionModal = ({
         const sortedWorkouts = sortWorkoutsByLessonNumber(workoutsData);
         setWorkouts(sortedWorkouts);
 
-        // 🔹 Безопасно выбираем незавершённые тренировки
+        //Безопасно выбираем незавершённые тренировки
         const workoutsProgress = courseProgress?.workoutsProgress;
         if (workoutsProgress?.length) {
           const incompleteWorkouts = workoutsProgress
@@ -100,7 +99,7 @@ export const WorkoutSelectionModal = ({
             workouts.map((workout) => {
               const isSelected = selectedWorkouts.has(workout._id);
 
-              // 🔹 Безопасный доступ к прогрессу тренировки
+              //Безопасный доступ к прогрессу тренировки
               const progress = courseProgress?.workoutsProgress?.find(
                 (wp) => wp.workoutId === workout._id
               );

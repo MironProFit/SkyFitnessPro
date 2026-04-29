@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom'; // 🔹 Добавили useLocation
+import { Link, useLocation } from 'react-router-dom'; 
 import { Button } from '@/shared/components/Button/Button';
 import profileIcon from '@/shared/assets/icons/profile.svg';
 
@@ -11,15 +11,15 @@ import Logo from '@/shared/components/Logo/Logo';
 import clsx from 'clsx';
 
 export const Header = () => {
-  const location = useLocation(); // 🔹 Получаем текущий путь
+  const location = useLocation(); 
   const { user, isAuthenticated } = useAuth();
   const { toggleModalAuth, openModalProfile, toggleModalProfile } = useApp();
 
   const userName = user?.email?.split('@')[0] || 'Пользователь';
 
-  // 🔹 Проверяем условия:
-  // 1. Главная страница: '/'
-  // 2. Страница курса: начинается с '/courses/'
+  //Проверяем условия:
+  //1. Главная страница: '/'
+  //2. Страница курса: начинается с '/courses/'
   const isHomeOrCoursePage = location.pathname === '/' || location.pathname.startsWith('/courses/');
 
   return (
@@ -30,7 +30,6 @@ export const Header = () => {
             <Logo />
           </Link>
 
-          {/* 🔹 Условный рендеринг */}
           {isHomeOrCoursePage && (
             <span className={styles.logo__tagline}>Онлайн-тренировки для занятий дома</span>
           )}

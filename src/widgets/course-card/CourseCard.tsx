@@ -1,4 +1,3 @@
-// src/widgets/course-card/CourseCard.tsx
 import styles from './CourseCard.module.css';
 import CalendarIcon from '@/shared/assets/icons/Calendar.svg';
 import TimeIcon from '@/shared/assets/icons/Time.svg';
@@ -42,7 +41,7 @@ const getDifficultyLabel = (level: number): string => {
   return 'Сложный';
 };
 
-// Функция для точного расчета прогресса по упражнениям
+//Функция для точного расчета прогресса по упражнениям
 const calculateExactProgress = (
   progress: CourseProgress | undefined,
   workoutDetails: Record<string, Workout>
@@ -133,8 +132,7 @@ export const CourseCard = ({ pageProfile, course, backgroundColor }: CourseCardP
     staleTime: 1000 * 60 * 2,
   });
 
-
-  // Эффект для загрузки деталей тренировок для точного расчета %
+  //Эффект для загрузки деталей тренировок для точного расчета %
   useEffect(() => {
     if (!isAuthenticated || !pageProfile || !courseWorkoutIds || courseWorkoutIds.length === 0)
       return;
@@ -170,7 +168,7 @@ export const CourseCard = ({ pageProfile, course, backgroundColor }: CourseCardP
     [courseProgress, workoutsDetails]
   );
 
-  // 🔹 Мутация для сброса ПРОГРЕССА ВСЕГО КУРСА
+  //Мутация для сброса ПРОГРЕССА ВСЕГО КУРСА
   const { mutate: resetCourseProgressMutate, isPending: isResetting } = useMutation({
     mutationFn: () => progressApi.resetCourseProgress(courseId),
     onSuccess: () => {
@@ -194,7 +192,7 @@ export const CourseCard = ({ pageProfile, course, backgroundColor }: CourseCardP
     e.preventDefault();
     e.stopPropagation();
 
-    // 🔹 Если прогресс 100%, вызываем сброс всего курса
+    //Если прогресс 100%, вызываем сброс всего курса
     if (progressPercent === 100) {
       resetCourseProgressMutate();
       return;
@@ -266,8 +264,9 @@ export const CourseCard = ({ pageProfile, course, backgroundColor }: CourseCardP
   const imageNameLower = nameEN?.toLowerCase() || '';
   const courseBackgroundImage = courseImages[imageNameLower];
 
-
-  useEffect(() => { console.log(pageProfile); }, [pageProfile])
+  useEffect(() => {
+    console.log(pageProfile);
+  }, [pageProfile]);
 
   return (
     <div

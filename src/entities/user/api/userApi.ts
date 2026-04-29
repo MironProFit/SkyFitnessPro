@@ -1,4 +1,3 @@
-// src/entities/user/api/userApi.ts
 import { apiClient } from '@/shared/api/axiosInstance';
 import { ENDPOINTS, type User } from '@/shared/api/types';
 import { fetchWithoutContentType } from '@/shared/lib/fetchWithoutContentType';
@@ -9,14 +8,14 @@ export const userApi = {
   //POST: courseId в теле, но БЕЗ заголовка Content-Type
   addCourse: (courseId: string) =>
     fetchWithoutContentType(
-      ENDPOINTS.USER.ADD_COURSE, // '/users/me/courses'
+      ENDPOINTS.USER.ADD_COURSE, //'/users/me/courses'
       { method: 'POST', body: { courseId } }
     ),
 
   //DELETE: courseId в URL, тоже без Content-Type (на всякий случай)
   removeCourse: (courseId: string) =>
     fetchWithoutContentType(
-      ENDPOINTS.USER.DEL_COURSE(courseId), // '/users/me/courses/:id'
+      ENDPOINTS.USER.DEL_COURSE(courseId), //'/users/me/courses/:id'
       { method: 'DELETE' }
     ),
 };

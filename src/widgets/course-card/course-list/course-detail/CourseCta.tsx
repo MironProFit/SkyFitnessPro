@@ -1,6 +1,5 @@
-// src/widgets/course-cta/CourseCta.tsx
 import { useApp } from '@/context/AppContext';
-import styles from './CourseDetail.module.css'; // Убедитесь, что путь к стилям верный
+import styles from './CourseDetail.module.css'; 
 import CtaImage from '@/shared/assets/courses/cta_img.png';
 import CtaImageLine from '@/shared/assets/courses/cta_line.png';
 
@@ -20,7 +19,7 @@ export const CourseCta = ({ fitting, courseId }: CourseCtaProps) => {
   const { toggleModalAuth, addCourseForUser, removeCourseForUser } = useApp();
   const { isAuthenticated, isAuthenticating } = useAuth();
 
-  // Состояние для анимации кнопки (загрузка)
+  //Состояние для анимации кнопки (загрузка)
   const [isToggling, setIsToggling] = useState(false);
 
   const { data: userData } = useQuery<User>({
@@ -30,7 +29,7 @@ export const CourseCta = ({ fitting, courseId }: CourseCtaProps) => {
     staleTime: 1000 * 60 * 5,
   });
 
-  // Проверяем, добавлен ли курс пользователем
+  //Проверяем, добавлен ли курс пользователем
   const isSelected = isAuthenticated
     ? (userData?.user?.selectedCourses || []).includes(courseId!)
     : false;
@@ -43,7 +42,7 @@ export const CourseCta = ({ fitting, courseId }: CourseCtaProps) => {
   const handleToggleCourse = async () => {
     if (!courseId) return;
 
-    setIsToggling(true); // 🔹 Включаем загрузку
+    setIsToggling(true); 
     try {
       if (isSelected) {
         await removeCourseForUser(courseId);
@@ -53,7 +52,7 @@ export const CourseCta = ({ fitting, courseId }: CourseCtaProps) => {
     } catch (error) {
       console.error('Не удалось переключить статус курса:', error);
     } finally {
-      setIsToggling(false); // 🔹 Выключаем загрузку
+      setIsToggling(false); 
     }
   };
 
@@ -76,14 +75,14 @@ export const CourseCta = ({ fitting, courseId }: CourseCtaProps) => {
           ))}
         </ul>
 
-        {/* 🔹 Кнопка с логикой добавления/удаления и загрузкой */}
+        {/* Кнопка с логикой добавления/удаления и загрузкой */}
         <Button onClick={handleClick} size="lg" disabled={isAuthenticating || isToggling}>
           {isAuthenticating ? (
             'Загрузка...'
           ) : !isAuthenticated ? (
             'Войдите, чтобы добавить курс'
           ) : isToggling ? (
-            // 🔹 Показываем спиннер или текст при загрузке
+            //Показываем спиннер или текст при загрузке
             <span className={styles.spinner}>Загрузка...</span>
           ) : (
             <>{isSelected ? 'Удалить курс' : 'Добавить курс'}</>

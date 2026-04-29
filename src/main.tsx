@@ -10,11 +10,12 @@ import { AuthProvider } from './context/AuthContext';
 import { AppProvider } from './context/AppContext';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
+import { StrictMode } from 'react';
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 60 * 5, // 5 минут
+      staleTime: 1000 * 60 * 5,
       retry: 1,
       refetchOnWindowFocus: false,
     },
@@ -22,7 +23,7 @@ const queryClient = new QueryClient({
 });
 
 createRoot(document.getElementById('root')!).render(
-  // <StrictMode>
+  <StrictMode>
   <BrowserRouter
     future={{
       v7_startTransition: true,
@@ -40,5 +41,5 @@ createRoot(document.getElementById('root')!).render(
       </AuthProvider>
     </QueryClientProvider>
   </BrowserRouter>
-  // </StrictMode>
+  </StrictMode>
 );

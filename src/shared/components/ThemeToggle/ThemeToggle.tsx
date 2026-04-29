@@ -1,4 +1,3 @@
-// src/shared/components/ThemeToggle/ThemeToggle.tsx
 import { useTheme } from '@/context/ThemeContext';
 import styles from './ThemeToggle.module.css';
 

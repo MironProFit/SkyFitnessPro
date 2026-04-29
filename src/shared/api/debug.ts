@@ -1,7 +1,6 @@
-// src/shared/api/debug.ts
 
 export const debug = {
-  // Логирование запроса
+  //Логирование запроса
   request: (label: string, url: string, options: RequestInit) => {
     console.group(`>>> ${label}`);
     console.log('URL:', url);
@@ -11,7 +10,7 @@ export const debug = {
     console.groupEnd();
   },
 
-  // Логирование ответа
+  //Логирование ответа
   response: (label: string, url: string, status: number, data: unknown) => {
     console.group(`<<< ${label}`);
     console.log('URL:', url);
@@ -20,7 +19,7 @@ export const debug = {
     console.groupEnd();
   },
 
-  // Логирование ошибки
+  //Логирование ошибки
   error: (label: string, url: string, error: unknown) => {
     console.group(`❌ ${label}`);
     console.log('URL:', url);
@@ -28,12 +27,12 @@ export const debug = {
     console.groupEnd();
   },
 
-  // Логирование состояния токена
+  //Логирование состояния токена
   token: (action: string, token: string | null) => {
     console.log(`🔐 Token ${action}:`, token ? `${token.slice(0, 20)}...` : 'null');
   },
 
-  // Логирование состояния хранилища
+  //Логирование состояния хранилища
   storage: () => {
     console.log('🗄️ localStorage:', {
       token: localStorage.getItem('token') ? '***' : null,

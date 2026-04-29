@@ -1,14 +1,11 @@
-﻿// src/widgets/auth-widget/AuthModal.tsx
-import logoIcon from '@/shared/assets/icons/logoIcon.svg';
-
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { Link, useNavigate } from 'react-router-dom'; // 🔹 Добавили useNavigate
+import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 import styles from './AuthModal.module.css';
 import { useApp } from '@/context/AppContext';
-import { ROUTES } from '@/shared/config/routes'; // 🔹 Импортируем ROUTES
+import { ROUTES } from '@/shared/config/routes';
 import Logo from '@/shared/components/Logo/Logo';
 
 const validatePassword = (password: string): { valid: boolean; error?: string } => {
@@ -32,7 +29,7 @@ const validateEmail = (email: string): boolean => {
 export const AuthModal = () => {
   const [isLogin, setIsLogin] = useState(true);
   const { openModalAuth: isOpen, toggleModalAuth } = useApp();
-  const navigate = useNavigate(); // 🔹 Создаём навигатор
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -66,12 +63,12 @@ export const AuthModal = () => {
     try {
       if (isLogin) {
         await login(email, password);
-        toggleModalAuth(); // Закрываем модалку
-        navigate(ROUTES.HOME, { replace: true }); // 🔹 Переходим на главную
+        toggleModalAuth();
+        navigate(ROUTES.HOME, { replace: true });
       } else {
         await register(email, password);
-        toggleModalAuth(); // Закрываем модалку
-        navigate(ROUTES.HOME, { replace: true }); // 🔹 Переходим на главную
+        toggleModalAuth();
+        navigate(ROUTES.HOME, { replace: true });
       }
     } catch (error: any) {
       const message = error?.response?.data?.message || 'Произошла ошибка';
@@ -94,7 +91,7 @@ export const AuthModal = () => {
     <div className={styles.overlay} onClick={toggleModalAuth}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <Link to="/" className={styles.logo}>
-          <Logo/>
+          <Logo />
         </Link>
 
         <form className={styles.form} onSubmit={handleSubmit}>

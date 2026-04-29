@@ -1,5 +1,3 @@
-// src/test-axios.ts
-
 export const runAxiosTest = async () => {
   console.log('🔍 Запуск теста axios...');
 
@@ -12,21 +10,23 @@ export const runAxiosTest = async () => {
       password: 'Test@!123',
     });
 
-    // Создаем конфигурацию с минимальными заголовками
+    //Создаем конфигурацию с минимальными заголовками
     const config = {
       headers: {} as Record<string, string>,
       transformRequest: [(data: any) => data],
-      transformResponse: [(data: any) => {
-        try {
-          return JSON.parse(data);
-        } catch {
-          return data;
-        }
-      }],
+      transformResponse: [
+        (data: any) => {
+          try {
+            return JSON.parse(data);
+          } catch {
+            return data;
+          }
+        },
+      ],
     };
 
-    // Явно не устанавливаем никакие заголовки
-    // Пустой объект headers не добавит Content-Type
+    //Явно не устанавливаем никакие заголовки
+    //Пустой объект headers не добавит Content-Type
 
     console.log('Отправка запроса...');
     console.log('Payload:', payload);
@@ -42,18 +42,15 @@ export const runAxiosTest = async () => {
       status: response.status,
       data: response.data,
     });
-
   } catch (error: any) {
-    // Логируем детали ошибки
+    //Логируем детали ошибки
     console.log('❌ ОШИБКА:', {
       status: error?.response?.status,
       data: error?.response?.data,
-      // Важно: преобразуем AxiosHeaders в обычный объект для просмотра
-      headersSent: error?.config?.headers 
+      //Важно: преобразуем AxiosHeaders в обычный объект для просмотра
+      headersSent: error?.config?.headers
         ? Object.fromEntries(
-            Object.entries(error.config.headers).filter(
-              ([, v]) => v !== undefined && v !== null
-            )
+            Object.entries(error.config.headers).filter(([, v]) => v !== undefined && v !== null)
           )
         : null,
       dataType: typeof error?.config?.data,
