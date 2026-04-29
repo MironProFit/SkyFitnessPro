@@ -13,7 +13,7 @@
   flex-direction: column;
   min-width: 360px;
   cursor: pointer;
-  position: relative; /* 🔹 Добавлено для позиционирования панели */
+  position: relative; /*  Добавлено для позиционирования панели */
 }
 
 .card:hover {
@@ -370,7 +370,7 @@
   opacity: 1;
 }
 
-/* 🔹 Внутренний контейнер списка */
+/*  Внутренний контейнер списка */
 .listInner {
   display: flex;
   flex-direction: column;
@@ -379,7 +379,7 @@
   box-sizing: border-box;
 }
 
-/* 🔹 Заголовок списка */
+/*  Заголовок списка */
 .listHeader {
   display: flex;
   align-items: center;
@@ -414,7 +414,7 @@
   font-family: 'StratosSkyeng', sans-serif;
 }
 
-/* 🔹 Область прокрутки списка */
+/*  Область прокрутки списка */
 .listScrollArea {
   flex: 1; /* Занимает всё доступное пространство между заголовком и кнопкой */
   overflow-y: auto; /* Скролл только здесь */
@@ -527,7 +527,7 @@
   margin-top: 2px;
 }
 
-/* 🔹 Кнопка "Начать" - всегда внизу */
+/*  Кнопка "Начать" - всегда внизу */
 .startBtn {
   width: 100%;
   background: #b8f33f;

@@ -9,7 +9,7 @@ interface PrivateRouteProps {
 }
 
 export const PrivateRoute = ({ children }: PrivateRouteProps) => {
-  // 🔹 Исправлено: isInitializing вместо isLoading
+  //  Исправлено: isInitializing вместо isLoading
   const { isAuthenticated, isInitializing } = useAuth();
   const location = useLocation();
 

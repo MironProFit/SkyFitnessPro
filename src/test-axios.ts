@@ -1,4 +1,3 @@
-// src/test-axios.ts
 
 export const runAxiosTest = async () => {
   console.log('🔍 Запуск теста axios...');

@@ -43,7 +43,7 @@ export const CourseCta = ({ fitting, courseId }: CourseCtaProps) => {
   const handleToggleCourse = async () => {
     if (!courseId) return;
 
-    setIsToggling(true); // 🔹 Включаем загрузку
+    setIsToggling(true); //  Включаем загрузку
     try {
       if (isSelected) {
         await removeCourseForUser(courseId);
@@ -53,7 +53,7 @@ export const CourseCta = ({ fitting, courseId }: CourseCtaProps) => {
     } catch (error) {
       console.error('Не удалось переключить статус курса:', error);
     } finally {
-      setIsToggling(false); // 🔹 Выключаем загрузку
+      setIsToggling(false); //  Выключаем загрузку
     }
   };
 
@@ -76,14 +76,14 @@ export const CourseCta = ({ fitting, courseId }: CourseCtaProps) => {
           ))}
         </ul>
 
-        {/* 🔹 Кнопка с логикой добавления/удаления и загрузкой */}
+        {/*  Кнопка с логикой добавления/удаления и загрузкой */}
         <Button onClick={handleClick} size="lg" disabled={isAuthenticating || isToggling}>
           {isAuthenticating ? (
             'Загрузка...'
           ) : !isAuthenticated ? (
             'Войдите, чтобы добавить курс'
           ) : isToggling ? (
-            // 🔹 Показываем спиннер или текст при загрузке
+            //  Показываем спиннер или текст при загрузке
             <span className={styles.spinner}>Загрузка...</span>
           ) : (
             <>{isSelected ? 'Удалить курс' : 'Добавить курс'}</>

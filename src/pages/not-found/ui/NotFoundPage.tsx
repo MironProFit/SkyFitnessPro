@@ -1,5 +1,3 @@
-// pages/not-found/ui/NotFoundPage.tsx
-
 import { Link } from 'react-router-dom';
 import styles from './NotFoundPage.module.css';
 import { ROUTES } from '@/shared/config/routes';

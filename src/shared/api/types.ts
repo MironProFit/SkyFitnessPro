@@ -42,7 +42,7 @@ export const ENDPOINTS = {
     RESET_WORKOUT: (courseId: string, workoutId: string) =>
       `/courses/${courseId}/workouts/${workoutId}/reset`,
 
-    // 🔹 PATCH: сбросить весь прогресс по курсу
+    //  PATCH: сбросить весь прогресс по курсу
     RESET_COURSE: (courseId: string) => `/courses/${courseId}/reset`,
   },
 } as const;

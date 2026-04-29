@@ -9,14 +9,14 @@ export const userApi = {
   //POST: courseId в теле, но БЕЗ заголовка Content-Type
   addCourse: (courseId: string) =>
     fetchWithoutContentType(
-      ENDPOINTS.USER.ADD_COURSE, // '/users/me/courses'
+      ENDPOINTS.USER.ADD_COURSE,
       { method: 'POST', body: { courseId } }
     ),
 
   //DELETE: courseId в URL, тоже без Content-Type (на всякий случай)
   removeCourse: (courseId: string) =>
     fetchWithoutContentType(
-      ENDPOINTS.USER.DEL_COURSE(courseId), // '/users/me/courses/:id'
+      ENDPOINTS.USER.DEL_COURSE(courseId),
       { method: 'DELETE' }
     ),
 };

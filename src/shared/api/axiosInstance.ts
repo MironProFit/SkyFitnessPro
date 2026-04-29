@@ -9,7 +9,7 @@ import { isPublicPath } from './helpers/isPublicPath';
 
 const isDev = process.env.NODE_ENV === 'development';
 
-// 🔹 ЕДИНСТВЕННОЕ объявление расширения типов для Axios в этом проекте
+//  ЕДИНСТВЕННОЕ объявление расширения типов для Axios в этом проекте
 // Убедитесь, что такого блока НЕТ в других файлах!
 declare module 'axios' {
   export interface InternalAxiosRequestConfig {
@@ -26,16 +26,16 @@ export const apiClient = axios.create({
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
-    'Accept': 'application/json',
+    Accept: 'application/json',
   },
 });
 
-// 🔹 Интерцептор запроса
+//  Интерцептор запроса
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     // Используем any для безопасного доступа к кастомным полям
     const cfg = config as any;
-    
+
     if (cfg.skipAuth || isPublicPath(config.url)) {
       return config;
     }
@@ -88,7 +88,7 @@ apiClient.interceptors.request.use(
   }
 );
 
-// 🔹 Интерцептор ответа
+//  Интерцептор ответа
 apiClient.interceptors.response.use(
   (response: AxiosResponse) => {
     if (isDev) {
