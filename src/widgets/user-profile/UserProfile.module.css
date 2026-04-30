@@ -4,12 +4,13 @@
   max-width: 1200px;
   margin: 0 auto;
   font-family: 'StratosSkyeng', sans-serif;
+  /* Гарантируем, что паддинги не ломают ширину */
+  box-sizing: border-box; 
 }
 
 .profile {
   display: flex;
   align-items: flex-start;
-  /* gap: 20px; */
   margin-bottom: 40px;
   flex-wrap: wrap;
 }
@@ -28,49 +29,38 @@
   display: flex;
   align-items: center;
   gap: 30px;
-  /* flex-direction: row; */
   padding: 30px;
   background: var(--bg-secondary);
   width: 100%;
   min-height: 258px;
   border-radius: 30px;
   box-shadow: 0px 4px 67px -12px rgba(0, 0, 0, 0.13);
-}
-
-.profile_container__img {
-  width: 200px;
-  height: 200px;
+  box-sizing: border-box; /* Важно для корректного расчета ширины */
 }
 
 .profile_box {
   display: flex;
   gap: 30px;
-  width: 100%; /* Добавлено для корректного распределения места */
+  width: 100%;
 }
 
 .profile_container__info {
   display: flex;
   flex-direction: column;
   gap: 30px;
-  flex: 1; /* Занимает оставшееся место */
+  flex: 1;
 }
 
 .info_name {
   font-weight: 400;
   font-size: 32px;
-  margin: 0 0;
+  margin: 0;
 }
 
 .info_login {
   font-weight: 400;
   font-size: 18px;
 }
-
-.info_button {
-  width: 100%;
-}
-
-/* НОВЫЕ СТИЛИ ДЛЯ КНОПКИ СБРОСА И ОБЕРТКИ */
 
 .buttonsWrapper {
   display: flex;
@@ -80,9 +70,8 @@
   width: 100%;
 }
 
-/* Стиль для красной кнопки сброса */
 .resetBtn {
-  background-color: #ff4d4f !important; /* Красный цвет */
+  background-color: #ff4d4f !important;
   color: var(--text-primary);
 }
 
@@ -97,29 +86,59 @@
 
 /* Адаптив для мобильных устройств */
 @media (max-width: 768px) {
+  .section_load {
+    padding: 10px;
+  }
+  
+  .info_name {
+    font-weight: 200;
+    font-size: 26px;
+    margin: 0;
+  }
+
+  .profile {
+    margin-bottom: 0;
+    width: 100%; /* На всю ширину секции */
+  }
+
   .profile_container {
     flex-direction: column;
-    text-align: center;
-    padding: 20px;
+    /* Исправлено: центрирование и отступы по краям */
+    width: calc(100% - 40px); /* Ширина минус отступы слева и справа */
+    margin: 0 auto; /* Центрирование блока */
+    padding: 20px; /* Чуть меньше внутренний отступ для мобильных */
+  }
+
+  .profile_title {
+    margin: 0 0 20px 20px; /* Отступ слева как у контейнера */
+    font-size: 32px; /* Опционально: чуть меньше заголовок на мобильном */
+  }
+
+  .profile_img {
+    width: 140px;
+    height: 140px;
   }
 
   .profile_box {
     flex-direction: column;
     align-items: center;
     gap: 20px;
+    width: 100%;
   }
 
   .profile_container__info {
-    align-items: center;
     width: 100%;
+    align-items: center; /* Центрируем текст внутри инфо-блока */
+    text-align: center;
   }
 
   .buttonsWrapper {
     flex-direction: column;
+    width: 100%;
   }
 
   .resetBtn,
-  .info_button {
+  .btn_logout {
     width: 100%;
   }
 }

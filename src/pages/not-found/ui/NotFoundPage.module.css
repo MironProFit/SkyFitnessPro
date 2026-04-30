@@ -18,7 +18,7 @@
 .errorCode {
   font-size: 120px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--text-primary);
   line-height: 1;
   margin: 0;
   letter-spacing: -4px;
@@ -28,7 +28,7 @@
 .title {
   font-size: 40px;
   font-weight: 400;
-  color: #1a1a1a;
+  color: var(--text-primary);
   line-height: 1.1;
   margin: 20px 0 40px;
   animation: fadeIn 0.6s ease-out 0.2s both;

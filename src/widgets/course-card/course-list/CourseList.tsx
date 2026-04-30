@@ -16,10 +16,12 @@ import styles from './CourseList.module.css';
 import { useEffect, useState, useMemo } from 'react';
 import type { User } from '@/shared/api/types';
 import { ROUTES } from '@/shared/config/routes';
+import { useApp } from '@/context/AppContext';
 
 export const CourseList = () => {
   const location = useLocation();
   const pageProfile = location.pathname === '/profile';
+  const { isMobile } = useApp();
   const [showScrollTop, setShowScrollTop] = useState(false);
   const SCROLL_THRESHOLD = 50;
 
@@ -137,10 +139,17 @@ export const CourseList = () => {
           <h1 className={styles['main-title--profile']}>Мои курсы</h1>
         ) : (
           <>
-            <h1 className={styles['main-title']}>
-              Начните заниматься спортом
-              <br />и улучшите качество жизни
-            </h1>
+            {isMobile ? (
+              <h1 className={styles['main-title']}>
+                Начните заниматься спортом
+                <br />и улучшите качество жизни
+              </h1>
+            ) : (
+              <h1 className={styles['main-title']}>
+                Начните заниматься спортом
+                <br />и улучшите качество жизни
+              </h1>
+            )}
             <div className={styles.badge}>Измени своё тело за полгода!</div>
           </>
         )}

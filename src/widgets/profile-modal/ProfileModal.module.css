@@ -53,3 +53,10 @@
   white-space: nowrap;
   color: #999999;
 }
+
+@media (max-width: 361px) {
+  .profileModal--open {
+    right: 50%;
+    transform: translateY(0) translateX(50%);
+  }
+}

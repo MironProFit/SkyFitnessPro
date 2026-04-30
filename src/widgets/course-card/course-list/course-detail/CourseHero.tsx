@@ -4,6 +4,7 @@ import yogaImg from '@/shared/assets/courses/yoga_cr.webp';
 import stretchingImg from '@/shared/assets/courses/stretching_cr.webp';
 import bodyflexImg from '@/shared/assets/courses/bodyflex_cr.webp';
 import fitnessImg from '@/shared/assets/courses/fitness_cr.webp';
+import { useApp } from '@/context/AppContext';
 
 const courseImages: Record<string, string> = {
   stepairobic: stepairobicImg,
@@ -22,6 +23,7 @@ interface CourseHeroProps {
 export const CourseHero = ({ title, color, nameEN }: CourseHeroProps) => {
   const imageName = nameEN ? nameEN.toLowerCase() : '';
   const backgroundImage = courseImages[imageName] || '';
+  const {isMobile} = useApp()
 
   return (
     <div className={styles.hero} style={{ backgroundColor: color }}>
@@ -29,7 +31,7 @@ export const CourseHero = ({ title, color, nameEN }: CourseHeroProps) => {
       
       >
         <div className={styles.heroContent}>
-          <h1 className={styles.heroTitle}>{title}</h1>
+          {!isMobile && <h1 className={styles.heroTitle}>{title}</h1>}
         </div>
       </div>
 

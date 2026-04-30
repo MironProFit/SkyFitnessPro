@@ -1,9 +1,11 @@
 .header {
   background-color: var(--bg-primary);
-  padding: 16px 0 60px 0;
+  padding: 16px 0 40px 0; /* Уменьшил нижний отступ для компактности */
   position: sticky;
   top: 0;
   z-index: 100;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .header__container {
@@ -13,12 +15,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .logo {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 8px; /* Уменьшил отступ между лого и теглайном */
 }
 
 .logo__link {
@@ -50,10 +54,11 @@
 }
 
 .logo__tagline {
-  font-size: 16px;
+  font-size: 14px; /* Чуть уменьшил шрифт теглайна */
   color: var(--text-primary);
   font-weight: 400;
-  opacity: 0.5;
+  opacity: 0.7;
+  line-height: 1.2;
 }
 
 .nav {
@@ -78,38 +83,89 @@
   display: flex;
   align-items: center;
   flex-direction: row;
-  gap: 10px;
+  gap: 12px;
 }
 
 .actions__profile_avatar {
-  width: 40px;
-  height: 40px;
+  width: 36px; /* Чуть уменьшил аватарку для баланса */
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .actions__profile_name {
   font-style: normal;
   font-weight: 400;
-  font-size: 24px;
+  font-size: 18px; /* Уменьшил размер имени */
   color: var(--text-secondary);
+  margin: 0;
 }
 
 .actions__profile_arrow {
-  /* width: 10px;
-  height: 10px; */
   cursor: pointer;
   transition: transform 0.3s ease;
+  display: flex;
+  align-items: center;
+  padding: 4px;
 }
+
 .actions__profile_arrow:hover {
   filter: grayscale(50%) brightness(120%) drop-shadow(2px 2px 10px rgba(0, 0, 0, 0.5));
 }
 
 .actions__profile-arrow_open {
   cursor: pointer;
-  transform: translateY(5px) rotate(180deg);
+  transform: rotate(180deg); /* Убрал смещение вниз, оставил только поворот */
 }
 
 .buttonsWrap {
   display: flex;
-  gap: 20px;
+  gap: 16px;
   align-items: center;
+}
+
+/* В @media (max-width: 768px) можно убрать эти строки, так как элементы не рендерятся: */
+/* .logo__tagline { display: none; } */
+/* .actions__profile_name { display: none; } */
+
+/* Оставляем только адаптацию отступов и размеров: */
+@media (max-width: 768px) {
+  .header {
+    padding: 12px 0 20px 0;
+  }
+
+  .header__container {
+    padding: 0 15px;
+  }
+
+  .logo {
+    gap: 4px;
+  }
+
+  .buttonsWrap {
+    gap: 8px;
+  }
+
+  .actions {
+    gap: 8px;
+  }
+
+  .actions__profile_avatar {
+    width: 32px;
+    height: 32px;
+  }
+
+  .buttonsWrap button {
+    padding: 6px 12px;
+    font-size: 13px;
+    min-height: 32px;
+  }
+}
+
+@media (max-width: 420px) {
+  .header__container {
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 12px;
+  }
 }

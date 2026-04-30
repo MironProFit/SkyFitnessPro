@@ -1,8 +1,11 @@
 .section {
   max-width: 1200px;
   margin: 0 auto;
+  margin-bottom: 80px;
+  /* Добавил box-sizing, чтобы padding не ломал ширину */
+  box-sizing: border-box;
+  /* Симметричные отступы, чтобы контент не прилипал к краям экрана */
   padding: 40px 20px;
-  font-family: 'StratosSkyeng', sans-serif;
 }
 
 .section__header {
@@ -12,10 +15,6 @@
   flex-wrap: wrap;
   gap: 16px;
 }
-
-/* ==========================================
-   TYPOGRAPHY
-   ========================================== */
 
 .main-title {
   font-size: 60px;
@@ -37,7 +36,7 @@
 
 .badge {
   background-color: var(--accent-color);
-  color: #1a1a1a; /* Текст внутри бейджа всегда темный для контраста с зеленым */
+  color: #1a1a1a;
   border-radius: 5px;
   padding: 12px 20px;
   font-weight: 400;
@@ -48,6 +47,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 5;
 }
 
 .badge::after {
@@ -60,20 +60,16 @@
   background-image: url('@/shared/assets/icons/badge_polygon_1.svg');
   background-size: contain;
   background-repeat: no-repeat;
+  z-index: -1;
 }
-
-/* ==========================================
-   GRID
-   ========================================== */
 
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
   gap: 40px;
-  /* margin-bottom: 40px; */
+  /* Гарантируем, что сетка занимает всю ширину родителя */
+  width: 100%;
 }
-
-/* ===== SCROLL TO TOP ===== */
 
 .scroll-top {
   opacity: 0;
@@ -95,21 +91,30 @@
   pointer-events: auto;
 }
 
+/* Добавил стили для кнопки скролла, если их не было в Button компоненте */
+.scroll-top__btn {
+  background: var(--accent-color);
+  color: #000;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s;
+}
+
 .scroll-top__btn:hover {
   background: var(--accent-hover);
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(184, 243, 63, 0.4);
 }
 
-/* ==========================================
-   ERROR STATE
-   ========================================== */
-
 .error-state {
   text-align: center;
   padding: 60px 20px;
   color: var(--text-secondary);
-  background-color: var(--bg-error-state); /* Используем переменную фона */
+  background-color: var(--bg-error-state);
   border-radius: 12px;
   border: 1px solid var(--border-color);
 }
@@ -132,16 +137,15 @@
   background: var(--bg-secondary);
   color: var(--text-primary);
   border: 1px solid var(--border-color);
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
 .error-state__retry-btn:hover {
   background: var(--bg-secondary-rev);
   transform: translateY(-2px);
 }
-
-/* ==========================================
-   EMPTY STATE
-   ========================================== */
 
 .empty-message {
   text-align: center;
@@ -163,16 +167,12 @@
   color: var(--accent-color);
 }
 
-/* ==========================================
-   FETCHING INDICATOR
-   ========================================== */
-
 .fetching-indicator {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 6px 12px;
-  background: rgba(184, 243, 63, 0.1); /* Прозрачный акцент */
+  background: rgba(184, 243, 63, 0.1);
   border: 1px solid rgba(184, 243, 63, 0.3);
   border-radius: 6px;
   margin-bottom: 16px;
@@ -185,34 +185,27 @@
   animation: pulse 1s infinite;
 }
 
-/* ==========================================
-   SKELETON: Card
-   ========================================== */
-
+/* SKELETON STYLES */
 .card-skeleton {
   background: var(--bg-card);
   border-radius: 20px;
   box-shadow: 0 4px 20px var(--shadow-color);
   display: flex;
   flex-direction: column;
-  /* gap: 16px; */
   height: 100%;
   box-sizing: border-box;
   overflow: hidden;
   border: 1px solid var(--border-color);
 }
 
-/* Image section */
 .skeleton__image-wrapper {
   position: relative;
   border-radius: 16px;
   overflow: hidden;
   height: 300px;
   background-color: var(--bg-skeleton-highlight);
-  /* animation: fade-in 0.3s; */
 }
 
-/* Add button in corner */
 .skeleton__add-button {
   position: absolute;
   top: 12px;
@@ -224,7 +217,6 @@
   border: 1px solid var(--border-color);
 }
 
-/* Content */
 .skeleton__content {
   display: flex;
   flex-direction: column;
@@ -232,17 +224,11 @@
   padding: 24px 16px;
 }
 
-/* ==========================================
-   GLOBAL SKELETON OVERRIDES
-   ========================================== */
-
-/* Переопределяем цвета библиотеки react-loading-skeleton через переменные */
 :global(.react-loading-skeleton) {
   --base-color: var(--bg-skeleton-base);
   --highlight-color: var(--bg-skeleton-highlight);
 }
 
-/* Title */
 .skeleton__title {
   height: 36px !important;
   width: 85% !important;
@@ -250,7 +236,6 @@
   background-color: var(--bg-skeleton-base);
 }
 
-/* Meta info */
 .skeleton__meta {
   display: flex;
   gap: 8px;
@@ -263,13 +248,12 @@
   border-radius: 4px !important;
 }
 
-/* Difficulty */
 .skeleton__difficulty {
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 8px 12px;
-  background: var(--bg-secondary); /* Вместо #fafafa */
+  background: var(--bg-secondary);
   border-radius: 8px;
   border: 1px solid var(--border-color);
 }
@@ -283,11 +267,11 @@
   width: 12px;
   height: 6px;
   border-radius: 3px;
-  background-color: var(--bg-skeleton-base); /* Вместо #f0f0f0 */
+  background-color: var(--bg-skeleton-base);
 }
 
 .skeleton__bar--active {
-  background-color: var(--bg-skeleton-highlight); /* Вместо #d0d0d0 */
+  background-color: var(--bg-skeleton-highlight);
 }
 
 .skeleton__difficulty-text {
@@ -296,13 +280,12 @@
   border-radius: 4px !important;
 }
 
-/* Progress bar (profile only) */
 .skeleton__progress {
   display: flex;
   flex-direction: column;
   gap: 8px;
   padding: 12px;
-  background: var(--bg-secondary); /* Вместо #fafafa */
+  background: var(--bg-secondary);
   border-radius: 12px;
   border: 1px solid var(--border-color);
 }
@@ -319,19 +302,17 @@
   border-radius: 4px !important;
 }
 
-/* Button */
-
 .skeleton__wrapper-buttons {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 6px;
 }
+
 .skeleton__button {
   height: 38px !important;
   border-radius: 50px !important;
 }
 
-/* Header skeletons */
 .skeleton__header {
   height: 60px !important;
   width: 60% !important;
@@ -343,10 +324,6 @@
   width: 262px !important;
   border-radius: 5px !important;
 }
-
-/* ==========================================
-   ANIMATIONS
-   ========================================== */
 
 @keyframes pulse {
   0%,
@@ -370,10 +347,15 @@
 }
 
 /* ==========================================
-   RESPONSIVE
+   RESPONSIVE (МОБИЛЬНЫЕ И ПЛАНШЕТЫ)
    ========================================== */
 
 @media (max-width: 768px) {
+  .section {
+    /* Уменьшаем отступы на мобильных, но оставляем симметричными */
+    padding: 20px 16px;
+  }
+
   .main-title {
     font-size: 32px;
   }
@@ -383,28 +365,40 @@
     gap: 10px;
   }
 
-  .badge::after {
-    left: 20px;
-    top: -8px;
-    border-width: 0 8px 8px 8px;
-    border-color: transparent transparent var(--accent-color) transparent;
+  /* 🔹 СКРЫВАЕМ BADGE НА МОБИЛЬНЫХ/ПЛАНШЕТАХ */
+  .badge {
+    display: none;
+  }
+
+  .grid {
+    /* Одна колонка на мобильных, чтобы карточки не сжимались */
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
 
   .card-skeleton {
-    padding: 12px;
     border-radius: 16px;
   }
 
   .skeleton__image-wrapper {
-    height: 140px;
+    height: 325px;
   }
 
   .skeleton__title {
-    height: 20px !important;
+    height: 24px !important;
     width: 90% !important;
   }
 
   .skeleton__meta-item {
     width: 100px !important;
+    height: 14px !important;
+  }
+
+  .skeleton__difficulty {
+    padding: 6px 8px;
+  }
+
+  .skeleton__bar {
+    width: 8px;
   }
 }

@@ -1,3 +1,5 @@
+/* src/pages/HomePage/HomePage.module.css */
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -13,17 +15,21 @@
 
 .section {
   margin-bottom: 60px;
+  
+
 }
 
 .sectionTitle {
   font-weight: 400;
   font-size: 40px;
   line-height: 1.2;
-  /* color: #1a1a1a; */
+  color: var(--text-primary);
   margin: 0 0 40px;
   white-space: normal;
   word-wrap: break-word;
 }
+
+/* --- HERO SECTION --- */
 
 .hero {
   position: relative;
@@ -32,22 +38,22 @@
   overflow: hidden;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 0 40px;
-  /* align-items: center; */
+  background-color: var(--bg-secondary);
 }
 
 .heroContent {
   z-index: 2;
   max-width: 50%;
-  padding-top: 40px;
 }
 
 .heroTitle {
   font-weight: 400;
   font-size: 60px;
-  /* color: #fff; */
+  color: var(--text-primary);
   margin: 0;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   line-height: 1.1;
   white-space: normal;
 }
@@ -69,6 +75,8 @@
   );
 }
 
+/* --- FITTING GRID --- */
+
 .fittingGrid {
   display: flex;
   flex-wrap: wrap;
@@ -79,7 +87,7 @@
 
 .fittingCard {
   background-color: var(--bg-fittingCard);
-  /* color: #fff; */
+  color: var(--text-on-card);
   padding: 24px;
   border-radius: 20px;
   display: flex;
@@ -107,14 +115,14 @@
   font-size: 24px;
   line-height: 1.3;
   margin: 0;
-  color: #ffffff;
+  color: inherit;
   white-space: normal;
   word-wrap: break-word;
   overflow-wrap: break-word;
-  max-height: none;
-  max-width: none;
   text-align: left;
 }
+
+/* --- DIRECTIONS LIST --- */
 
 .directionsBox {
   background-color: #b8f33f;
@@ -124,28 +132,13 @@
   box-sizing: border-box;
 }
 
-/* Базовый стиль: 3 колонки */
 .directionsList {
   list-style: none;
   padding: 0;
-  /* margin: 0 0 30px 0; */
+  margin: 0;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px 40px;
-}
-
-/* Адаптив: если экран меньше 900px, делаем 2 колонки */
-@media (max-width: 900px) {
-  .directionsList {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* Если экран меньше 600px, делаем 1 колонку */
-@media (max-width: 600px) {
-  .directionsList {
-    grid-template-columns: 1fr;
-  }
 }
 
 .directionsItem {
@@ -167,8 +160,10 @@
   margin-top: 2px;
 }
 
+/* --- CTA BLOCK --- */
+
 .ctaBlock {
-  background:var( --bg-secondary);
+  background: var(--bg-secondary);
   border-radius: 30px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
   padding: 40px;
@@ -177,7 +172,7 @@
   justify-content: space-between;
   gap: 40px;
   position: relative;
-  overflow: visible;
+  overflow: visible; /* Разрешаем картинке выходить за пределы радиуса */
   min-height: 400px;
   width: 100%;
   box-sizing: border-box;
@@ -188,33 +183,15 @@
   flex: 1;
   z-index: 3;
   position: relative;
+  /* На десктопе текст слева */
 }
 
-.ctaImageLine {
-  position: absolute;
-  right: 20px;
-  bottom: -60px;
-  height: 100%;
-  width: auto;
-  max-width: 60%;
-  object-fit: contain;
-  z-index: 1;
-  pointer-events: none;
-  clip-path: inset(0 0 60px 0);
-}
-
-.ctaImage {
-  position: absolute;
-  top: -60px;
-  right: 0;
-  bottom: 0;
-  height: calc(100% + 60px);
-  width: auto;
-  max-width: 50%;
-  object-fit: cover;
-  object-position: bottom center;
-  z-index: 2;
-  margin: 0;
+.ctaTitle {
+  font-weight: 400;
+  font-size: 40px;
+  line-height: 1.2;
+  margin: 0 0 20px 0;
+  color: var(--text-primary);
 }
 
 .benefitsList {
@@ -226,13 +203,14 @@
 .benefitsList li {
   font-style: normal;
   font-weight: 400;
-  font-size: 24px;
-  line-height: 1.3;
-  opacity: 0.6;
+  font-size: 18px;
+  line-height: 1.4;
+  opacity: 0.9;
   margin-bottom: 12px;
   padding-left: 20px;
   position: relative;
   word-wrap: break-word;
+  color: var(--text-primary);
 }
 
 .benefitsList li::before {
@@ -241,6 +219,9 @@
   position: absolute;
   left: 0;
   font-weight: bold;
+  font-size: 1.5em;
+  line-height: 0.8;
+  top: 4px;
 }
 
 .ctaButton {
@@ -253,53 +234,77 @@
   border-radius: 50px;
   cursor: pointer;
   transition:
-    transform 0.2s,
-    background-color 0.2s;
+    transform 0.2s ease,
+    background-color 0.2s ease;
   font-family: 'StratosSkyeng', sans-serif;
   height: 50px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 500;
   font-size: 18px;
   line-height: 1;
   white-space: nowrap;
-}
-
-.ctaButton:hover {
-  background-color: #a6e030;
-  transform: translateY(-2px);
-}
-
-.ctaImageWrapper {
-  position: relative;
-  width: 350px;
-  height: 350px;
-  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #000;
-  border-radius: 50%;
-  overflow: hidden;
 }
 
-.scribble {
+/* Ховер только для устройств с мышью */
+@media (hover: hover) and (pointer: fine) {
+  .ctaButton:hover {
+    background-color: #a6e030;
+    transform: translateY(-2px);
+  }
+}
+
+/* Обертка для картинки на десктопе */
+.ctaImageWrapper {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90%;
-  height: 90%;
-  border: 4px solid #b8f33f;
-  border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-  opacity: 0.6;
-  pointer-events: none;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 50%;
+  height: 100%;
   z-index: 1;
+  pointer-events: none;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  visibility: visible;
 }
 
+.ctaImageLine {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 80%;
+  opacity: 0.5;
+  z-index: 0;
+}
+
+.ctaImage {
+  width: 80%;
+  height: auto;
+  object-fit: contain;
+  object-position: bottom center;
+  margin-bottom: -10px; /* Небольшой сдвиг вниз */
+}
+
+/* --- MEDIA QUERIES --- */
+
+/* Планшеты и небольшие ноутбуки */
 @media (max-width: 900px) {
+  .content__wrapper {
+    padding: 40px 20px;
+  }
+
+  .sectionTitle {
+    font-size: 32px;
+    margin-bottom: 30px;
+  }
+
   .hero {
-    height: auto;
-    flex-direction: column;
+    /* height: auto; */
+    flex-direction: column-reverse;
     padding: 30px 20px;
     text-align: center;
   }
@@ -307,65 +312,94 @@
   .heroContent {
     max-width: 100%;
     padding-top: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 0;
   }
 
   .heroTitle {
-    font-size: 42px;
+    font-size: 40px;
+    margin-bottom: 20px;
+    position: static;
+    margin: 0 0 20px 0;
   }
-
+/* 
   .heroImage {
     position: relative;
     width: 100%;
     height: 250px;
+    right: auto;
     mask-image: none;
     -webkit-mask-image: none;
     object-fit: cover;
-  }
-
-  .ctaBlock {
-    flex-direction: column;
-    text-align: center;
-    padding: 30px 20px;
-    min-height: auto;
-  }
-
-  .ctaContent {
-    max-width: 100%;
-    order: 2;
-  }
-
-  .ctaImage {
-    position: relative;
-    top: 0;
-    right: auto;
-    bottom: auto;
-    height: 250px;
-    width: 100%;
-    max-width: none;
-    clip-path: none;
-    order: 1;
-    margin-bottom: 20px;
     border-radius: 20px;
+  } */
+
+  .directionsList {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px 20px;
   }
 
-  .ctaTitle {
-    font-weight: 400;
-    font-size: 60px;
-    line-height: 60px;
-  }
-
-  .benefitsList li {
-    text-align: left;
-    display: inline-block;
+  .directionsItem {
+    font-size: 20px;
   }
 
   .fittingCard {
-    flex: 1 1 100%;
+    flex: 1 1 calc(50% - 17px);
+    min-width: auto;
+  }
+
+  /* Адаптация CTA для планшета */
+  .ctaBlock {
+    flex-direction: column;
+    min-height: auto;
+    padding-top: 0;
+  }
+
+  .ctaImageWrapper {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    margin-bottom: -50px; /* Ключевой момент: наезжаем белым блоком */
+    z-index: 1;
+    justify-content: flex-end; /* Сдвигаем мужчину вправо */
+    align-items: flex-end;
+  }
+
+  .ctaImage {
+    width: 90%;
+    max-width: 350px;
+    margin-right: -20px; /* Вылезает за правый край */
+    margin-bottom: 0;
+  }
+
+  .ctaImageLine {
+    display: none;
+  }
+
+  .ctaContent {
+    position: relative;
+    z-index: 2;
+    background: var(--bg-secondary);
+    border-radius: 20px 20px 0 0;
+    padding: 30px 20px;
+    width: 100%;
+    max-width: 100%;
+    margin-right: 0;
+    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.05);
+  }
+
+  .ctaTitle {
+    font-size: 28px;
+    text-align: left;
+  }
+
+  .benefitsList li {
+    font-size: 16px;
+    text-align: left;
   }
 }
 
-@media (max-width: 480px) {
+/* Мобильные телефоны */
+@media (max-width: 600px) {
   .sectionTitle {
     font-size: 28px;
   }
@@ -377,6 +411,7 @@
   .fittingCard {
     flex: 1 1 100%;
     width: 100%;
+    max-width: none;
   }
 
   .fittingNumber {
@@ -395,21 +430,48 @@
     font-size: 18px;
   }
 
-  .ctaTitle {
-    font-size: 28px;
+  .ctaBlock {
+    padding: 0; /* Убираем паддинг у родителя, так как он есть у контента */
+    background: transparent; /* Фон переносим в контент или оставляем прозрачным */
+    box-shadow: none;
+    border-radius: 0;
   }
 
-  .benefitsList li {
-    font-size: 18px;
+  .ctaImageWrapper {
+    height: 220px;
+    margin-bottom: -40px;
+  }
+
+  .ctaImage {
+    width: 90%;
+    margin-right: -10px;
+  }
+
+  .ctaContent {
+    padding: 20px 15px;
+    border-radius: 20px; /* Полное скругление на очень маленьких экранах, если нужно */
+  }
+
+  .ctaTitle {
+    font-size: 24px;
   }
 
   .ctaButton {
     max-width: 100%;
     font-size: 16px;
+    height: 48px;
+  }
+}
+
+/* Отключение ховеров на тач-устройствах */
+@media (hover: none) and (pointer: coarse) {
+  .ctaButton {
+    transform: none !important;
+    transition: none !important;
   }
 
-  .ctaImageWrapper {
-    width: 200px;
-    height: 200px;
+  .fittingCard,
+  .directionsItem {
+    transition: none !important;
   }
 }

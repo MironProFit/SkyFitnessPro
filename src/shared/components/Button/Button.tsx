@@ -10,6 +10,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: ButtonSize;
   color?: ButtonsColor;
   isLoading?: boolean;
+  isMobileAdaptive?: boolean;
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -19,6 +20,7 @@ export const Button: React.FC<ButtonProps> = ({
   isLoading = false,
   disabled,
   color = 'green',
+  isMobileAdaptive = false, // По умолчанию false
   className = '',
   ...props
 }) => {
@@ -27,6 +29,7 @@ export const Button: React.FC<ButtonProps> = ({
     styles[`btn--${variant}`],
     styles[`btn--${size}`],
     styles[`btn--${color}`],
+    isMobileAdaptive ? styles['btn--mobile-adaptive'] : '', // Добавляем класс если проп true
     className,
   ]
     .filter(Boolean)

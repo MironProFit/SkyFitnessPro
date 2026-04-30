@@ -7,7 +7,7 @@
   flex-direction: column;
 }
 
-/* Хедер: ширина 1200px, БЕЗ боковых отступов (padding: 0) */
+/* Хедер: ширина 1200px, центрирование */
 .header {
   display: flex;
   align-items: center;
@@ -19,7 +19,7 @@
   box-sizing: border-box;
 }
 
-/* Скрытые кнопки с ховер-эффектом (для хедера) */
+/* Скрытые кнопки с ховер-эффектом (для десктопа) */
 .hiddenBtn {
   display: flex;
   align-items: center;
@@ -31,8 +31,7 @@
   font-weight: 500;
   color: var(--text-secondary);
   padding: 10px 16px;
-  /* border-radius: 8px; */
-  opacity: 0; /* Невидимы по умолчанию */
+  opacity: 0; /* Невидимы по умолчанию на десктопе */
   transition: all 0.3s ease;
 }
 
@@ -41,10 +40,9 @@
 .hiddenBtn:hover {
   opacity: 1;
   color: var(--text-primary);
-  background-color: var(--bg-secondary); /* Фон при наведении */
+  background-color: var(--bg-secondary);
 }
 
-/* Дополнительный ховер для акцента */
 .hiddenBtn:hover {
   background-color: var(--border-color);
   transform: translateY(-1px);
@@ -57,15 +55,16 @@
   font-size: 60px;
   line-height: 60px;
   flex-grow: 1;
+  text-align: center; /* Центрируем заголовок курса */
 }
 
-/* Контент: ширина 1200px, БЕЗ боковых отступов */
+/* Контент: ширина 1200px */
 .content {
   flex: 1;
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
-  padding: 0; /* Убираем боковые отступы */
+  padding: 0 20px; /* Небольшие боковые отступы для безопасности */
   box-sizing: border-box;
 }
 
@@ -197,7 +196,7 @@
 
 /* Стили для кнопки сохранения */
 .saveBtn {
-  white-space: nowrap; /* Текст без переноса */
+  white-space: nowrap;
   padding: 0 20px;
   min-width: 300px;
 }
@@ -233,50 +232,6 @@
 @keyframes spin {
   to {
     transform: rotate(360deg);
-  }
-}
-
-/* Адаптив */
-@media (max-width: 768px) {
-  .header {
-    padding: 16px 0;
-  }
-
-  .exercisesGrid {
-    grid-template-columns: 1fr;
-    padding: 20px;
-    border-radius: 20px;
-  }
-
-  .controls {
-    flex-direction: column-reverse; /* Кнопка сохранения сверху, навигация снизу */
-    gap: 20px;
-  }
-
-  .navContainer {
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  .navBtn,
-  .saveBtn {
-    width: 100%;
-  }
-
-  .courseTitle {
-    font-size: 32px;
-    line-height: 1.2;
-  }
-
-  /* На мобильных кнопки всегда видны */
-  .hiddenBtn {
-    opacity: 1;
-    font-size: 12px;
-    padding: 8px;
-  }
-
-  .hiddenBtn span {
-    display: none;
   }
 }
 
@@ -425,9 +380,92 @@
   height: 48px;
 }
 
+/* ==========================================
+   АДАПТИВНОСТЬ (ПЛАНШЕТЫ И МОБИЛЬНЫЕ)
+   ========================================== */
+
 @media (max-width: 768px) {
+  /* Хедер на мобильных */
+  .header {
+    padding: 16px;
+    
+    gap: 10px;
+  }
+
+  .courseTitle {
+    font-size: 28px; /* Уменьшаем заголовок курса */
+    line-height: 1.2;
+    order: 1; /* Заголовок сверху */
+    width: 100%;
+    text-align: left;
+    margin-bottom: 10px;
+  }
+
+  /* Кнопки хедера на мобильных: всегда видны, только иконки */
+  .hiddenBtn {
+    opacity: 1;
+    font-size: 12px;
+    padding: 8px 12px;
+    order: 2; /* Кнопки под заголовком */
+  }
+
+  .hiddenBtn span {
+    display: none; /* Скрываем текст, оставляем иконки */
+  }
+
+  /* Контент на мобильных */
+  .content {
+    padding: 0 16px; /* Боковые отступы */
+  }
+
+  /* Сетка упражнений в одну колонку */
+  .exercisesGrid {
+    grid-template-columns: 1fr;
+    padding: 20px;
+    border-radius: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .gridHeader {
+    font-size: 24px;
+    margin-bottom: 15px;
+  }
+
+  /* Панель управления на мобильных */
+  .controls {
+    flex-direction: column-reverse; /* Кнопка сохранения сверху, навигация снизу */
+    gap: 15px;
+    padding-bottom: 20px;
+  }
+
+  .saveBtn {
+    width: 100%; /* Кнопка сохранения на всю ширину */
+    min-width: unset;
+    padding: 12px;
+  }
+
+  .navContainer {
+    width: 100%;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .navBtn {
+    width: 48%; /* Кнопки навигации делят ширину пополам */
+    min-width: unset;
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  /* Модальное окно на мобильных */
   .modalContent {
     width: 90%;
     padding: 20px;
+    margin: 20px;
+  }
+  
+  .modalTitle {
+    font-size: 18px;
   }
 }

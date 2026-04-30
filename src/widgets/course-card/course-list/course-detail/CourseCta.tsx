@@ -1,14 +1,13 @@
-import { useApp } from '@/context/AppContext';
-import styles from './CourseDetail.module.css'; 
+import styles from './CourseDetail.module.css';
 import CtaImage from '@/shared/assets/courses/cta_img.png';
 import CtaImageLine from '@/shared/assets/courses/cta_line.png';
-
 import { useAuth } from '@/context/AuthContext';
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import type { User } from '@/shared/api/types';
 import { userApi } from '@/entities/user/api/userApi';
 import { Button } from '@/shared/components/Button/Button';
+import type { User } from '@/shared/api/types';
+import { useApp } from '@/context/AppContext';
 
 interface CourseCtaProps {
   fitting?: string[];
@@ -16,10 +15,8 @@ interface CourseCtaProps {
 }
 
 export const CourseCta = ({ fitting, courseId }: CourseCtaProps) => {
-  const { toggleModalAuth, addCourseForUser, removeCourseForUser } = useApp();
+  const { toggleModalAuth, addCourseForUser, removeCourseForUser, isMobile } = useApp();
   const { isAuthenticated, isAuthenticating } = useAuth();
-
-  //Состояние для анимации кнопки (загрузка)
   const [isToggling, setIsToggling] = useState(false);
 
   const { data: userData } = useQuery<User>({
@@ -29,7 +26,6 @@ export const CourseCta = ({ fitting, courseId }: CourseCtaProps) => {
     staleTime: 1000 * 60 * 5,
   });
 
-  //Проверяем, добавлен ли курс пользователем
   const isSelected = isAuthenticated
     ? (userData?.user?.selectedCourses || []).includes(courseId!)
     : false;
@@ -41,8 +37,7 @@ export const CourseCta = ({ fitting, courseId }: CourseCtaProps) => {
 
   const handleToggleCourse = async () => {
     if (!courseId) return;
-
-    setIsToggling(true); 
+    setIsToggling(true);
     try {
       if (isSelected) {
         await removeCourseForUser(courseId);
@@ -50,9 +45,9 @@ export const CourseCta = ({ fitting, courseId }: CourseCtaProps) => {
         await addCourseForUser(courseId);
       }
     } catch (error) {
-      console.error('Не удалось переключить статус курса:', error);
+      console.error('Ошибка переключения курса:', error);
     } finally {
-      setIsToggling(false); 
+      setIsToggling(false);
     }
   };
 
@@ -66,8 +61,16 @@ export const CourseCta = ({ fitting, courseId }: CourseCtaProps) => {
 
   return (
     <div className={styles.ctaBlock}>
+      {/* Картинка всегда рендерится, CSS сам скроет или переместит её на мобильных */}
+      {isMobile && (
+        <div className={styles.ctaImageWrapper}>
+          <img src={CtaImageLine} className={styles.ctaImageLine} alt="" aria-hidden="true" />
+          <img src={CtaImage} alt="Athlete" className={styles.ctaImage} />
+        </div>
+      )}
+
       <div className={styles.ctaContent}>
-        <h2 className={styles.ctaTitle}>Начните путь к новому телу</h2>
+        <h1 className={styles.ctaTitle}>Начните путь к новому телу</h1>
 
         <ul className={styles.benefitsList}>
           {benefits.map((item, index) => (
@@ -75,23 +78,23 @@ export const CourseCta = ({ fitting, courseId }: CourseCtaProps) => {
           ))}
         </ul>
 
-        {/* Кнопка с логикой добавления/удаления и загрузкой */}
-        <Button onClick={handleClick} size="lg" disabled={isAuthenticating || isToggling}>
+        <Button
+          onClick={handleClick}
+          size="lg"
+          disabled={isAuthenticating || isToggling}
+          className={styles.ctaButton}
+        >
           {isAuthenticating ? (
             'Загрузка...'
           ) : !isAuthenticated ? (
             'Войдите, чтобы добавить курс'
           ) : isToggling ? (
-            //Показываем спиннер или текст при загрузке
-            <span className={styles.spinner}>Загрузка...</span>
+            'Загрузка...'
           ) : (
             <>{isSelected ? 'Удалить курс' : 'Добавить курс'}</>
           )}
         </Button>
       </div>
-
-      <img src={CtaImageLine} className={styles.ctaImageLine} alt="" />
-      <img src={CtaImage} alt="Athlet" className={styles.ctaImage} />
     </div>
   );
 };

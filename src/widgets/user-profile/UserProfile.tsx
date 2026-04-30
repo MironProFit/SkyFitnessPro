@@ -69,7 +69,7 @@ export default function UserProfile() {
   };
 
   if (isLoading) {
-    return <div className={styles.section}>Загрузка профиля...</div>;
+    return <div className={styles.section_load}>Загрузка профиля...</div>;
   }
 
   return (
@@ -78,13 +78,13 @@ export default function UserProfile() {
         <h1 className={styles.profile_title}>Профиль</h1>
         <div className={styles.profile_container}>
           <div className={styles.profile_box}>
-            <img src={imgProfile} alt="Profile" />
+            <img src={imgProfile} className={styles.profile_img} alt="Profile" />
             <div className={styles.profile_container__info}>
               <div className={styles.info_name}>{userName}</div>
               <div className={styles.info_login}>Логин: {userEmail}</div>
 
               <div className={styles.buttonsWrapper}>
-                <Button color="white" size="xl" onClick={handleLogout}>
+                <Button className={styles.btn_logout} color="white" size="xl" onClick={handleLogout}>
                   Выйти
                 </Button>
 
