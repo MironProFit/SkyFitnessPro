@@ -61,8 +61,7 @@ export const CourseCta = ({ fitting, courseId }: CourseCtaProps) => {
 
   return (
     <div className={styles.ctaBlock}>
-      {/* Картинка всегда рендерится, CSS сам скроет или переместит её на мобильных */}
-      {isMobile && (
+      {!isMobile && (
         <div className={styles.ctaImageWrapper}>
           <img src={CtaImageLine} className={styles.ctaImageLine} alt="" aria-hidden="true" />
           <img src={CtaImage} alt="Athlete" className={styles.ctaImage} />

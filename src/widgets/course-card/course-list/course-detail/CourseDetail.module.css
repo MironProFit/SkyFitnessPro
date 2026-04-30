@@ -15,8 +15,6 @@
 
 .section {
   margin-bottom: 60px;
-  
-
 }
 
 .sectionTitle {
@@ -262,7 +260,7 @@
   top: 0;
   right: 0;
   bottom: 0;
-  width: 50%;
+  width: 60%;
   height: 100%;
   z-index: 1;
   pointer-events: none;
@@ -275,8 +273,7 @@
 .ctaImageLine {
   position: absolute;
   bottom: 0;
-  right: 0;
-  width: 80%;
+  right: 60px;
   opacity: 0.5;
   z-index: 0;
 }
@@ -286,7 +283,8 @@
   height: auto;
   object-fit: contain;
   object-position: bottom center;
-  margin-bottom: -10px; /* Небольшой сдвиг вниз */
+  margin-bottom: -10px;
+  z-index: 1;
 }
 
 /* --- MEDIA QUERIES --- */
@@ -321,7 +319,7 @@
     position: static;
     margin: 0 0 20px 0;
   }
-/* 
+  /* 
   .heroImage {
     position: relative;
     width: 100%;
@@ -336,6 +334,10 @@
   .directionsList {
     grid-template-columns: repeat(2, 1fr);
     gap: 15px 20px;
+  }
+  .directionsBox {
+    margin-bottom: 150px;
+    z-index: 1;
   }
 
   .directionsItem {
@@ -352,27 +354,30 @@
     flex-direction: column;
     min-height: auto;
     padding-top: 0;
+    z-index: 3;
   }
 
   .ctaImageWrapper {
-    position: relative;
-    width: 100%;
+    position: absolute;
+    width: 80%;
     height: 300px;
     margin-bottom: -50px; /* Ключевой момент: наезжаем белым блоком */
     z-index: 1;
     justify-content: flex-end; /* Сдвигаем мужчину вправо */
     align-items: flex-end;
+    z-index: 2;
+        right: -15%;
+    top: -10%;
   }
 
   .ctaImage {
-    width: 90%;
-    max-width: 350px;
+    /* width: 90%; */
+    /* max-width: 350px;
     margin-right: -20px; /* Вылезает за правый край */
-    margin-bottom: 0;
+    /* margin-bottom: 0;  */
   }
 
   .ctaImageLine {
-    display: none;
   }
 
   .ctaContent {
@@ -437,16 +442,15 @@
     border-radius: 0;
   }
 
-  .ctaImageWrapper {
+  /* .ctaImageWrapper {
     height: 220px;
     margin-bottom: -40px;
-  }
+  } */
 
   .ctaImage {
-    width: 90%;
+    width: 50%;
     margin-right: -10px;
   }
-
   .ctaContent {
     padding: 20px 15px;
     border-radius: 20px; /* Полное скругление на очень маленьких экранах, если нужно */
