@@ -15,8 +15,9 @@ interface CourseCtaProps {
 }
 
 export const CourseCta = ({ fitting, courseId }: CourseCtaProps) => {
-  const { toggleModalAuth, addCourseForUser, removeCourseForUser, isMobile } = useApp();
+  const { toggleModalAuth, addCourseForUser, removeCourseForUser } = useApp();
   const { isAuthenticated, isAuthenticating } = useAuth();
+  const { isMobile } = useApp(); // Используем хук
   const [isToggling, setIsToggling] = useState(false);
 
   const { data: userData } = useQuery<User>({
@@ -62,9 +63,14 @@ export const CourseCta = ({ fitting, courseId }: CourseCtaProps) => {
   return (
     <div className={styles.ctaBlock}>
       {!isMobile && (
-        <div className={styles.ctaImageWrapper}>
-          <img src={CtaImageLine} className={styles.ctaImageLine} alt="" aria-hidden="true" />
-          <img src={CtaImage} alt="Athlete" className={styles.ctaImage} />
+        <div className={styles.ctaImageWrapperDesktop}>
+          <img
+            src={CtaImageLine}
+            className={styles.ctaImageLineDesktop}
+            alt=""
+            aria-hidden="true"
+          />
+          <img src={CtaImage} alt="Athlete" className={styles.ctaImageDesktop} />
         </div>
       )}
 

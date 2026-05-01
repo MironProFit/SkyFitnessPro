@@ -1,4 +1,4 @@
-/* src/pages/HomePage/HomePage.module.css */
+/* src/pages/CourseDetail/CourseDetail.module.css */
 
 .container {
   max-width: 1200px;
@@ -11,6 +11,7 @@
 
 .content__wrapper {
   padding: 60px 20px;
+  overflow: hidden;
 }
 
 .section {
@@ -27,17 +28,18 @@
   word-wrap: break-word;
 }
 
-/* --- HERO SECTION --- */
-
+/* --- HERO SECTION (Шапка курса) --- */
 .hero {
   position: relative;
   height: 300px;
+  min-height: 300px;
   border-radius: 30px;
   overflow: hidden;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 40px;
+  margin: 0 20px;
   background-color: var(--bg-secondary);
 }
 
@@ -73,8 +75,7 @@
   );
 }
 
-/* --- FITTING GRID --- */
-
+/* --- FITTING GRID (Карточки с цифрами) --- */
 .fittingGrid {
   display: flex;
   flex-wrap: wrap;
@@ -85,17 +86,15 @@
 
 .fittingCard {
   background-color: var(--bg-fittingCard);
-  color: var(--text-on-card);
+  color: #fff;
   padding: 24px;
   border-radius: 20px;
   display: flex;
   align-items: flex-start;
   gap: 16px;
-  width: auto;
   min-width: 280px;
   max-width: 500px;
   box-sizing: border-box;
-  height: auto;
   flex: 0 0 auto;
 }
 
@@ -116,18 +115,19 @@
   color: inherit;
   white-space: normal;
   word-wrap: break-word;
-  overflow-wrap: break-word;
   text-align: left;
 }
 
-/* --- DIRECTIONS LIST --- */
-
+/* --- DIRECTIONS BOX (Желтый блок) --- */
 .directionsBox {
   background-color: #b8f33f;
   border-radius: 20px;
   padding: 30px;
   width: 100%;
   box-sizing: border-box;
+  position: relative;
+  z-index: 1; /* Самый нижний слой из трех (желтый -> спортсмен -> белый) */
+  margin-bottom: 0;
 }
 
 .directionsList {
@@ -137,6 +137,8 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px 40px;
+  position: relative;
+  z-index: 2;
 }
 
 .directionsItem {
@@ -158,8 +160,39 @@
   margin-top: 2px;
 }
 
-/* --- CTA BLOCK --- */
+/* --- ATHLETE WRAPPER MOBILE (Спортсмен между блоками) --- */
+.athleteWrapperMobile {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  margin-top: -60px; 
+  margin-bottom: -60px; 
+  z-index: 2; 
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
 
+.athleteImageMobile {
+  width: 90%;
+  max-width: 400px;
+  height: auto;
+  object-fit: contain;
+  object-position: right bottom;
+  transform: translate(60%, 25%) ;
+}
+
+.athleteLineMobile {
+  position: absolute;
+  bottom: 10px;
+  transform: translateY(10%); 
+  width: 100%;
+  opacity: 0.6;
+  z-index: -1;
+}
+
+/* --- CTA BLOCK (Белая плашка) --- */
 .ctaBlock {
   background: var(--bg-secondary);
   border-radius: 30px;
@@ -170,10 +203,11 @@
   justify-content: space-between;
   gap: 40px;
   position: relative;
-  overflow: visible; /* Разрешаем картинке выходить за пределы радиуса */
+  overflow: visible;
   min-height: 400px;
   width: 100%;
   box-sizing: border-box;
+  z-index: 3; /* Самый верхний слой на десктопе */
 }
 
 .ctaContent {
@@ -181,7 +215,6 @@
   flex: 1;
   z-index: 3;
   position: relative;
-  /* На десктопе текст слева */
 }
 
 .ctaTitle {
@@ -199,16 +232,12 @@
 }
 
 .benefitsList li {
-  font-style: normal;
-  font-weight: 400;
   font-size: 18px;
   line-height: 1.4;
-  opacity: 0.9;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   padding-left: 20px;
   position: relative;
-  word-wrap: break-word;
-  color: var(--text-primary);
+  color: var(--text-secondary);
 }
 
 .benefitsList li::before {
@@ -216,8 +245,7 @@
   color: #b8f33f;
   position: absolute;
   left: 0;
-  font-weight: bold;
-  font-size: 1.5em;
+  font-size: 24px;
   line-height: 0.8;
   top: 4px;
 }
@@ -236,17 +264,13 @@
     background-color 0.2s ease;
   font-family: 'StratosSkyeng', sans-serif;
   height: 50px;
-  font-style: normal;
   font-weight: 500;
   font-size: 18px;
-  line-height: 1;
-  white-space: nowrap;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Ховер только для устройств с мышью */
 @media (hover: hover) and (pointer: fine) {
   .ctaButton:hover {
     background-color: #a6e030;
@@ -254,54 +278,46 @@
   }
 }
 
-/* Обертка для картинки на десктопе */
-.ctaImageWrapper {
+/* Desktop Image Wrapper (Картинка внутри CTA на десктопе) */
+.ctaImageWrapperDesktop {
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
-  width: 60%;
+  width: 50%;
   height: 100%;
   z-index: 1;
   pointer-events: none;
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  visibility: visible;
 }
 
-.ctaImageLine {
-  position: absolute;
-  bottom: 0;
-  right: 60px;
-  opacity: 0.5;
-  z-index: 0;
-}
-
-.ctaImage {
-  width: 80%;
+.ctaImageDesktop {
+  width: 100%;
   height: auto;
   object-fit: contain;
   object-position: bottom center;
   margin-bottom: -10px;
-  z-index: 1;
+}
+
+.ctaImageLineDesktop {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  opacity: 0.5;
+  z-index: -1;
 }
 
 /* --- MEDIA QUERIES --- */
 
-/* Планшеты и небольшие ноутбуки */
+/* Планшеты (< 900px) */
 @media (max-width: 900px) {
-  .content__wrapper {
-    padding: 40px 20px;
-  }
-
-  .sectionTitle {
-    font-size: 32px;
-    margin-bottom: 30px;
-  }
-
+  /* Hero Adaptation */
   .hero {
-    /* height: auto; */
+    height: auto;
+    min-height: auto;
     flex-direction: column-reverse;
     padding: 30px 20px;
     text-align: center;
@@ -310,16 +326,13 @@
   .heroContent {
     max-width: 100%;
     padding-top: 20px;
-    margin-bottom: 0;
   }
 
   .heroTitle {
     font-size: 40px;
     margin-bottom: 20px;
-    position: static;
-    margin: 0 0 20px 0;
   }
-  /* 
+
   .heroImage {
     position: relative;
     width: 100%;
@@ -329,19 +342,11 @@
     -webkit-mask-image: none;
     object-fit: cover;
     border-radius: 20px;
-  } */
-
-  .directionsList {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px 20px;
-  }
-  .directionsBox {
-    margin-bottom: 150px;
-    z-index: 1;
   }
 
-  .directionsItem {
-    font-size: 20px;
+  .sectionTitle {
+    font-size: 32px;
+    margin-bottom: 30px;
   }
 
   .fittingCard {
@@ -349,62 +354,54 @@
     min-width: auto;
   }
 
-  /* Адаптация CTA для планшета */
+  .directionsList {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px 20px;
+  }
+
+  .directionsItem {
+    font-size: 20px;
+  }
+
+  /* CTA Adaptation for Tablet/Mobile */
   .ctaBlock {
     flex-direction: column;
     min-height: auto;
-    padding-top: 0;
+    padding: 30px 20px;
+    border-radius: 20px 20px 0 0; /* Скругление только сверху */
+    margin-top: 0;
+    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.05);
     z-index: 3;
   }
 
-  .ctaImageWrapper {
-    position: absolute;
-    width: 80%;
-    height: 300px;
-    margin-bottom: -50px; /* Ключевой момент: наезжаем белым блоком */
-    z-index: 1;
-    justify-content: flex-end; /* Сдвигаем мужчину вправо */
-    align-items: flex-end;
-    z-index: 2;
-        right: -15%;
-    top: -10%;
-  }
-
-  .ctaImage {
-    /* width: 90%; */
-    /* max-width: 350px;
-    margin-right: -20px; /* Вылезает за правый край */
-    /* margin-bottom: 0;  */
-  }
-
-  .ctaImageLine {
-  }
-
   .ctaContent {
-    position: relative;
-    z-index: 2;
-    background: var(--bg-secondary);
-    border-radius: 20px 20px 0 0;
-    padding: 30px 20px;
-    width: 100%;
     max-width: 100%;
-    margin-right: 0;
-    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    text-align: left;
   }
 
   .ctaTitle {
     font-size: 28px;
-    text-align: left;
   }
 
   .benefitsList li {
     font-size: 16px;
-    text-align: left;
+  }
+
+  .ctaButton {
+    max-width: 100%;
+    font-size: 16px;
+    height: 48px;
   }
 }
 
-/* Мобильные телефоны */
+/* Мобильные телефоны (< 600px) */
 @media (max-width: 600px) {
+  .content__wrapper {
+    padding: 40px 15px;
+
+  }
+
   .sectionTitle {
     font-size: 28px;
   }
@@ -435,35 +432,26 @@
     font-size: 18px;
   }
 
-  .ctaBlock {
-    padding: 0; /* Убираем паддинг у родителя, так как он есть у контента */
-    background: transparent; /* Фон переносим в контент или оставляем прозрачным */
-    box-shadow: none;
-    border-radius: 0;
-  }
-
-  /* .ctaImageWrapper {
+  /* Athlete Mobile Adaptation */
+  .athleteWrapperMobile {
     height: 220px;
+    margin-top: -40px;
     margin-bottom: -40px;
-  } */
-
-  .ctaImage {
-    width: 50%;
-    margin-right: -10px;
   }
-  .ctaContent {
+
+  .athleteImageMobile {
+    width: 100%;
+    max-width: 320px;
+    transform: translateX(36%);
+  }
+
+  .ctaBlock {
     padding: 20px 15px;
-    border-radius: 20px; /* Полное скругление на очень маленьких экранах, если нужно */
+    border-radius: 20px; /* Полное скругление на мобильном */
   }
 
   .ctaTitle {
     font-size: 24px;
-  }
-
-  .ctaButton {
-    max-width: 100%;
-    font-size: 16px;
-    height: 48px;
   }
 }
 
@@ -471,11 +459,6 @@
 @media (hover: none) and (pointer: coarse) {
   .ctaButton {
     transform: none !important;
-    transition: none !important;
-  }
-
-  .fittingCard,
-  .directionsItem {
     transition: none !important;
   }
 }

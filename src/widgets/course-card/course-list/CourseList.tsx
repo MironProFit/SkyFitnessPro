@@ -61,6 +61,13 @@ export const CourseList = () => {
     return allCourses.filter((course) => selectedIds.includes(course._id));
   }, [pageProfile, allCourses, userData]);
 
+  const skeletonCount = useMemo(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth < 900 ? 1 : 3;
+    }
+    return isMobile ? 1 : 3;
+  }, [isMobile]);
+
   //Объединённое состояние загрузки
   const isLoading = pageProfile ? isLoadingCourses || isLoadingUser : isLoadingCourses;
   const isError = pageProfile ? isErrorCourses || isErrorUser : isErrorCourses;
@@ -81,7 +88,7 @@ export const CourseList = () => {
   //Компонент скелетона для сетки курсов
   const CourseListSkeleton = () => (
     <div className={styles.grid}>
-      {Array.from({ length: 3 }).map((_, index) => (
+      {Array.from({ length: skeletonCount }).map((_, index) => (
         <div key={index} className={styles['card-skeleton']}>
           <Skeleton className={styles['skeleton__image-wrapper']}></Skeleton>
           <div className={styles['skeleton__content']}>

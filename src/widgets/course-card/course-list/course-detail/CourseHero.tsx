@@ -23,16 +23,12 @@ interface CourseHeroProps {
 export const CourseHero = ({ title, color, nameEN }: CourseHeroProps) => {
   const imageName = nameEN ? nameEN.toLowerCase() : '';
   const backgroundImage = courseImages[imageName] || '';
-  const {isMobile} = useApp()
+  const { isMobile } = useApp();
 
   return (
     <div className={styles.hero} style={{ backgroundColor: color }}>
-      <div 
-      
-      >
-        <div className={styles.heroContent}>
-          {!isMobile && <h1 className={styles.heroTitle}>{title}</h1>}
-        </div>
+      <div className={styles.heroContent}>
+        {!isMobile && <h1 className={styles.heroTitle}>{title}</h1>}
       </div>
 
       {backgroundImage && <img src={backgroundImage} alt={title} className={styles.heroImage} />}
