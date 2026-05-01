@@ -219,7 +219,6 @@ export const WorkoutPage = () => {
       <header className={styles.header}>
         <h1 className={styles.courseTitle}>{courseName}</h1>
 
-        {/* Кнопка В ПРОФИЛЬ (скрытая) */}
         <Button
           className={styles.hiddenBtn}
           style={{ marginRight: '20px' }}
@@ -230,7 +229,6 @@ export const WorkoutPage = () => {
           <span>В профиль</span>
         </Button>
 
-        {/* Кнопка СБРОСИТЬ (скрытая) */}
         <Button
           className={styles.hiddenBtn}
           onClick={handleResetCourse}
@@ -279,18 +277,15 @@ export const WorkoutPage = () => {
           </div>
         </section>
 
-        {/* Нижняя панель управления */}
         <div
           className={styles.controls}
           onMouseEnter={() => setShowNavButtons(true)}
           onMouseLeave={() => setShowNavButtons(false)}
         >
-          {/* Кнопка сохранения всегда видна */}
           <Button onClick={handleOpenModal} size="xxl" className={styles.saveBtn}>
             {saveButtonText}
           </Button>
 
-          {/* Контейнер навигации (скрытые кнопки) */}
           {showNavigation && (
             <div className={styles.navContainer}>
               <Button
@@ -318,7 +313,6 @@ export const WorkoutPage = () => {
         </div>
       </main>
 
-      {/* Модалка ввода */}
       {isModalOpen && (
         <div className={styles.modalOverlay} onClick={handleCloseModal}>
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
@@ -353,7 +347,6 @@ export const WorkoutPage = () => {
         </div>
       )}
 
-      {/* Модалка успеха */}
       {isSuccessModalOpen && (
         <div className={styles.successOverlay}>
           <div className={styles.successContent}>

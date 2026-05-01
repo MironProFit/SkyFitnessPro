@@ -1,5 +1,3 @@
-/* src/pages/CourseDetail/CourseDetail.module.css */
-
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -28,7 +26,6 @@
   word-wrap: break-word;
 }
 
-/* --- HERO SECTION (Шапка курса) --- */
 .hero {
   position: relative;
   height: 300px;
@@ -37,7 +34,6 @@
   overflow: hidden;
   display: flex;
   justify-content: space-between;
-  align-items: center;
   padding: 0 40px;
   margin: 0 20px;
   background-color: var(--bg-secondary);
@@ -52,7 +48,7 @@
   font-weight: 400;
   font-size: 60px;
   color: var(--text-primary);
-  margin: 0;
+  margin: 40px;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   line-height: 1.1;
   white-space: normal;
@@ -75,7 +71,6 @@
   );
 }
 
-/* --- FITTING GRID (Карточки с цифрами) --- */
 .fittingGrid {
   display: flex;
   flex-wrap: wrap;
@@ -118,7 +113,6 @@
   text-align: left;
 }
 
-/* --- DIRECTIONS BOX (Желтый блок) --- */
 .directionsBox {
   background-color: #b8f33f;
   border-radius: 20px;
@@ -126,7 +120,7 @@
   width: 100%;
   box-sizing: border-box;
   position: relative;
-  z-index: 1; /* Самый нижний слой из трех (желтый -> спортсмен -> белый) */
+  z-index: 1;
   margin-bottom: 0;
 }
 
@@ -160,14 +154,13 @@
   margin-top: 2px;
 }
 
-/* --- ATHLETE WRAPPER MOBILE (Спортсмен между блоками) --- */
 .athleteWrapperMobile {
   position: relative;
   width: 100%;
   height: 280px;
-  margin-top: -60px; 
-  margin-bottom: -60px; 
-  z-index: 2; 
+  margin-top: -60px;
+  margin-bottom: -60px;
+  z-index: 2;
   pointer-events: none;
   display: flex;
   justify-content: center;
@@ -180,19 +173,18 @@
   height: auto;
   object-fit: contain;
   object-position: right bottom;
-  transform: translate(60%, 25%) ;
+  transform: translate(60%, 25%);
 }
 
 .athleteLineMobile {
   position: absolute;
   bottom: 10px;
-  transform: translateY(10%); 
+  transform: translateY(10%);
   width: 100%;
   opacity: 0.6;
   z-index: -1;
 }
 
-/* --- CTA BLOCK (Белая плашка) --- */
 .ctaBlock {
   background: var(--bg-secondary);
   border-radius: 30px;
@@ -207,7 +199,7 @@
   min-height: 400px;
   width: 100%;
   box-sizing: border-box;
-  z-index: 3; /* Самый верхний слой на десктопе */
+  z-index: 3;
 }
 
 .ctaContent {
@@ -278,7 +270,6 @@
   }
 }
 
-/* Desktop Image Wrapper (Картинка внутри CTA на десктопе) */
 .ctaImageWrapperDesktop {
   position: absolute;
   top: 0;
@@ -295,6 +286,7 @@
 
 .ctaImageDesktop {
   width: 100%;
+  max-width: 460px;
   height: auto;
   object-fit: contain;
   object-position: bottom center;
@@ -310,15 +302,10 @@
   z-index: -1;
 }
 
-/* --- MEDIA QUERIES --- */
-
-/* Планшеты (< 900px) */
 @media (max-width: 900px) {
-  /* Hero Adaptation */
   .hero {
     height: auto;
     min-height: auto;
-    flex-direction: column-reverse;
     padding: 30px 20px;
     text-align: center;
   }
@@ -330,17 +317,17 @@
 
   .heroTitle {
     font-size: 40px;
-    margin-bottom: 20px;
+    margin: 20px;
   }
 
   .heroImage {
     position: relative;
     width: 100%;
-    height: 250px;
+    max-height: 250px;
     right: auto;
     mask-image: none;
     -webkit-mask-image: none;
-    object-fit: cover;
+    object-fit: contain;
     border-radius: 20px;
   }
 
@@ -363,12 +350,11 @@
     font-size: 20px;
   }
 
-  /* CTA Adaptation for Tablet/Mobile */
   .ctaBlock {
     flex-direction: column;
     min-height: auto;
     padding: 30px 20px;
-    border-radius: 20px 20px 0 0; /* Скругление только сверху */
+    border-radius: 20px 20px 0 0;
     margin-top: 0;
     box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.05);
     z-index: 3;
@@ -395,11 +381,9 @@
   }
 }
 
-/* Мобильные телефоны (< 600px) */
 @media (max-width: 600px) {
   .content__wrapper {
     padding: 40px 15px;
-
   }
 
   .sectionTitle {
@@ -432,7 +416,6 @@
     font-size: 18px;
   }
 
-  /* Athlete Mobile Adaptation */
   .athleteWrapperMobile {
     height: 220px;
     margin-top: -40px;
@@ -447,7 +430,7 @@
 
   .ctaBlock {
     padding: 20px 15px;
-    border-radius: 20px; /* Полное скругление на мобильном */
+    border-radius: 20px;
   }
 
   .ctaTitle {
@@ -455,7 +438,6 @@
   }
 }
 
-/* Отключение ховеров на тач-устройствах */
 @media (hover: none) and (pointer: coarse) {
   .ctaButton {
     transform: none !important;

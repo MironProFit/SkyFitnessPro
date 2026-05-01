@@ -1,5 +1,3 @@
-/* src/index.css */
-
 @font-face {
   font-family: 'StratosSkyeng';
   src: url('../../shared/assets/fonts/Stratos-Regular.woff2') format('woff2');
@@ -102,7 +100,7 @@ body {
   transition:
     background-color 0.3s ease,
     color 0.3s ease;
-  overflow-x: hidden; /* Предотвращаем горизонтальный скролл */
+  overflow-x: hidden;
 }
 
 p {
@@ -120,7 +118,7 @@ h3 {
   margin: 0;
 }
 
-   /* МОБИЛЬНАЯ ТИПОГРАФИКА */
+/* МОБИЛЬНАЯ ТИПОГРАФИКА */
 
 @media (max-width: 768px) {
   h1 {

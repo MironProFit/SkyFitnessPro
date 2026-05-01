@@ -4,7 +4,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { userApi } from '@/entities/user/api/userApi';
 
-// 🔹 Порог переключения на мобильную версию (можно вынести в константы)
 const MOBILE_BREAKPOINT = 768;
 
 interface AppContextType {
@@ -19,8 +18,6 @@ interface AppContextType {
   setError: (value: string | null) => void;
   addCourseForUser: (courseId: string) => Promise<void>;
   removeCourseForUser: (courseId: string) => Promise<void>;
-
-  // 🔹 Новый параметр
   isMobile: boolean;
 }
 
@@ -35,15 +32,12 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   const [openModalProfile, setOpenModalProfile] = useState(false);
   const [isAppLoading, setIsAppLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  // 🔹 Состояние для отслеживания мобильного устройства
   const [isMobile, setIsMobile] = useState(window.innerWidth <= MOBILE_BREAKPOINT);
 
   const location = useLocation();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  // 🔹 Эффект для отслеживания изменения размера окна
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= MOBILE_BREAKPOINT);
@@ -51,7 +45,6 @@ export const AppProvider = ({ children }: AppProviderProps) => {
 
     window.addEventListener('resize', handleResize);
 
-    // Очистка слушателя при размонтировании
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 

@@ -37,7 +37,6 @@
   font-weight: 400;
 }
 
-
 .btn--xl {
   width: 192px;
   height: 52px;
@@ -71,7 +70,6 @@
   box-shadow: 0 0 0 3px rgba(184, 243, 63, 0.4);
 }
 
-/* Белый вариант кнопки */
 .btn--white {
   background-color: #ffffff;
   color: #000000;

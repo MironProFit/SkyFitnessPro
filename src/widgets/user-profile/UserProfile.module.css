@@ -1,11 +1,8 @@
-/* src/widgets/user-profile/UserProfile.module.css */
-
 .section {
   max-width: 1200px;
   margin: 0 auto;
   font-family: 'StratosSkyeng', sans-serif;
-  /* Гарантируем, что паддинги не ломают ширину */
-  box-sizing: border-box; 
+  box-sizing: border-box;
 }
 
 .profile {
@@ -35,7 +32,7 @@
   min-height: 258px;
   border-radius: 30px;
   box-shadow: 0px 4px 67px -12px rgba(0, 0, 0, 0.13);
-  box-sizing: border-box; /* Важно для корректного расчета ширины */
+  box-sizing: border-box;
 }
 
 .profile_box {
@@ -84,12 +81,11 @@
   cursor: not-allowed;
 }
 
-/* Адаптив для мобильных устройств */
 @media (max-width: 768px) {
   .section_load {
     padding: 10px;
   }
-  
+
   .info_name {
     font-weight: 200;
     font-size: 26px;
@@ -98,20 +94,19 @@
 
   .profile {
     margin-bottom: 0;
-    width: 100%; /* На всю ширину секции */
+    width: 100%;
   }
 
   .profile_container {
     flex-direction: column;
-    /* Исправлено: центрирование и отступы по краям */
-    width: calc(100% - 40px); /* Ширина минус отступы слева и справа */
-    margin: 0 auto; /* Центрирование блока */
-    padding: 20px; /* Чуть меньше внутренний отступ для мобильных */
+    width: calc(100% - 40px);
+    margin: 0 auto;
+    padding: 20px;
   }
 
   .profile_title {
-    margin: 0 0 20px 20px; /* Отступ слева как у контейнера */
-    font-size: 32px; /* Опционально: чуть меньше заголовок на мобильном */
+    margin: 0 0 20px 20px;
+    font-size: 32px;
   }
 
   .profile_img {
@@ -128,7 +123,7 @@
 
   .profile_container__info {
     width: 100%;
-    align-items: center; /* Центрируем текст внутри инфо-блока */
+    align-items: center;
     text-align: center;
   }
 

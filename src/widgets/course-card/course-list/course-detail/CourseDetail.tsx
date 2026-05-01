@@ -43,7 +43,7 @@ export const CourseDetail = ({ course }: CourseDetailProps) => {
           </section>
         )}
 
-        {/* --- МОБИЛЬНАЯ КАРТИНКА МЕЖДУ БЛОКАМИ --- */}
+        {/* МОБИЛЬНАЯ КАРТИНКА МЕЖДУ БЛОКАМИ  */}
         {isMobile && (
           <div className={styles.athleteWrapperMobile}>
             <img src={AthleteLine} alt="" className={styles.athleteLineMobile} aria-hidden="true" />

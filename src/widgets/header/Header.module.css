@@ -1,6 +1,6 @@
 .header {
   background-color: var(--bg-primary);
-  padding: 16px 0 40px 0; /* Уменьшил нижний отступ для компактности */
+  padding: 16px 0 40px 0;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -22,7 +22,7 @@
 .logo {
   display: flex;
   flex-direction: column;
-  gap: 8px; /* Уменьшил отступ между лого и теглайном */
+  gap: 8px;
 }
 
 .logo__link {
@@ -54,7 +54,7 @@
 }
 
 .logo__tagline {
-  font-size: 14px; /* Чуть уменьшил шрифт теглайна */
+  font-size: 14px;
   color: var(--text-primary);
   font-weight: 400;
   opacity: 0.7;
@@ -87,7 +87,7 @@
 }
 
 .actions__profile_avatar {
-  width: 36px; /* Чуть уменьшил аватарку для баланса */
+  width: 36px;
   height: 36px;
   border-radius: 50%;
   object-fit: cover;
@@ -96,7 +96,7 @@
 .actions__profile_name {
   font-style: normal;
   font-weight: 400;
-  font-size: 18px; /* Уменьшил размер имени */
+  font-size: 18px;
   color: var(--text-secondary);
   margin: 0;
 }
@@ -115,7 +115,7 @@
 
 .actions__profile-arrow_open {
   cursor: pointer;
-  transform: rotate(180deg); /* Убрал смещение вниз, оставил только поворот */
+  transform: rotate(180deg);
 }
 
 .buttonsWrap {
@@ -124,11 +124,6 @@
   align-items: center;
 }
 
-/* В @media (max-width: 768px) можно убрать эти строки, так как элементы не рендерятся: */
-/* .logo__tagline { display: none; } */
-/* .actions__profile_name { display: none; } */
-
-/* Оставляем только адаптацию отступов и размеров: */
 @media (max-width: 768px) {
   .header {
     padding: 12px 0 20px 0;

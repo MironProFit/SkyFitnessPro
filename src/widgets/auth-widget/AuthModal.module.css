@@ -70,9 +70,8 @@
 }
 
 .input:not(:placeholder-shown) {
-  /* например, изменить цвет текста или рамки */
-  border-color: #4caf50; /* зеленый, например */
-  color: var(--text-primary); /* черный цвет текста */
+  border-color: #4caf50; 
+  color: var(--text-primary);
 }
 
 .submitButton {

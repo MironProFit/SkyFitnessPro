@@ -1,5 +1,3 @@
-/* src/pages/WorkoutPage/WorkoutPage.module.css */
-
 .page {
   min-height: 100vh;
   background: var(--bg-primary);
@@ -7,7 +5,6 @@
   flex-direction: column;
 }
 
-/* Хедер: ширина 1200px, центрирование */
 .header {
   display: flex;
   align-items: center;
@@ -19,7 +16,6 @@
   box-sizing: border-box;
 }
 
-/* Скрытые кнопки с ховер-эффектом (для десктопа) */
 .hiddenBtn {
   display: flex;
   align-items: center;
@@ -31,11 +27,10 @@
   font-weight: 500;
   color: var(--text-secondary);
   padding: 10px 16px;
-  opacity: 0; /* Невидимы по умолчанию на десктопе */
+  opacity: 0; 
   transition: all 0.3s ease;
 }
 
-/* Появление при наведении на хедер или саму кнопку */
 .header:hover .hiddenBtn,
 .hiddenBtn:hover {
   opacity: 1;
@@ -55,20 +50,18 @@
   font-size: 60px;
   line-height: 60px;
   flex-grow: 1;
-  text-align: center; /* Центрируем заголовок курса */
+  text-align: center; 
 }
 
-/* Контент: ширина 1200px */
 .content {
   flex: 1;
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
-  padding: 0 20px; /* Небольшие боковые отступы для безопасности */
+  padding: 0 20px; 
   box-sizing: border-box;
 }
 
-/* Видео iframe */
 .videoWrapper {
   position: relative;
   padding-bottom: 56.25%; /* 16:9 */
@@ -102,7 +95,6 @@
   color: #fff;
 }
 
-/* Сетка упражнений */
 .exercisesGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -170,7 +162,6 @@
   transition: width 0.3s ease;
 }
 
-/* Панель управления внизу */
 .controls {
   display: flex;
   justify-content: space-between;
@@ -180,7 +171,6 @@
   padding-bottom: 40px;
 }
 
-/* Контейнер для кнопок навигации */
 .navContainer {
   display: flex;
   gap: 16px;
@@ -194,7 +184,6 @@
   justify-content: center;
 }
 
-/* Стили для кнопки сохранения */
 .saveBtn {
   white-space: nowrap;
   padding: 0 20px;
@@ -235,7 +224,6 @@
   }
 }
 
-/* Модальные окна */
 .modalOverlay {
   position: fixed;
   top: 0;
@@ -380,45 +368,38 @@
   height: 48px;
 }
 
-/* ==========================================
-   АДАПТИВНОСТЬ (ПЛАНШЕТЫ И МОБИЛЬНЫЕ)
-   ========================================== */
 
 @media (max-width: 768px) {
-  /* Хедер на мобильных */
   .header {
     padding: 16px;
-    
+
     gap: 10px;
   }
 
   .courseTitle {
-    font-size: 28px; /* Уменьшаем заголовок курса */
+    font-size: 28px;
     line-height: 1.2;
-    order: 1; /* Заголовок сверху */
+    order: 1;
     width: 100%;
     text-align: left;
     margin-bottom: 10px;
   }
 
-  /* Кнопки хедера на мобильных: всегда видны, только иконки */
   .hiddenBtn {
     opacity: 1;
     font-size: 12px;
     padding: 8px 12px;
-    order: 2; /* Кнопки под заголовком */
+    order: 2; 
   }
 
   .hiddenBtn span {
-    display: none; /* Скрываем текст, оставляем иконки */
+    display: none;
   }
 
-  /* Контент на мобильных */
   .content {
-    padding: 0 16px; /* Боковые отступы */
+    padding: 0 16px; 
   }
 
-  /* Сетка упражнений в одну колонку */
   .exercisesGrid {
     grid-template-columns: 1fr;
     padding: 20px;
@@ -432,15 +413,14 @@
     margin-bottom: 15px;
   }
 
-  /* Панель управления на мобильных */
   .controls {
-    flex-direction: column-reverse; /* Кнопка сохранения сверху, навигация снизу */
+    flex-direction: column-reverse; 
     gap: 15px;
     padding-bottom: 20px;
   }
 
   .saveBtn {
-    width: 100%; /* Кнопка сохранения на всю ширину */
+    width: 100%; 
     min-width: unset;
     padding: 12px;
   }
@@ -452,19 +432,18 @@
   }
 
   .navBtn {
-    width: 48%; /* Кнопки навигации делят ширину пополам */
+    width: 48%; 
     min-width: unset;
     padding: 10px;
     font-size: 14px;
   }
 
-  /* Модальное окно на мобильных */
   .modalContent {
     width: 90%;
     padding: 20px;
     margin: 20px;
   }
-  
+
   .modalTitle {
     font-size: 18px;
   }
