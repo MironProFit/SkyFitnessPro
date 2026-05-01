@@ -1,73 +1,92 @@
-# React + TypeScript + Vite
+SkyFitnessPro - Платформа для управления фитнес-курсами
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+ОПИСАНИЕ ПРОЕКТА
+================
+Веб-приложение для каталогизации фитнес-курсов, управления личным кабинетом пользователя и отслеживания прогресса тренировок. Реализована система аутентификации на основе JWT-токенов, адаптивный интерфейс для мобильных и десктопных устройств, кэширование данных и оптимизированная работа с API.
 
-Currently, two official plugins are available:
+ТЕХНОЛОГИЧЕСКИЙ СТЕК
+====================
+Frontend:
+- React 19.2.4 + TypeScript 5.9.3
+- Vite (сборщик)
+- Redux Toolkit (глобальное состояние: аутентификация, пользовательские данные)
+- TanStack Query (кэширование серверного состояния)
+- Axios (HTTP-клиент)
+- CSS Modules (стилизация компонентов)
+- Jest + React Testing Library (тестирование)
+- ESLint + Prettier (линтинг и форматирование)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+СТРУКТУРА ПРОЕКТА (FRONTEND)
+============================
+src/
+├── shared/           # Общие ресурсы
+│   ├── components/   # UI-компоненты (Button, Input и др.)
+│   ├── assets/       # Изображения, иконки
+│   ├── config/       # Конфигурации (маршруты, константы)
+│   └── api/          # Типы данных, API-клиент
+├── entities/         # Бизнес-сущности
+│   ├── user/         # Пользователь (API, типы, модели)
+│   └── course/       # Курсы (API, типы, модели)
+├── widgets/          # Крупные блоки интерфейса
+│   ├── CourseList/   # Список курсов
+│   ├── CourseCard/   # Карточка курса
+│   └── UserProfile/  # Профиль пользователя
+├── pages/            # Страницы
+│   ├── HomePage/     # Главная страница
+│   ├── CourseDetail/ # Детальная страница курса
+│   └── AuthPage/     # Аутентификация
+├── context/          # React Context (AuthContext, AppContext)
+└── App.tsx           # Корневой компонент
 
-## React Compiler
+КЛЮЧЕВЫЕ ФУНКЦИИ
+================
+1. Аутентификация:
+   - Регистрация и вход по email/паролю
+   - Автоматическое обновление Access Token через Refresh Token
+   - Сохранение сессии между перезагрузками (localStorage/cookies)
+   - Защита маршрутов от неавторизованных пользователей
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+2. Управление курсами:
+   - Просмотр каталога курсов с фильтрацией
+   - Добавление/удаление курсов в личный профиль
+   - Детальная информация по каждому курсу (программа, направления, рекомендации)
+   - Сброс всех выбранных курсов с подтверждением
 
-## Expanding the ESLint configuration
+3. Оптимизация:
+   - Кэширование API-ответов через TanStack Query
+   - Скелетоны загрузки вместо спиннеров
+   - React.memo, useCallback, useMemo для предотвращения лишних ререндеров
+   - Отключение hover-эффектов на тач-устройствах
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+4. Адаптивность:
+   - Мобильная версия (<600px): одноколоночная верстка, крупные кнопки
+   - Планшет (600–900px): двухколоночная сетка
+   - Десктоп (>900px): полноразмерный интерфейс
+   - Корректное отображение на всех разрешениях без горизонтального скролла
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      //Other configs...
 
-      //Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      //Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      //Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+<!-- ТЕСТИРОВАНИЕ
+============
+- Запуск всех тестов: npm test
+- Тесты с покрытием: npm run test:coverage
+- Режим наблюдения: npm run test:watch
 
-      //Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      //other options...
-    },
-  },
-]);
-```
+Покрытие тестами включает:
+- UI-компоненты (Button, Input, Card)
+- Хуки аутентификации (useAuth)
+- API-клиент и обработку ошибок
+- Редьюсеры Redux Toolkit
+- Валидацию форм -->
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+КОДСТАЙЛ
+========
+- TypeScript: строгая типизация, интерфейсы для моделей, дженерики
+- React: функциональные компоненты с хуками, разделение логики и представления
+- CSS: CSS Modules, BEM-подобный нейминг
+- Коммиты: семантические сообщения (Conventional Commits)
+- Линтинг: ESLint + Prettier (автоматическое форматирование при сохранении)
 
-```js
-//eslint.config.js
-import reactX from 'eslint-plugin-react-x';
-import reactDom from 'eslint-plugin-react-dom';
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      //Other configs...
-      //Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      //Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      //other options...
-    },
-  },
-]);
-```
+КОНТАКТЫ
+========
+Автор: Miron
+Email: mpf_3d@vk.com
